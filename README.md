@@ -6,4 +6,4 @@ __NOT SUPPORT TILEMAPS!!__
 
 # How to use #
 
-Go to demo folder: [./demo](./tree/master/demo)
+Go to demo folder: [./demo](./demo)
