@@ -1,4 +1,6 @@
 
+/// <reference path="../dist/pixi-tiled.d.ts" />
+
 function init() {
 
     var app = new PIXI.Application();
