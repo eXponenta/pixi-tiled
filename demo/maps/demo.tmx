@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="left-up" width="20" height="13" tilewidth="40" tileheight="50" infinite="0" nextlayerid="6" nextobjectid="13">
+ <tileset firstgid="1" name="Images" tilewidth="192" tileheight="192" tilecount="11" columns="0">
+  <grid orientation="orthogonal" width="1" height="1"/>
+  <tile id="0">
+   <image width="26" height="25" source="gfx/arrow.png"/>
+  </tile>
+  <tile id="1">
+   <image width="28" height="28" source="gfx/time_icon.png"/>
+  </tile>
+  <tile id="2">
+   <image width="80" height="125" source="gfx/women.png"/>
+  </tile>
+  <tile id="3">
+   <image width="192" height="192" source="gfx/girl_run_7.png"/>
+  </tile>
+  <tile id="4">
+   <image width="192" height="192" source="gfx/girl_run_0.png"/>
+  </tile>
+  <tile id="5">
+   <image width="192" height="192" source="gfx/girl_run_1.png"/>
+  </tile>
+  <tile id="6">
+   <image width="192" height="192" source="gfx/girl_run_2.png"/>
+  </tile>
+  <tile id="7">
+   <image width="192" height="192" source="gfx/girl_run_3.png"/>
+  </tile>
+  <tile id="8">
+   <image width="192" height="192" source="gfx/girl_run_4.png"/>
+  </tile>
+  <tile id="9">
+   <image width="192" height="192" source="gfx/girl_run_5.png"/>
+  </tile>
+  <tile id="10">
+   <image width="192" height="192" source="gfx/girl_run_6.png"/>
+   <animation>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="4" duration="200"/>
+    <frame tileid="5" duration="100"/>
+    <frame tileid="6" duration="100"/>
+    <frame tileid="7" duration="100"/>
+    <frame tileid="8" duration="200"/>
+    <frame tileid="9" duration="100"/>
+    <frame tileid="10" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <imagelayer id="3" name="Fullimage">
+  <image source="gfx/bg.png" width="3020" height="1760"/>
+ </imagelayer>
+ <objectgroup id="2" name="Primitives"/>
+ <objectgroup id="4" name="Images">
+  <object id="1" name="Normal" gid="3" x="25" y="142" width="80" height="125"/>
+  <object id="2" name="FlipH" gid="2147483651" x="136" y="143" width="80" height="125"/>
+  <object id="3" name="FlipV" gid="1073741827" x="244" y="146" width="80" height="125"/>
+  <object id="4" name="Rotate" gid="3" x="345" y="113" width="80" height="125" rotation="35"/>
+  <object id="5" name="Clock" gid="2" x="24" y="196" width="28" height="28"/>
+  <object id="6" name="Scale" gid="2" x="63" y="328" width="130" height="130"/>
+  <object id="7" name="Tint" gid="2" x="234" y="284" width="65" height="65">
+   <properties>
+    <property name="tint" type="color" value="#ff000000"/>
+   </properties>
+  </object>
+  <object id="8" name="Animations" gid="11" x="316" y="352" width="192" height="192">
+   <properties>
+    <property name="animLoop" type="bool" value="true"/>
+    <property name="animPlaying" type="bool" value="true"/>
+    <property name="animSpeed" type="float" value="0.2"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="Interaction">
+  <object id="9" name="ButtonRight" gid="1" x="560" y="79" width="26" height="25">
+   <properties>
+    <property name="buttonMode" type="bool" value="true"/>
+    <property name="interactive" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="10" name="ButtonLeft" gid="2147483649" x="757" y="78" width="26" height="25">
+   <properties>
+    <property name="buttonMode" type="bool" value="true"/>
+    <property name="interactive" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="11" name="SingleLine" x="589" y="50" width="164" height="29">
+   <text fontfamily="Tahoma" pixelsize="22" color="#ffffff" kerning="0" halign="center" valign="center">Click arrows</text>
+  </object>
+  <object id="12" name="Multiline" x="561" y="117" width="216" height="242">
+   <text wrap="1" bold="1" halign="center" valign="center">Multiline text from tiled editor:
+
+First line?
+
+
+
+Second line??
+
+Autowraping ?? Supported, this line is autowrap</text>
+  </object>
+ </objectgroup>
+</map>
