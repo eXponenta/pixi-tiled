@@ -1,4 +1,3 @@
-/// <reference types="./typings/pixi.js" />
 declare namespace TiledOG.ContainerBuilder {
     function ApplyMeta(meta: any, target: PIXI.Container): void;
     function Build(meta: any): PIXI.DisplayObject;
