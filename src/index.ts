@@ -35,10 +35,7 @@ namespace TiledOG {
 									: Config.roundFontAlpha;
 		}
 
-		const parser = new TiledOG.Parser();
-		PIXI.loaders.Loader.addPixiMiddleware(() => parser.Parse);
-
-		console.log("Now you use Tiled!");
+		PIXI.Loader.registerPlugin( TiledOG.Parser);
 	}
 }
 

@@ -1,15 +1,15 @@
 /// <reference path ="../../node_modules/pixi-layers/dist/pixi-layers.d.ts">
 
 //inject new field in resources
-declare module PIXI.loaders {
-	export interface Resource {
+declare module PIXI {
+	export interface LoaderResource {
 		stage?: TiledOG.TiledContainer;
 	}
 }
 
 namespace TiledOG {
-	let showHello: boolean = true;
 
+	let showHello: boolean = true;
 	function PrepareOject(layer: any) {
 
 		let props: any = {};
@@ -75,12 +75,12 @@ namespace TiledOG {
 	}
 
 	export function CreateStage(
-		res: PIXI.loaders.Resource | PIXI.Spritesheet | Tiled.MultiSpritesheet,
+		res: PIXI.LoaderResource | PIXI.Spritesheet | Tiled.MultiSpritesheet,
 		loader: any
 	): TiledOG.TiledContainer | undefined {
 		let _data: any = {};
 
-		if (res instanceof PIXI.loaders.Resource) {
+		if (res instanceof PIXI.LoaderResource) {
 			_data = res.data;
 		} else {
 			_data = loader;
@@ -112,7 +112,7 @@ namespace TiledOG {
 
 		let baseUrl = "";
 
-		if (res instanceof PIXI.loaders.Resource) 
+		if (res instanceof PIXI.LoaderResource) 
 		{
 			_stage.name = res.url.replace(cropName,"").split(".")[0];
 
@@ -154,7 +154,8 @@ namespace TiledOG {
 
 				pixiLayer.position.set(layer.x, layer.y);
 				pixiLayer.alpha = layer.opacity || 1;
-
+				
+				
 				ContainerBuilder.ApplyMeta(layer, pixiLayer);
 				
 				_stage.addChild(pixiLayer);
@@ -201,16 +202,16 @@ namespace TiledOG {
 
 							let sprite: PIXI.Sprite = pixiObject as PIXI.Sprite;
 
-							let cached: PIXI.Texture | PIXI.loaders.Resource | undefined = undefined;
+							let cached: PIXI.Texture | PIXI.LoaderResource | undefined = undefined;
 
-							if (loader instanceof PIXI.loaders.Loader) {
+							if (loader instanceof PIXI.Loader) {
 								cached = loader.resources[layerObj.img.image];
 							} else if (res instanceof PIXI.Spritesheet) {
 								cached = res.textures[layerObj.img.image];
 							}
 
 							if (!cached) {
-								if (loader instanceof PIXI.loaders.Loader) {
+								if (loader instanceof PIXI.Loader) {
 									
 									loader.add(
 										layerObj.img.image,
@@ -229,14 +230,14 @@ namespace TiledOG {
 									continue;
 								}
 							} else {
-								if (cached instanceof PIXI.loaders.Resource) {
+								if (cached instanceof PIXI.LoaderResource) {
 									if (!cached.isComplete) {
-										cached.onAfterMiddleware.once(() => {
+										cached.onAfterMiddleware.once((e:any) => {
 											sprite.texture = (cached as any).texture;
 											if (layerObj.fromImageLayer) {
 												sprite.scale.set(1);
 											}
-										});
+										})
 									} else {
 										sprite.texture = cached.texture;
 										if (layerObj.fromImageLayer) {
@@ -282,13 +283,23 @@ namespace TiledOG {
 		return _stage;
 	}
 
-	export class Parser {
-		consructor() {}
 
-		Parse(res: PIXI.loaders.Resource, next: Function) {
+	export let Parser = {
+		
+		Parse(res: PIXI.LoaderResource, next: Function) {
+			//@ts-ignore
 			var stage = CreateStage(res, this as any);
 			res.stage = stage;
 			next();
+		},
+
+		use(res: PIXI.LoaderResource, next: Function) {
+		 	Parser.Parse.call(this, res, next);
+		},
+
+		add() {
+			console.log("Now you use Tiled!");
 		}
+
 	}
 }

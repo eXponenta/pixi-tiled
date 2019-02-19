@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var TiledOG;
 (function (TiledOG) {
     var ContainerBuilder;
@@ -19,6 +32,7 @@ var TiledOG;
             target.primitive = TiledOG.Primitives.BuildPrimitive(meta);
             if (meta.properties) {
                 target.alpha = meta.properties.opacity || 1;
+                //@ts-ignore
                 Object.assign(target, meta.properties);
             }
             if (TiledOG.Config.debugContainers) {
@@ -65,7 +79,7 @@ var TiledOG;
     (function (SpriteBuilder) {
         function сreateSprite(meta) {
             // TODO make load from texture atlass
-            var sprite = new PIXI.Sprite();
+            var sprite = new PIXI.Sprite(PIXI.Texture.EMPTY);
             //TODO Set anchor and offsets to center (.5, .5)
             if (!meta.fromImageLayer) {
                 sprite.anchor = TiledOG.Config.defSpriteAnchor;
@@ -122,7 +136,7 @@ var TiledOG;
             });
             pixiText.name = meta.name + "_Text";
             if (TiledOG.Config.roundFontAlpha) {
-                pixiText.texture.once("update", function (x) {
+                pixiText.texture.once("update", function () {
                     roundAlpha(pixiText.canvas);
                     pixiText.texture.baseTexture.update();
                     console.log("update");
@@ -239,19 +253,6 @@ var Tiled;
     }());
     Tiled.MultiSpritesheet = MultiSpritesheet;
 })(Tiled || (Tiled = {}));
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    }
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 var TiledOG;
 (function (TiledOG) {
     var TiledContainer = /** @class */ (function (_super) {
@@ -323,7 +324,7 @@ var TiledOG;
     }
     function CreateStage(res, loader) {
         var _data = {};
-        if (res instanceof PIXI.loaders.Resource) {
+        if (res instanceof PIXI.LoaderResource) {
             _data = res.data;
         }
         else {
@@ -346,7 +347,7 @@ var TiledOG;
         _stage.layerHeight = _data.height;
         _stage.layerWidth = _data.width;
         var baseUrl = "";
-        if (res instanceof PIXI.loaders.Resource) {
+        if (res instanceof PIXI.LoaderResource) {
             _stage.name = res.url.replace(cropName, "").split(".")[0];
             baseUrl = res.url.replace(loader.baseUrl, "");
             baseUrl = baseUrl.match(cropName)[0];
@@ -418,14 +419,14 @@ var TiledOG;
                             pixiObject = TiledOG.SpriteBuilder.Build(layerObj);
                             var sprite_1 = pixiObject;
                             var cached_1 = undefined;
-                            if (loader instanceof PIXI.loaders.Loader) {
+                            if (loader instanceof PIXI.Loader) {
                                 cached_1 = loader.resources[layerObj.img.image];
                             }
                             else if (res instanceof PIXI.Spritesheet) {
                                 cached_1 = res.textures[layerObj.img.image];
                             }
                             if (!cached_1) {
-                                if (loader instanceof PIXI.loaders.Loader) {
+                                if (loader instanceof PIXI.Loader) {
                                     loader.add(layerObj.img.image, {
                                         parentResource: res
                                     }, function () {
@@ -441,9 +442,9 @@ var TiledOG;
                                 }
                             }
                             else {
-                                if (cached_1 instanceof PIXI.loaders.Resource) {
+                                if (cached_1 instanceof PIXI.LoaderResource) {
                                     if (!cached_1.isComplete) {
-                                        cached_1.onAfterMiddleware.once(function () {
+                                        cached_1.onAfterMiddleware.once(function (e) {
                                             sprite_1.texture = cached_1.texture;
                                             if (layerObj.fromImageLayer) {
                                                 sprite_1.scale.set(1);
@@ -495,18 +496,20 @@ var TiledOG;
         return _stage;
     }
     TiledOG.CreateStage = CreateStage;
-    var Parser = /** @class */ (function () {
-        function Parser() {
-        }
-        Parser.prototype.consructor = function () { };
-        Parser.prototype.Parse = function (res, next) {
+    TiledOG.Parser = {
+        Parse: function (res, next) {
+            //@ts-ignore
             var stage = CreateStage(res, this);
             res.stage = stage;
             next();
-        };
-        return Parser;
-    }());
-    TiledOG.Parser = Parser;
+        },
+        use: function (res, next) {
+            TiledOG.Parser.Parse.call(this, res, next);
+        },
+        add: function () {
+            console.log("Now you use Tiled!");
+        }
+    };
 })(TiledOG || (TiledOG = {}));
 var TiledOG;
 (function (TiledOG) {
@@ -778,9 +781,7 @@ var TiledOG;
                 ? props.roundFontAlpha
                 : TiledOG.Config.roundFontAlpha;
         }
-        var parser = new TiledOG.Parser();
-        PIXI.loaders.Loader.addPixiMiddleware(function () { return parser.Parse; });
-        console.log("Now you use Tiled!");
+        PIXI.Loader.registerPlugin(TiledOG.Parser);
     }
     TiledOG.InjectToPixi = InjectToPixi;
 })(TiledOG || (TiledOG = {}));

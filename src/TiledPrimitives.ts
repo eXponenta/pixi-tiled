@@ -1,4 +1,4 @@
-namespace TiledOG.Primitives {
+	namespace TiledOG.Primitives {
 	export interface ITiledPtimitive {
 		name: string;
 		types: Array<string>;

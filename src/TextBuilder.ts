@@ -31,7 +31,7 @@ namespace TiledOG.TextBuilder {
 		pixiText.name = meta.name + "_Text";
 
 		if(Config.roundFontAlpha){
-			pixiText.texture.once("update", (x) =>{
+			pixiText.texture.once("update", () =>{
 				roundAlpha(pixiText.canvas);
 				pixiText.texture.baseTexture.update();
 				console.log("update")

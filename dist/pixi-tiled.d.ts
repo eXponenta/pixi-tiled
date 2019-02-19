@@ -1,4 +1,4 @@
-/// <reference types="pixi.js" />
+/// <reference types="./typings/pixi.js" />
 declare namespace TiledOG.ContainerBuilder {
     function ApplyMeta(meta: any, target: PIXI.Container): void;
     function Build(meta: any): PIXI.DisplayObject;
@@ -43,17 +43,18 @@ declare namespace TiledOG {
         tiledId?: number;
     }
 }
-declare module PIXI.loaders {
-    interface Resource {
+declare module PIXI {
+    interface LoaderResource {
         stage?: TiledOG.TiledContainer;
     }
 }
 declare namespace TiledOG {
-    function CreateStage(res: PIXI.loaders.Resource | PIXI.Spritesheet | Tiled.MultiSpritesheet, loader: any): TiledOG.TiledContainer | undefined;
-    class Parser {
-        consructor(): void;
-        Parse(res: PIXI.loaders.Resource, next: Function): void;
-    }
+    function CreateStage(res: PIXI.LoaderResource | PIXI.Spritesheet | Tiled.MultiSpritesheet, loader: any): TiledOG.TiledContainer | undefined;
+    let Parser: {
+        Parse(res: PIXI.LoaderResource, next: Function): void;
+        use(res: PIXI.LoaderResource, next: Function): void;
+        add(): void;
+    };
 }
 declare namespace TiledOG.Primitives {
     interface ITiledPtimitive {

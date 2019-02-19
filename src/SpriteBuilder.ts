@@ -1,7 +1,7 @@
 namespace TiledOG.SpriteBuilder {
 	function сreateSprite(meta: any): PIXI.Sprite {
 		// TODO make load from texture atlass
-		const sprite = new PIXI.Sprite();
+		const sprite = new PIXI.Sprite(PIXI.Texture.EMPTY);
 
 		//TODO Set anchor and offsets to center (.5, .5)
 		if (!meta.fromImageLayer) {

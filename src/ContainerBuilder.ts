@@ -18,10 +18,11 @@ namespace TiledOG.ContainerBuilder {
 
 		const type = Tiled.Utils.Objectype(meta);
 
-		(target as TiledContainer).primitive = TiledOG.Primitives.BuildPrimitive(meta);
+		(target as TiledOG.TiledContainer).primitive = TiledOG.Primitives.BuildPrimitive(meta);
 
 		if (meta.properties) {
 			target.alpha = meta.properties.opacity || 1;
+			//@ts-ignore
 			Object.assign(target, meta.properties);
 		}
 
