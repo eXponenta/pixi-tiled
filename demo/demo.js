@@ -1,6 +1,8 @@
 
 /// <reference path="../dist/pixi-tiled.d.ts" />
 
+PIXI.settings.CREATE_IMAGE_BITMAP = false;
+
 function init() {
 
     //inject to pixi loader 

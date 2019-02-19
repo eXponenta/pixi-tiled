@@ -16,7 +16,7 @@ namespace TiledOG.ContainerBuilder {
 		target.visible = meta.visible == undefined ? true : meta.visible;
 		target.types = meta.type ? meta.type.split(":") : [];
 
-		const type = Tiled.Utils.Objectype(meta);
+		const type = Utils.Objectype(meta);
 
 		(target as TiledOG.TiledContainer).primitive = TiledOG.Primitives.BuildPrimitive(meta);
 

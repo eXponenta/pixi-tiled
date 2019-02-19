@@ -1,4 +1,4 @@
-namespace Tiled.Utils {
+namespace TiledOG.Utils {
 	export function HexStringToHexInt(value: string | number): number {
 		if (!value) return 0;
 

@@ -3,7 +3,7 @@ namespace TiledOG {
         layerHeight: number = 0;
         layerWidth: number = 0;
         text?:PIXI.Text;
-        primitive?: TiledOG.Primitives.ITiledPtimitive;
+        primitive?: Primitives.ITiledPtimitive;
         tiledId?: number
     }
 }

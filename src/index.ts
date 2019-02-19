@@ -7,9 +7,9 @@ namespace TiledOG {
 	};
 
 	export let Builders: Array<Function> = [
-		TiledOG.ContainerBuilder.Build,
-		TiledOG.SpriteBuilder.Build,
-		TiledOG.TextBuilder.Build
+		ContainerBuilder.Build,
+		SpriteBuilder.Build,
+		TextBuilder.Build
 	];
 
 	export interface ITiledProps {
@@ -35,7 +35,7 @@ namespace TiledOG {
 									: Config.roundFontAlpha;
 		}
 
-		PIXI.Loader.registerPlugin( TiledOG.Parser);
+		PIXI.Loader.registerPlugin( Parser);
 	}
 }
 

@@ -20,7 +20,7 @@ namespace TiledOG.TextBuilder {
 		let pixiText = new PIXI.Text(meta.text.text, {
 			wordWrap: meta.text.wrap,
 			wordWrapWidth: meta.width,
-			fill: Tiled.Utils.HexStringToHexInt(meta.text.color) || 0x000000,
+			fill: Utils.HexStringToHexInt(meta.text.color) || 0x000000,
 			align: meta.text.valign || "center",
 			fontFamily: meta.text.fontfamily || "Arial",
 			fontWeight: meta.text.bold ? "bold" : "normal",
@@ -86,7 +86,7 @@ namespace TiledOG.TextBuilder {
 		}
 
 		if (props) {
-			pixiText.style.stroke = Tiled.Utils.HexStringToHexInt(meta.properties.strokeColor) || 0;
+			pixiText.style.stroke = Utils.HexStringToHexInt(meta.properties.strokeColor) || 0;
 			pixiText.style.strokeThickness = meta.properties.strokeThickness || 0;
 			pixiText.style.padding = meta.properties.fontPadding || 0;
 			Object.assign(pixiText, props);

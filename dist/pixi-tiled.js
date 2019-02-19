@@ -1,17 +1,4 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 var TiledOG;
 (function (TiledOG) {
     var ContainerBuilder;
@@ -28,11 +15,10 @@ var TiledOG;
                 target.y = meta.y;
             target.visible = meta.visible == undefined ? true : meta.visible;
             target.types = meta.type ? meta.type.split(":") : [];
-            var type = Tiled.Utils.Objectype(meta);
+            var type = TiledOG.Utils.Objectype(meta);
             target.primitive = TiledOG.Primitives.BuildPrimitive(meta);
             if (meta.properties) {
                 target.alpha = meta.properties.opacity || 1;
-                //@ts-ignore
                 Object.assign(target, meta.properties);
             }
             if (TiledOG.Config.debugContainers) {
@@ -51,7 +37,7 @@ var TiledOG;
         ContainerBuilder.ApplyMeta = ApplyMeta;
         function Build(meta) {
             var types = meta.type ? meta.type.split(":") : [];
-            var container = undefined; // new TiledOG.TiledContainer();
+            var container = undefined;
             if (types.indexOf("mask") > -1) {
                 container = new PIXI.Sprite(PIXI.Texture.WHITE);
             }
@@ -75,16 +61,17 @@ var TiledOG;
 })(TiledOG || (TiledOG = {}));
 var TiledOG;
 (function (TiledOG) {
+    PIXI.tiled = TiledOG;
+})(TiledOG || (TiledOG = {}));
+var TiledOG;
+(function (TiledOG) {
     var SpriteBuilder;
     (function (SpriteBuilder) {
         function сreateSprite(meta) {
-            // TODO make load from texture atlass
             var sprite = new PIXI.Sprite(PIXI.Texture.EMPTY);
-            //TODO Set anchor and offsets to center (.5, .5)
             if (!meta.fromImageLayer) {
                 sprite.anchor = TiledOG.Config.defSpriteAnchor;
             }
-            //debugger
             TiledOG.ContainerBuilder.ApplyMeta(meta, sprite);
             var obj = meta.img.objectgroup;
             if (obj) {
@@ -103,7 +90,6 @@ var TiledOG;
             return sprite;
         }
         function Build(meta) {
-            //debugger
             var sprite = сreateSprite(meta);
             return sprite;
         }
@@ -127,7 +113,7 @@ var TiledOG;
             var pixiText = new PIXI.Text(meta.text.text, {
                 wordWrap: meta.text.wrap,
                 wordWrapWidth: meta.width,
-                fill: Tiled.Utils.HexStringToHexInt(meta.text.color) || 0x000000,
+                fill: TiledOG.Utils.HexStringToHexInt(meta.text.color) || 0x000000,
                 align: meta.text.valign || "center",
                 fontFamily: meta.text.fontfamily || "Arial",
                 fontWeight: meta.text.bold ? "bold" : "normal",
@@ -187,12 +173,11 @@ var TiledOG;
                     break;
             }
             if (props) {
-                pixiText.style.stroke = Tiled.Utils.HexStringToHexInt(meta.properties.strokeColor) || 0;
+                pixiText.style.stroke = TiledOG.Utils.HexStringToHexInt(meta.properties.strokeColor) || 0;
                 pixiText.style.strokeThickness = meta.properties.strokeThickness || 0;
                 pixiText.style.padding = meta.properties.fontPadding || 0;
                 Object.assign(pixiText, props);
             }
-            //_cont.parentGroup = _layer.group;
             container.addChild(pixiText);
             container.text = pixiText;
             return container;
@@ -205,7 +190,7 @@ var TiledOG;
 })(TiledOG || (TiledOG = {}));
 var Tiled;
 (function (Tiled) {
-    var MultiSpritesheet = /** @class */ (function () {
+    var MultiSpritesheet = (function () {
         function MultiSpritesheet(sheets) {
             var _this = this;
             this.sheets = [];
@@ -253,9 +238,22 @@ var Tiled;
     }());
     Tiled.MultiSpritesheet = MultiSpritesheet;
 })(Tiled || (Tiled = {}));
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var TiledOG;
 (function (TiledOG) {
-    var TiledContainer = /** @class */ (function (_super) {
+    var TiledContainer = (function (_super) {
         __extends(TiledContainer, _super);
         function TiledContainer() {
             var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -267,7 +265,6 @@ var TiledOG;
     }(PIXI.Container));
     TiledOG.TiledContainer = TiledContainer;
 })(TiledOG || (TiledOG = {}));
-/// <reference path ="../../node_modules/pixi-layers/dist/pixi-layers.d.ts">
 var TiledOG;
 (function (TiledOG) {
     var showHello = true;
@@ -279,7 +276,7 @@ var TiledOG;
                     var p = _a[_i];
                     var val = p.value;
                     if (p.type == "color")
-                        val = Tiled.Utils.HexStringToHexInt(val);
+                        val = TiledOG.Utils.HexStringToHexInt(val);
                     props[p.name] = val;
                 }
             }
@@ -287,7 +284,6 @@ var TiledOG;
                 props = layer.properties;
             }
         }
-        // http://doc.mapeditor.org/en/stable/reference/tmx-map-format/#tile-flipping
         if (layer.gid) {
             var gid = layer.gid;
             var vFlip = gid & 0x40000000;
@@ -302,7 +298,7 @@ var TiledOG;
         layer.properties = props;
     }
     function ImageFromTileset(tilesets, baseUrl, gid) {
-        var tileSet = undefined; //_data.tilesets[0];
+        var tileSet = undefined;
         for (var i = 0; i < tilesets.length; i++) {
             if (tilesets[i].firstgid <= gid) {
                 tileSet = tilesets[i];
@@ -331,7 +327,6 @@ var TiledOG;
             _data = loader;
         }
         if (!_data || _data.type != "map") {
-            //next();
             return undefined;
         }
         if (showHello) {
@@ -342,7 +337,7 @@ var TiledOG;
         var Layer = useDisplay ? PIXI.display.Layer : {};
         var Group = useDisplay ? PIXI.display.Group : {};
         var Stage = useDisplay ? PIXI.display.Stage : {};
-        var _stage = new TiledOG.TiledContainer(); //useDisplay ?  new Stage() : new TiledContainer();
+        var _stage = new TiledOG.TiledContainer();
         var cropName = new RegExp(/^.*[\\\/]/);
         _stage.layerHeight = _data.height;
         _stage.layerWidth = _data.width;
@@ -353,7 +348,7 @@ var TiledOG;
             baseUrl = baseUrl.match(cropName)[0];
         }
         if (_data.layers) {
-            var zOrder = 0; //_data.layers.length;
+            var zOrder = 0;
             if (useDisplay)
                 _data.layers = _data.layers.reverse();
             for (var _i = 0, _a = _data.layers; _i < _a.length; _i++) {
@@ -398,16 +393,15 @@ var TiledOG;
                 }
                 if (!layer.objects)
                     return undefined;
-                //next();
                 var localZIndex = 0;
                 var _loop_1 = function (layerObj) {
                     PrepareOject(layerObj);
                     if (layerObj.properties.ignore)
                         return "continue";
-                    var type = Tiled.Utils.Objectype(layerObj);
+                    var type = TiledOG.Utils.Objectype(layerObj);
                     var pixiObject = null;
                     switch (type) {
-                        case Tiled.Utils.TiledObjectType.IMAGE: {
+                        case TiledOG.Utils.TiledObjectType.IMAGE: {
                             if (!layerObj.fromImageLayer) {
                                 var img = ImageFromTileset(_data.tilesets, baseUrl, layerObj.gid);
                                 if (!img) {
@@ -415,7 +409,6 @@ var TiledOG;
                                 }
                                 layerObj.img = img;
                             }
-                            //Sprite Loader
                             pixiObject = TiledOG.SpriteBuilder.Build(layerObj);
                             var sprite_1 = pixiObject;
                             var cached_1 = undefined;
@@ -460,8 +453,6 @@ var TiledOG;
                                 }
                                 else if (cached_1) {
                                     sprite_1.texture = cached_1;
-                                    //sprite.height = (cached as any).height;
-                                    //sprite.width = (cached as any).width;
                                     if (layerObj.fromImageLayer) {
                                         sprite_1.scale.set(1);
                                     }
@@ -469,8 +460,7 @@ var TiledOG;
                             }
                             break;
                         }
-                        // TextLoader
-                        case Tiled.Utils.TiledObjectType.TEXT: {
+                        case TiledOG.Utils.TiledObjectType.TEXT: {
                             pixiObject = TiledOG.TextBuilder.Build(layerObj);
                             break;
                         }
@@ -498,7 +488,6 @@ var TiledOG;
     TiledOG.CreateStage = CreateStage;
     TiledOG.Parser = {
         Parse: function (res, next) {
-            //@ts-ignore
             var stage = CreateStage(res, this);
             res.stage = stage;
             next();
@@ -515,7 +504,7 @@ var TiledOG;
 (function (TiledOG) {
     var Primitives;
     (function (Primitives) {
-        var TiledRect = /** @class */ (function (_super) {
+        var TiledRect = (function (_super) {
             __extends(TiledRect, _super);
             function TiledRect() {
                 var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -527,7 +516,7 @@ var TiledOG;
             return TiledRect;
         }(PIXI.Rectangle));
         Primitives.TiledRect = TiledRect;
-        var TiledPoint = /** @class */ (function (_super) {
+        var TiledPoint = (function (_super) {
             __extends(TiledPoint, _super);
             function TiledPoint(x, y) {
                 var _this = _super.call(this, x, y) || this;
@@ -539,7 +528,7 @@ var TiledOG;
             return TiledPoint;
         }(PIXI.Point));
         Primitives.TiledPoint = TiledPoint;
-        var TiledPolygon = /** @class */ (function (_super) {
+        var TiledPolygon = (function (_super) {
             __extends(TiledPolygon, _super);
             function TiledPolygon(points) {
                 var _this = _super.call(this, points) || this;
@@ -626,7 +615,7 @@ var TiledOG;
             return TiledPolygon;
         }(PIXI.Polygon));
         Primitives.TiledPolygon = TiledPolygon;
-        var TiledPolypine = /** @class */ (function () {
+        var TiledPolypine = (function () {
             function TiledPolypine(points) {
                 this.name = "";
                 this.types = [];
@@ -637,7 +626,7 @@ var TiledOG;
             return TiledPolypine;
         }());
         Primitives.TiledPolypine = TiledPolypine;
-        var TiledEllipse = /** @class */ (function (_super) {
+        var TiledEllipse = (function (_super) {
             __extends(TiledEllipse, _super);
             function TiledEllipse(x, y, hw, hh) {
                 var _this = _super.call(this, x, y, hw, hh) || this;
@@ -653,15 +642,15 @@ var TiledOG;
             if (!meta)
                 return;
             var prim = undefined;
-            var type = Tiled.Utils.Objectype(meta);
+            var type = TiledOG.Utils.Objectype(meta);
             meta.x = meta.x || 0;
             meta.y = meta.y || 0;
             switch (type) {
-                case Tiled.Utils.TiledObjectType.ELLIPSE: {
+                case TiledOG.Utils.TiledObjectType.ELLIPSE: {
                     prim = new TiledEllipse(meta.x + 0.5 * meta.width, meta.y + 0.5 * meta.height, meta.width * 0.5, meta.height * 0.5);
                     break;
                 }
-                case Tiled.Utils.TiledObjectType.POLYGON: {
+                case TiledOG.Utils.TiledObjectType.POLYGON: {
                     var points = meta.polygon;
                     var poses = points.map(function (p) {
                         return new PIXI.Point(p.x + meta.x, p.y + meta.y);
@@ -669,7 +658,7 @@ var TiledOG;
                     prim = new TiledPolygon(poses);
                     break;
                 }
-                case Tiled.Utils.TiledObjectType.POLYLINE: {
+                case TiledOG.Utils.TiledObjectType.POLYLINE: {
                     var points = meta.polygon;
                     var poses = points.map(function (p) {
                         return new PIXI.Point(p.x + meta.x, p.y + meta.y);
@@ -688,8 +677,8 @@ var TiledOG;
         Primitives.BuildPrimitive = BuildPrimitive;
     })(Primitives = TiledOG.Primitives || (TiledOG.Primitives = {}));
 })(TiledOG || (TiledOG = {}));
-var Tiled;
-(function (Tiled) {
+var TiledOG;
+(function (TiledOG) {
     var Utils;
     (function (Utils) {
         function HexStringToHexInt(value) {
@@ -733,7 +722,6 @@ var Tiled;
             TiledObjectType[TiledObjectType["TEXT"] = 5] = "TEXT";
             TiledObjectType[TiledObjectType["IMAGE"] = 6] = "IMAGE";
         })(TiledObjectType = Utils.TiledObjectType || (Utils.TiledObjectType = {}));
-        // https://doc.mapeditor.org/en/stable/reference/json-map-format/
         function Objectype(meta) {
             if (meta.properties && meta.properties.container)
                 return TiledObjectType.DEFAULT;
@@ -752,8 +740,8 @@ var Tiled;
             return TiledObjectType.DEFAULT;
         }
         Utils.Objectype = Objectype;
-    })(Utils = Tiled.Utils || (Tiled.Utils = {}));
-})(Tiled || (Tiled = {}));
+    })(Utils = TiledOG.Utils || (TiledOG.Utils = {}));
+})(TiledOG || (TiledOG = {}));
 var TiledOG;
 (function (TiledOG) {
     TiledOG.Config = {
@@ -785,5 +773,4 @@ var TiledOG;
     }
     TiledOG.InjectToPixi = InjectToPixi;
 })(TiledOG || (TiledOG = {}));
-//TiledOG.InjectToPixi();
 //# sourceMappingURL=pixi-tiled.js.map

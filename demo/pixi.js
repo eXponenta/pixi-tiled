@@ -1,15 +1,12 @@
 /*!
- * pixi.js - v5.0.0-rc
- * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+ * pixi.js - v5.0.0-rc.2
+ * Compiled Mon, 18 Feb 2019 23:48:11 UTC
  *
  * pixi.js is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  */
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(global = global || self, factory(global.PIXI = {}));
-}(this, function (exports) { 'use strict';
+var PIXI = (function (exports) {
+	'use strict';
 
 	var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -828,7 +825,7 @@
 	    var p = start,
 	        leftmost = start;
 	    do {
-	        if (p.x < leftmost.x) { leftmost = p; }
+	        if (p.x < leftmost.x || (p.x === leftmost.x && p.y < leftmost.y)) { leftmost = p; }
 	        p = p.next;
 	    } while (p !== start);
 
@@ -1030,8 +1027,8 @@
 	earcut_1.default = default_1;
 
 	/*!
-	 * @pixi/settings - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/settings - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/settings is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -1127,16 +1124,16 @@
 	     * @static
 	     * @name MIPMAP_TEXTURES
 	     * @memberof PIXI.settings
-	     * @type {boolean}
-	     * @default true
+	     * @type {PIXI.MIPMAP_MODES}
+	     * @default PIXI.MIPMAP_MODES.POW2
 	     */
-	    MIPMAP_TEXTURES: true,
+	    MIPMAP_TEXTURES: 1,
 
 	    /**
 	     * Default resolution / device pixel ratio of the renderer.
 	     *
 	     * @static
-	     * @name RESOLTION
+	     * @name RESOLUTION
 	     * @memberof PIXI.settings
 	     * @type {number}
 	     * @default 1
@@ -1329,8 +1326,8 @@
 	};
 
 	/*!
-	 * @pixi/constants - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/constants - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/constants is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -1594,6 +1591,30 @@
 	};
 
 	/**
+	 * Mipmap filtering modes that are supported by pixi.
+	 *
+	 * The {@link PIXI.settings.MIPMAP_TEXTURES} affects default texture filtering.
+	 * Mipmaps are generated for a baseTexture if its `mipmap` field is `ON`,
+	 * or its `POW2` and texture dimensions are powers of 2.
+	 * Due to platform restriction, `ON` option will work like `POW2` for webgl-1.
+	 *
+	 * This property only affects WebGL.
+	 *
+	 * @name MIPMAP_MODES
+	 * @memberof PIXI
+	 * @static
+	 * @enum {number}
+	 * @property {number} OFF - No mipmaps
+	 * @property {number} POW2 - Generate mipmaps if texture dimensions are pow2
+	 * @property {number} ON - Always generate mipmaps
+	 */
+	var MIPMAP_MODES = {
+	    OFF: 0,
+	    POW2: 1,
+	    ON: 2,
+	};
+
+	/**
 	 * The gc modes that are supported by pixi.
 	 *
 	 * The {@link PIXI.settings.GC_MODE} Garbage Collection mode for PixiJS textures is AUTO
@@ -1634,20 +1655,6 @@
 	    MEDIUM: 'mediump',
 	    HIGH: 'highp',
 	};
-
-	var constants = ({
-		ENV: ENV,
-		RENDERER_TYPE: RENDERER_TYPE,
-		BLEND_MODES: BLEND_MODES,
-		DRAW_MODES: DRAW_MODES,
-		FORMATS: FORMATS,
-		TARGETS: TARGETS,
-		TYPES: TYPES,
-		SCALE_MODES: SCALE_MODES,
-		WRAP_MODES: WRAP_MODES,
-		GC_MODES: GC_MODES,
-		PRECISION: PRECISION
-	});
 
 	var punycode = createCommonjsModule(function (module, exports) {
 	/*! https://mths.be/punycode v1.3.2 by @mathias */
@@ -3101,8 +3108,8 @@
 	};
 
 	/*!
-	 * @pixi/utils - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/utils - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/utils is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -3185,7 +3192,7 @@
 	settings.RETINA_PREFIX = /@([0-9\.]+)x/;
 
 	var saidHello = false;
-	var VERSION = '5.0.0-rc';
+	var VERSION = '5.0.0-rc.2';
 
 	/**
 	 * Skips the hello message of renderers that are created after this is run.
@@ -4043,7 +4050,7 @@
 	    warnings[message] = true;
 	}
 
-	var utils = ({
+	var utils_es = ({
 		mixins: mixins$1,
 		skipHello: skipHello,
 		sayHello: sayHello,
@@ -4082,8 +4089,8 @@
 	});
 
 	/*!
-	 * @pixi/math - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/math - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/math is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -5907,26 +5914,9 @@
 	    return false;
 	};
 
-	var math = ({
-		Point: Point,
-		ObservablePoint: ObservablePoint,
-		Matrix: Matrix,
-		GroupD8: GroupD8,
-		Transform: Transform,
-		Circle: Circle,
-		Ellipse: Ellipse,
-		Polygon: Polygon,
-		Rectangle: Rectangle,
-		RoundedRectangle: RoundedRectangle,
-		PI_2: PI_2,
-		RAD_TO_DEG: RAD_TO_DEG,
-		DEG_TO_RAD: DEG_TO_RAD,
-		SHAPES: SHAPES
-	});
-
 	/*!
-	 * @pixi/display - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/display - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/display is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -7667,15 +7657,9 @@
 	// performance increase to avoid using call.. (10x faster)
 	Container.prototype.containerUpdateTransform = Container.prototype.updateTransform;
 
-	var display = ({
-		Bounds: Bounds,
-		DisplayObject: DisplayObject,
-		Container: Container
-	});
-
 	/*!
-	 * @pixi/accessibility - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/accessibility - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/accessibility is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -7784,7 +7768,7 @@
 	     * @private
 	     */
 	    this._hookDiv = null;
-	    if ((isMobile_min.tablet || isMobile_min.phone) && !navigator.isCocoonJS)
+	    if (isMobile_min.tablet || isMobile_min.phone)
 	    {
 	        this.createTouchHook();
 	    }
@@ -8306,7 +8290,7 @@
 	    this.renderer = null;
 	};
 
-	var accessibility = ({
+	var accessibility_es = ({
 		accessibleTarget: accessibleTarget,
 		AccessibilityManager: AccessibilityManager
 	});
@@ -8314,8 +8298,8 @@
 	var MiniRunner=function(name,argsLength){this.items=[];this._name=name;this.dispatch=this.emit=this.run=MiniRunner.generateRun(name,argsLength||0);};var p=MiniRunner.prototype;p.add=function(item){if(!item[this._name]){ return; }this.remove(item);this.items.push(item);};p.remove=function(item){var index=this.items.indexOf(item);if(index!==-1){this.items.splice(index,1);}};p.contains=function(item){return this.items.indexOf(item)!==-1};p.removeAll=function(){this.items.length=0;};Object.defineProperty(p,"empty",{get:function(){return this.items.length===0}});MiniRunner.generateRun=function(name,argsLength){var key=name+"|"+argsLength;var func=MiniRunner.hash[key];if(!func){if(argsLength>0){var args="arg0";for(var i=1;i<argsLength;i++){args+=",arg"+i;}func=new Function(args,"var items = this.items; for(var i=0;i<items.length;i++){ items[i]."+name+"("+args+"); }");}else{func=new Function("var items = this.items; for(var i=0;i<items.length;i++){ items[i]."+name+"(); }");}MiniRunner.hash[key]=func;}return func};MiniRunner.hash={};var miniRunner_min=MiniRunner;
 
 	/*!
-	 * @pixi/ticker - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/ticker - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/ticker is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -8379,7 +8363,7 @@
 	    /**
 	     * The calling to execute.
 	     * @private
-	     * @member {Function}
+	     * @member {*}
 	     */
 	    this.context = context;
 
@@ -8745,7 +8729,7 @@
 	 * it is removed or the ticker is stopped.
 	 *
 	 * @param {Function} fn - The listener function to be added for updates
-	 * @param {Function} [context] - The listener context
+	 * @param {*} [context] - The listener context
 	 * @param {number} [priority=PIXI.UPDATE_PRIORITY.NORMAL] - The priority for emitting
 	 * @returns {PIXI.Ticker} This instance of a ticker
 	 */
@@ -8760,7 +8744,7 @@
 	 * Add a handler for the tick event which is only execute once.
 	 *
 	 * @param {Function} fn - The listener function to be added for one update
-	 * @param {Function} [context] - The listener context
+	 * @param {*} [context] - The listener context
 	 * @param {number} [priority=PIXI.UPDATE_PRIORITY.NORMAL] - The priority for emitting
 	 * @returns {PIXI.Ticker} This instance of a ticker
 	 */
@@ -8822,7 +8806,7 @@
 	 * If no handlers are left after removing, then it cancels the animation frame.
 	 *
 	 * @param {Function} fn - The listener function to be removed
-	 * @param {Function} [context] - The listener context to be removed
+	 * @param {*} [context] - The listener context to be removed
 	 * @returns {PIXI.Ticker} This instance of a ticker
 	 */
 	Ticker.prototype.remove = function remove (fn, context)
@@ -9252,15 +9236,9 @@
 	    }
 	};
 
-	var ticker = ({
-		Ticker: Ticker,
-		TickerPlugin: TickerPlugin,
-		UPDATE_PRIORITY: UPDATE_PRIORITY
-	});
-
 	/*!
-	 * @pixi/core - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/core - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/core is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -9764,21 +9742,40 @@
 	    {
 	        baseTexture.premultiplyAlpha = this.premultiplyAlpha;
 
-	        if (this.createBitmap)
+	        if (!this.createBitmap)
 	        {
+	            return BaseImageResource$$1.prototype.upload.call(this, renderer, baseTexture, glTexture);
+	        }
+	        if (!this.bitmap)
+	        {
+	            // yeah, ignore the output
+	            this.process();
 	            if (!this.bitmap)
 	            {
-	                // yeah, ignore the output
-	                this.process();
-	                if (!this.bitmap)
+	                return false;
+	            }
+	        }
+
+	        BaseImageResource$$1.prototype.upload.call(this, renderer, baseTexture, glTexture, this.bitmap);
+
+	        if (!this.preserveBitmap)
+	        {
+	            // checks if there are other renderers that possibly need this bitmap
+
+	            var flag = true;
+
+	            for (var key in baseTexture._glTextures)
+	            {
+	                var otherTex = baseTexture._glTextures[key];
+
+	                if (otherTex !== glTexture && otherTex.dirtyId !== baseTexture.dirtyId)
 	                {
-	                    return false;
+	                    flag = false;
+	                    break;
 	                }
 	            }
 
-	            BaseImageResource$$1.prototype.upload.call(this, renderer, baseTexture, glTexture, this.bitmap);
-
-	            if (!this.preserveBitmap)
+	            if (flag)
 	            {
 	                if (this.bitmap.close)
 	                {
@@ -9787,10 +9784,6 @@
 
 	                this.bitmap = null;
 	            }
-	        }
-	        else
-	        {
-	            BaseImageResource$$1.prototype.upload.call(this, renderer, baseTexture, glTexture);
 	        }
 
 	        return true;
@@ -10048,7 +10041,7 @@
 	 *        The current resource to use, for things that aren't Resource objects, will be converted
 	 *        into a Resource.
 	 * @param {Object} [options] - Collection of options
-	 * @param {boolean} [options.mipmap=PIXI.settings.MIPMAP_TEXTURES] - If mipmapping is enabled for texture
+	 * @param {PIXI.MIPMAP_MODES} [options.mipmap=PIXI.settings.MIPMAP_TEXTURES] - If mipmapping is enabled for texture
 	 * @param {PIXI.WRAP_MODES} [options.wrapMode=PIXI.settings.WRAP_MODE] - Wrap mode for textures
 	 * @param {PIXI.SCALE_MODES} [options.scaleMode=PIXI.settings.SCALE_MODE] - Default scale mode, linear, nearest
 	 * @param {PIXI.FORMATS} [options.format=PIXI.FORMATS.RGBA] - GL format type
@@ -10114,9 +10107,10 @@
 	        this.resolution = resolution || settings.RESOLUTION;
 
 	        /**
-	         * If mipmapping was used for this texture, enable and disable with enableMipmap()
+	         * Mipmap mode of the texture, affects downscaled images
 	         *
-	         * @member {boolean}
+	         * @member {PIXI.MIPMAP_MODES}
+	         * @default PIXI.settings.MIPMAP_TEXTURES
 	         */
 	        this.mipmap = mipmap !== undefined ? mipmap : settings.MIPMAP_TEXTURES;
 
@@ -10129,9 +10123,8 @@
 	        /**
 	         * The scale mode to apply when scaling this texture
 	         *
-	         * @member {number}
+	         * @member {PIXI.SCALE_MODES}
 	         * @default PIXI.settings.SCALE_MODE
-	         * @see PIXI.SCALE_MODES
 	         */
 	        this.scaleMode = scaleMode !== undefined ? scaleMode : settings.SCALE_MODE;
 
@@ -10343,7 +10336,7 @@
 	     * Changes style options of BaseTexture
 	     *
 	     * @param {PIXI.SCALE_MODES} [scaleMode] - Pixi scalemode
-	     * @param {boolean} [mipmap] - enable mipmaps
+	     * @param {PIXI.MIPMAP_MODES} [mipmap] - enable mipmaps
 	     * @returns {BaseTexture} this
 	     */
 	    BaseTexture.prototype.setStyle = function setStyle (scaleMode, mipmap)
@@ -11422,10 +11415,12 @@
 	    /**
 	     * Trigger updating of the texture
 	     *
-	     * @param {number} deltaTime - time delta since last tick
+	     * @param {number} [deltaTime=0] - time delta since last tick
 	     */
 	    VideoResource.prototype.update = function update (deltaTime)
 	    {
+	        if ( deltaTime === void 0 ) { deltaTime = 0; }
+
 	        if (!this.destroyed)
 	        {
 	            // account for if video has had its playbackRate changed
@@ -11444,7 +11439,7 @@
 	     * Start preloading the video resource.
 	     *
 	     * @protected
-	     * @return {Promise} Handle the validate event
+	     * @return {Promise<void>} Handle the validate event
 	     */
 	    VideoResource.prototype.load = function load ()
 	    {
@@ -11743,6 +11738,65 @@
 	};
 
 	/**
+	 * Resource type for DepthTexture.
+	 * @class
+	 * @extends PIXI.resources.BufferResource
+	 * @memberof PIXI.resources
+	 */
+	var DepthResource = /*@__PURE__*/(function (BufferResource$$1) {
+	    function DepthResource () {
+	        BufferResource$$1.apply(this, arguments);
+	    }
+
+	    if ( BufferResource$$1 ) { DepthResource.__proto__ = BufferResource$$1; }
+	    DepthResource.prototype = Object.create( BufferResource$$1 && BufferResource$$1.prototype );
+	    DepthResource.prototype.constructor = DepthResource;
+
+	    DepthResource.prototype.upload = function upload (renderer, baseTexture, glTexture)
+	    {
+	        var gl = renderer.gl;
+
+	        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, baseTexture.premultiplyAlpha);
+
+	        if (glTexture.width === baseTexture.width && glTexture.height === baseTexture.height)
+	        {
+	            gl.texSubImage2D(
+	                baseTexture.target,
+	                0,
+	                0,
+	                0,
+	                baseTexture.width,
+	                baseTexture.height,
+	                baseTexture.format,
+	                baseTexture.type,
+	                this.data
+	            );
+	        }
+	        else
+	        {
+	            glTexture.width = baseTexture.width;
+	            glTexture.height = baseTexture.height;
+
+	            gl.texImage2D(
+	                baseTexture.target,
+	                0,
+	                gl.DEPTH_COMPONENT16, // Needed for depth to render properly in webgl2.0
+	                baseTexture.width,
+	                baseTexture.height,
+	                0,
+	                baseTexture.format,
+	                baseTexture.type,
+	                this.data
+	            );
+	        }
+
+	        return true;
+	    };
+
+	    return DepthResource;
+	}(BufferResource));
+
+	/**
 	 * Frame buffer used by the BaseRenderTexture
 	 *
 	 * @class
@@ -11812,7 +11866,7 @@
 	Framebuffer.prototype.addDepthTexture = function addDepthTexture (texture)
 	{
 	    /* eslint-disable max-len */
-	    this.depthTexture = texture || new BaseTexture(null, { scaleMode: 0,
+	    this.depthTexture = texture || new BaseTexture(new DepthResource(null, { width: this.width, height: this.height }), { scaleMode: 0,
 	        resolution: 1,
 	        width: this.width,
 	        height: this.height,
@@ -13936,7 +13990,7 @@
 
 	        if (filterStack.length === 1)
 	        {
-	            this.defaultFilterStack[0].renderTexture = renderer.renderTexture.renderTexture;
+	            this.defaultFilterStack[0].renderTexture = renderer.renderTexture.current;
 	        }
 
 	        filterStack.push(state);
@@ -14688,6 +14742,13 @@
 	         * @readonly
 	         */
 	        this.managedFramebuffers = [];
+
+	        /**
+	         * Framebuffer value that shows that we don't know what is bound
+	         * @member {Framebuffer}
+	         * @readonly
+	         */
+	        this.unknownFramebuffer = new Framebuffer(10, 10);
 	    }
 
 	    if ( System$$1 ) { FramebufferSystem.__proto__ = System$$1; }
@@ -14704,21 +14765,24 @@
 	        var gl = this.gl = this.renderer.gl;
 
 	        this.CONTEXT_UID = this.renderer.CONTEXT_UID;
-	        this.current = null;
+	        this.current = this.unknownFramebuffer;
 	        this.viewport = new Rectangle();
 	        this.hasMRT = true;
+	        this.writeDepthTexture = true;
 
 	        this.disposeAll(true);
 
 	        // webgl2
-	        if (!gl.drawBuffers)
+	        if (this.renderer.context.webGLVersion === 1)
 	        {
 	            // webgl 1!
 	            var nativeDrawBuffersExtension = this.renderer.context.extensions.drawBuffers;
+	            var nativeDepthTextureExtension = this.renderer.context.extensions.depthTexture;
 
 	            if (settings.PREFER_ENV === ENV.WEBGL_LEGACY)
 	            {
 	                nativeDrawBuffersExtension = null;
+	                nativeDepthTextureExtension = null;
 	            }
 
 	            if (nativeDrawBuffersExtension)
@@ -14732,6 +14796,11 @@
 	                    // empty
 	                };
 	            }
+
+	            if (!nativeDepthTextureExtension)
+	            {
+	                this.writeDepthTexture = false;
+	            }
 	        }
 	    };
 
@@ -14739,14 +14808,12 @@
 	     * Bind a framebuffer
 	     *
 	     * @param {PIXI.Framebuffer} framebuffer
-	     * @param {PIXI.Rectangle} frame
+	     * @param {PIXI.Rectangle} [frame] frame, default is framebuffer size
 	     */
 	    FramebufferSystem.prototype.bind = function bind (framebuffer, frame)
 	    {
 	        var ref = this;
 	        var gl = ref.gl;
-
-	        this.current = framebuffer;
 
 	        if (framebuffer)
 	        {
@@ -14754,7 +14821,11 @@
 
 	            var fbo = framebuffer.glFramebuffers[this.CONTEXT_UID] || this.initFramebuffer(framebuffer);
 
-	            gl.bindFramebuffer(gl.FRAMEBUFFER, fbo.framebuffer);
+	            if (this.current !== framebuffer)
+	            {
+	                this.current = framebuffer;
+	                gl.bindFramebuffer(gl.FRAMEBUFFER, fbo.framebuffer);
+	            }
 	            // make sure all textures are unbound..
 
 	            // now check for updates...
@@ -14802,7 +14873,11 @@
 	        }
 	        else
 	        {
-	            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+	            if (this.current)
+	            {
+	                this.current = null;
+	                gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+	            }
 
 	            if (frame)
 	            {
@@ -14993,9 +15068,9 @@
 
 	        if (framebuffer.depthTexture)
 	        {
-	            var depthTextureExt = this.renderer.context.extensions.depthTexture;
+	            var writeDepthTexture = this.writeDepthTexture;
 
-	            if (depthTextureExt)
+	            if (writeDepthTexture)
 	            {
 	                var depthTexture = framebuffer.depthTexture;
 
@@ -15016,7 +15091,10 @@
 	            gl.bindRenderbuffer(gl.RENDERBUFFER, fbo.stencil);
 
 	            // TODO.. this is depth AND stencil?
-	            gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, fbo.stencil);
+	            if (!framebuffer.depthTexture)
+	            { // you can't have both, so one should take priority if enabled
+	                gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, fbo.stencil);
+	            }
 	            gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_STENCIL, framebuffer.width, framebuffer.height);
 	            // fbo.enableStencil();
 	        }
@@ -15072,6 +15150,17 @@
 	        {
 	            this.disposeFramebuffer(list[i], contextLost);
 	        }
+	    };
+
+	    /**
+	     * resets framebuffer stored state, binds screen framebuffer
+	     *
+	     * should be called before renderTexture reset()
+	     */
+	    FramebufferSystem.prototype.reset = function reset ()
+	    {
+	        this.current = this.unknownFramebuffer;
+	        this.viewport = new Rectangle();
 	    };
 
 	    Object.defineProperties( FramebufferSystem.prototype, prototypeAccessors );
@@ -17199,8 +17288,9 @@
 	     * @param {PIXI.systems.FilterSystem} filterManager - The renderer to retrieve the filter from
 	     * @param {PIXI.RenderTexture} input - The input render target.
 	     * @param {PIXI.RenderTexture} output - The target to output to.
+	     * @param {boolean} clear - Should the output be cleared before rendering to it.
 	     */
-	    SpriteMaskFilter.prototype.apply = function apply (filterManager, input, output)
+	    SpriteMaskFilter.prototype.apply = function apply (filterManager, input, output, clear)
 	    {
 	        var maskSprite = this.maskSprite;
 	        var tex = this.maskSprite.texture;
@@ -17224,7 +17314,7 @@
 	        this.uniforms.alpha = maskSprite.worldAlpha;
 	        this.uniforms.maskClamp = tex.transform.uClampFrame;
 
-	        filterManager.applyFilter(this, input, output);
+	        filterManager.applyFilter(this, input, output, clear);
 	    };
 
 	    return SpriteMaskFilter;
@@ -17375,10 +17465,11 @@
 	        alphaMaskFilter[0].resolution = this.renderer.resolution;
 	        alphaMaskFilter[0].maskSprite = maskData;
 
-	        // TODO - may cause issues!
-	        target.filterArea = maskData.getBounds(true);
+	        var stashFilterArea = target.filterArea;
 
+	        target.filterArea = maskData.getBounds(true);
 	        this.renderer.filter.push(target, alphaMaskFilter);
+	        target.filterArea = stashFilterArea;
 
 	        this.alphaMaskIndex++;
 	    };
@@ -17747,6 +17838,8 @@
 	/**
 	 * System plugin to the renderer to manage render textures.
 	 *
+	 * Should be added after FramebufferSystem
+	 *
 	 * @class
 	 * @extends PIXI.System
 	 * @memberof PIXI.systems
@@ -17777,7 +17870,7 @@
 	         * @member {PIXI.RenderTexture}
 	         * @readonly
 	         */
-	        this.renderTexture = null;
+	        this.current = null;
 
 	        /**
 	         * Source frame
@@ -17806,9 +17899,9 @@
 	     */
 	    RenderTextureSystem.prototype.bind = function bind (renderTexture, sourceFrame, destinationFrame)
 	    {
-	        // TODO - do we want this??
-	        if (this.renderTexture === renderTexture) { return; }
-	        this.renderTexture = renderTexture;
+	        if ( renderTexture === void 0 ) { renderTexture = null; }
+
+	        this.current = renderTexture;
 
 	        var renderer = this.renderer;
 
@@ -17881,9 +17974,9 @@
 	     */
 	    RenderTextureSystem.prototype.clear = function clear (clearColor)
 	    {
-	        if (this.renderTexture)
+	        if (this.current)
 	        {
-	            clearColor = clearColor || this.renderTexture.baseTexture.clearColor;
+	            clearColor = clearColor || this.current.baseTexture.clearColor;
 	        }
 	        else
 	        {
@@ -17896,6 +17989,14 @@
 	    RenderTextureSystem.prototype.resize = function resize ()// screenWidth, screenHeight)
 	    {
 	        // resize the root only!
+	        this.bind(null);
+	    };
+
+	    /**
+	     * Resets renderTexture state
+	     */
+	    RenderTextureSystem.prototype.reset = function reset ()
+	    {
 	        this.bind(null);
 	    };
 
@@ -18140,6 +18241,15 @@
 	    };
 
 	    /**
+	     * Resets ShaderSystem state, does not affect WebGL state
+	     */
+	    ShaderSystem.prototype.reset = function reset ()
+	    {
+	        this.program = null;
+	        this.shader = null;
+	    };
+
+	    /**
 	     * Destroys this System and removes all its textures
 	     */
 	    ShaderSystem.prototype.destroy = function destroy ()
@@ -18232,29 +18342,6 @@
 	        this.gl = null;
 
 	        /**
-	         * Return from MAX_VERTEX_ATTRIBS
-	         * @member {number}
-	         * @readonly
-	         */
-	        this.maxAttribs = null;
-
-	        /**
-	         * Check we have vao
-	         * @member {OES_vertex_array_object}
-	         * @readonly
-	         */
-	        this.nativeVaoExtension = null;
-
-	        /**
-	         * Attribute state
-	         * @member {object}
-	         * @readonly
-	         * @property {number[]} tempAttribState
-	         * @property {number[]} attribState
-	         */
-	        this.attribState = null;
-
-	        /**
 	         * State ID
 	         * @member {number}
 	         * @readonly
@@ -18322,20 +18409,6 @@
 	    {
 	        this.gl = gl;
 
-	        this.maxAttribs = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
-
-	        // check we have vao..
-	        this.nativeVaoExtension = (
-	            gl.getExtension('OES_vertex_array_object')
-	            || gl.getExtension('MOZ_OES_vertex_array_object')
-	            || gl.getExtension('WEBKIT_OES_vertex_array_object')
-	        );
-
-	        this.attribState = {
-	            tempAttribState: new Array(this.maxAttribs),
-	            attribState: new Array(this.maxAttribs),
-	        };
-
 	        this.blendModes = mapWebGLBlendModesToPixi(gl);
 
 	        this.setState(this.defaultState);
@@ -18381,6 +18454,26 @@
 	        {
 	            this.checks[i$1](this, state);
 	        }
+	    };
+
+	    /**
+	     * Sets the state, when previous state is unknown
+	     *
+	     * @param {*} state - The state to set
+	     */
+	    StateSystem.prototype.forceState = function forceState (state)
+	    {
+	        state = state || this.defaultState;
+	        for (var i = 0; i < this.map.length; i++)
+	        {
+	            this.map[i].call(this, !!(state.data & (1 << i)));
+	        }
+	        for (var i$1 = 0; i$1 < this.checks.length; i$1++)
+	        {
+	            this.checks[i$1](this, state);
+	        }
+
+	        this.stateId = state.data;
 	    };
 
 	    /**
@@ -18483,52 +18576,19 @@
 	        this.gl.polygonOffset(value, scale);
 	    };
 
-	    /**
-	     * Disables all the vaos in use
-	     *
-	     */
-	    StateSystem.prototype.resetAttributes = function resetAttributes ()
-	    {
-	        for (var i = 0; i < this.attribState.tempAttribState.length; i++)
-	        {
-	            this.attribState.tempAttribState[i] = 0;
-	        }
-
-	        for (var i$1 = 0; i$1 < this.attribState.attribState.length; i$1++)
-	        {
-	            this.attribState.attribState[i$1] = 0;
-	        }
-
-	        // im going to assume one is always active for performance reasons.
-	        for (var i$2 = 1; i$2 < this.maxAttribs; i$2++)
-	        {
-	            this.gl.disableVertexAttribArray(i$2);
-	        }
-	    };
-
 	    // used
 	    /**
 	     * Resets all the logic and disables the vaos
 	     */
 	    StateSystem.prototype.reset = function reset ()
 	    {
-	        // unbind any VAO if they exist..
-	        if (this.nativeVaoExtension)
-	        {
-	            this.nativeVaoExtension.bindVertexArrayOES(null);
-	        }
-
-	        // reset all attributes..
-	        this.resetAttributes();
-
 	        this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, false);
 
+	        this.forceState(0);
+
 	        this._blendEq = true;
-
+	        this.blendMode = -1;
 	        this.setBlendMode(0);
-
-	        // TODO?
-	        // this.setState(this.defaultState);
 	    };
 
 	    /**
@@ -18782,6 +18842,20 @@
 	         * @readonly
 	         */
 	        this.managedTextures = [];
+
+	        /**
+	         * Did someone temper with textures state? We'll overwrite them when we need to unbind something.
+	         * @member {boolean}
+	         * @private
+	         */
+	        this._unknownBoundTextures = false;
+
+	        /**
+	         * BaseTexture value that shows that we don't know what is bound
+	         * @member {PIXI.BaseTexture}
+	         * @readonly
+	         */
+	        this.unknownTexture = new BaseTexture();
 	    }
 
 	    if ( System$$1 ) { TextureSystem.__proto__ = System$$1; }
@@ -18838,6 +18912,8 @@
 	    /**
 	     * Bind a texture to a specific location
 	     *
+	     * If you want to unbind something, please use `unbind(texture)` instead of `bind(null, textureLocation)`
+	     *
 	     * @param {PIXI.Texture|PIXI.BaseTexture} texture - Texture to bind
 	     * @param {number} [location=0] - Location to bind at
 	     */
@@ -18891,6 +18967,22 @@
 	    };
 
 	    /**
+	     * Resets texture location and bound textures
+	     *
+	     * Actual `bind(null, i)` calls will be performed at next `unbind()` call
+	     */
+	    TextureSystem.prototype.reset = function reset ()
+	    {
+	        this._unknownBoundTextures = true;
+	        this.currentLocation = -1;
+
+	        for (var i = 0; i < this.boundTextures.length; i++)
+	        {
+	            this.boundTextures[i] = this.unknownTexture;
+	        }
+	    };
+
+	    /**
 	     * Unbind a texture
 	     * @param {PIXI.Texture|PIXI.BaseTexture} texture - Texture to bind
 	     */
@@ -18898,19 +18990,34 @@
 	    {
 	        var ref = this;
 	        var gl = ref.gl;
+	        var boundTextures = ref.boundTextures;
 
-	        for (var i = 0; i < this.boundTextures.length; i++)
+	        if (this._unknownBoundTextures)
 	        {
-	            if (this.boundTextures[i] === texture)
+	            this._unknownBoundTextures = false;
+	            // someone changed webGL state,
+	            // we have to be sure that our texture does not appear in multi-texture renderer samplers
+	            for (var i = 0; i < boundTextures.length; i++)
 	            {
-	                if (this.currentLocation !== i)
+	                if (boundTextures[i] === this.unknownTexture)
 	                {
-	                    gl.activeTexture(gl.TEXTURE0 + i);
-	                    this.currentLocation = i;
+	                    this.bind(null, i);
+	                }
+	            }
+	        }
+
+	        for (var i$1 = 0; i$1 < boundTextures.length; i$1++)
+	        {
+	            if (boundTextures[i$1] === texture)
+	            {
+	                if (this.currentLocation !== i$1)
+	                {
+	                    gl.activeTexture(gl.TEXTURE0 + i$1);
+	                    this.currentLocation = i$1;
 	                }
 
 	                gl.bindTexture(gl.TEXTURE_2D, this.emptyTextures[texture.target].texture);
-	                this.boundTextures[i] = null;
+	                boundTextures[i$1] = null;
 	            }
 	        }
 	    };
@@ -19032,14 +19139,14 @@
 	            return;
 	        }
 
-	        if (this.webGLVersion !== 2 && !texture.isPowerOfTwo)
+	        if ((texture.mipmap === MIPMAP_MODES.POW2 || this.webGLVersion !== 2) && !texture.isPowerOfTwo)
 	        {
-	            glTexture.mipmap = false;
+	            glTexture.mipmap = 0;
 	            glTexture.wrapMode = WRAP_MODES.CLAMP;
 	        }
 	        else
 	        {
-	            glTexture.mipmap = texture.mipmap;
+	            glTexture.mipmap = texture.mipmap >= 1;
 	            glTexture.wrapMode = texture.wrapMode;
 	        }
 
@@ -19692,10 +19799,10 @@
 	     * Renders the object to its WebGL view
 	     *
 	     * @param {PIXI.DisplayObject} displayObject - The object to be rendered.
-	     * @param {PIXI.RenderTexture} renderTexture - The render texture to render to.
-	     * @param {boolean} [clear] - Should the canvas be cleared before the new render.
+	     * @param {PIXI.RenderTexture} [renderTexture] - The render texture to render to.
+	     * @param {boolean} [clear=true] - Should the canvas be cleared before the new render.
 	     * @param {PIXI.Matrix} [transform] - A transform to apply to the render texture before rendering.
-	     * @param {boolean} [skipUpdateTransform] - Should we skip the update transform pass?
+	     * @param {boolean} [skipUpdateTransform=false] - Should we skip the update transform pass?
 	     */
 	    Renderer.prototype.render = function render (displayObject, renderTexture, clear, transform, skipUpdateTransform)
 	    {
@@ -20329,7 +20436,7 @@
 	            this.packGeometry(sprite, float32View, uint32View, indexBuffer, index, indexCount);// argb, nextTexture._id, float32View, uint32View, indexBuffer, index, indexCount);
 
 	            // push a graphics..
-	            index += (sprite.vertexData.length / 2) * 6;
+	            index += (sprite.vertexData.length / 2) * this.vertSize;
 	            indexCount += sprite.indices.length;
 	        }
 
@@ -20409,7 +20516,7 @@
 
 	    BatchRenderer.prototype.packGeometry = function packGeometry (element, float32View, uint32View, indexBuffer, index, indexCount)
 	    {
-	        var p = index / 6;// float32View.length / 6 / 2;
+	        var p = index / this.vertSize;// float32View.length / 6 / 2;
 	        var uvs = element.uvs;
 	        var indicies = element.indices;// geometry.getIndex().data;// indicies;
 	        var vertexData = element.vertexData;
@@ -20550,295 +20657,9 @@
 	    return BatchRenderer;
 	}(ObjectRenderer));
 
-	var core = ({
-		systems: systems,
-		resources: index,
-		System: System,
-		Renderer: Renderer,
-		AbstractRenderer: AbstractRenderer,
-		Framebuffer: Framebuffer,
-		CubeTexture: CubeTexture,
-		BaseTexture: BaseTexture,
-		GLTexture: BaseTexture,
-		Texture: Texture,
-		TextureMatrix: TextureMatrix,
-		RenderTexture: RenderTexture,
-		BaseRenderTexture: BaseRenderTexture,
-		TextureUvs: TextureUvs,
-		State: State,
-		ObjectRenderer: ObjectRenderer,
-		BatchRenderer: BatchRenderer,
-		BatchGeometry: BatchGeometry,
-		BatchDrawCall: BatchDrawCall,
-		generateMultiTextureShader: generateMultiTextureShader,
-		Quad: Quad,
-		QuadUv: QuadUv,
-		checkMaxIfStatementsInShader: checkMaxIfStatementsInShader,
-		Shader: Shader,
-		Program: Program,
-		GLProgram: GLProgram,
-		UniformGroup: UniformGroup,
-		SpriteMaskFilter: SpriteMaskFilter,
-		Filter: Filter,
-		Attribute: Attribute,
-		Buffer: Buffer,
-		Geometry: Geometry
-	});
-
 	/*!
-	 * @pixi/app - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
-	 *
-	 * @pixi/app is licensed under the MIT License.
-	 * http://www.opensource.org/licenses/mit-license
-	 */
-
-	/**
-	 * Convenience class to create a new PIXI application.
-	 *
-	 * This class automatically creates the renderer, ticker and root container.
-	 *
-	 * @example
-	 * // Create the application
-	 * const app = new PIXI.Application();
-	 *
-	 * // Add the view to the DOM
-	 * document.body.appendChild(app.view);
-	 *
-	 * // ex, add display objects
-	 * app.stage.addChild(PIXI.Sprite.from('something.png'));
-	 *
-	 * @class
-	 * @memberof PIXI
-	 */
-	var Application = function Application(options, arg2, arg3, arg4, arg5)
-	{
-	    var this$1 = this;
-
-	    // Support for constructor(width, height, options, noWebGL, useSharedTicker)
-	    if (typeof options === 'number')
-	    {
-	        options = Object.assign({
-	            width: options,
-	            height: arg2 || settings.RENDER_OPTIONS.height,
-	            forceCanvas: !!arg4,
-	            sharedTicker: !!arg5,
-	        }, arg3);
-	    }
-
-	    // The default options
-	    options = Object.assign({
-	        forceCanvas: false,
-	    }, options);
-
-	    /**
-	     * WebGL renderer if available, otherwise CanvasRenderer.
-	     * @member {PIXI.Renderer|PIXI.CanvasRenderer}
-	     */
-	    this.renderer = this.createRenderer(options);
-
-	    /**
-	     * The root display container that's rendered.
-	     * @member {PIXI.Container}
-	     */
-	    this.stage = new Container();
-
-	    // install plugins here
-	    Application._plugins.forEach(function (plugin) {
-	        plugin.init.call(this$1, options);
-	    });
-	};
-
-	var prototypeAccessors$5 = { view: { configurable: true },screen: { configurable: true } };
-
-	/**
-	 * Register a middleware plugin for the application
-	 * @static
-	 * @param {PIXI.Application.Plugin} plugin - Plugin being installed
-	 */
-	Application.registerPlugin = function registerPlugin (plugin)
-	{
-	    Application._plugins.push(plugin);
-	};
-
-	/**
-	 * Create the new renderer, this is here to overridden to support Canvas.
-	 *
-	 * @protected
-	 * @param {Object} [options] See constructor for complete arguments
-	 */
-	Application.prototype.createRenderer = function createRenderer (options)
-	{
-	    return new Renderer(options);
-	};
-
-	/**
-	 * Render the current stage.
-	 */
-	Application.prototype.render = function render ()
-	{
-	    this.renderer.render(this.stage);
-	};
-
-	/**
-	 * Reference to the renderer's canvas element.
-	 * @member {HTMLCanvasElement}
-	 * @readonly
-	 */
-	prototypeAccessors$5.view.get = function ()
-	{
-	    return this.renderer.view;
-	};
-
-	/**
-	 * Reference to the renderer's screen rectangle. Its safe to use as `filterArea` or `hitArea` for the whole screen.
-	 * @member {PIXI.Rectangle}
-	 * @readonly
-	 */
-	prototypeAccessors$5.screen.get = function ()
-	{
-	    return this.renderer.screen;
-	};
-
-	/**
-	 * Destroy and don't use after this.
-	 * @param {Boolean} [removeView=false] Automatically remove canvas from DOM.
-	 * @param {object|boolean} [stageOptions] - Options parameter. A boolean will act as if all options
-	 *  have been set to that value
-	 * @param {boolean} [stageOptions.children=false] - if set to true, all the children will have their destroy
-	 *  method called as well. 'stageOptions' will be passed on to those calls.
-	 * @param {boolean} [stageOptions.texture=false] - Only used for child Sprites if stageOptions.children is set
-	 *  to true. Should it destroy the texture of the child sprite
-	 * @param {boolean} [stageOptions.baseTexture=false] - Only used for child Sprites if stageOptions.children is set
-	 *  to true. Should it destroy the base texture of the child sprite
-	 */
-	Application.prototype.destroy = function destroy (removeView)
-	{
-	        var this$1 = this;
-
-	    // Destroy plugins in the opposite order
-	    // which they were constructed
-	    var plugins = Application._plugins.slice(0);
-
-	    plugins.reverse();
-	    plugins.forEach(function (plugin) {
-	        plugin.destroy.call(this$1);
-	    });
-
-	    this.stage.destroy();
-	    this.stage = null;
-
-	    this.renderer.destroy(removeView);
-	    this.renderer = null;
-
-	    this._options = null;
-	};
-
-	Object.defineProperties( Application.prototype, prototypeAccessors$5 );
-
-	/**
-	 * @memberof PIXI.Application
-	 * @typedef {object} Plugin
-	 * @property {function} init - Called when Application is constructed, scoped to Application instance.
-	 *  Passes in `options` as the only argument, which are Application constructor options.
-	 * @property {function} destroy - Called when destroying Application, scoped to Application instance
-	 */
-
-	/**
-	 * Collection of installed plugins.
-	 * @static
-	 * @private
-	 * @type {PIXI.Application.Plugin[]}
-	 */
-	Application._plugins = [];
-
-	/**
-	 * Middleware for for Application's resize functionality
-	 * @private
-	 * @class
-	 */
-	var ResizePlugin = function ResizePlugin () {};
-
-	ResizePlugin.init = function init (options)
-	{
-	        var this$1 = this;
-
-	    /**
-	     * The element or window to resize the application to.
-	     * @type {Window|HTMLElement}
-	     * @name resizeTo
-	     * @memberof PIXI.Application#
-	     */
-	    Object.defineProperty(this, 'resizeTo',
-	        {
-	            set: function set(dom)
-	            {
-	                window.removeEventListener('resize', this.resize);
-	                this._resizeTo = dom;
-	                if (dom)
-	                {
-	                    window.addEventListener('resize', this.resize);
-	                    this.resize();
-	                }
-	            },
-	            get: function get()
-	            {
-	                return this._resizeTo;
-	            },
-	        });
-
-	    /**
-	     * If `resizeTo` is set, calling this function
-	     * will resize to the width and height of that element.
-	     * @method PIXI.Application#resize
-	     */
-	    this.resize = function () {
-	        if (this$1._resizeTo)
-	        {
-	            // Resize to the window
-	            if (this$1._resizeTo === window)
-	            {
-	                this$1.renderer.resize(
-	                    window.innerWidth,
-	                    window.innerHeight
-	                );
-	            }
-	            // Resize to other HTML entities
-	            else
-	            {
-	                this$1.renderer.resize(
-	                    this$1._resizeTo.clientWidth,
-	                    this$1._resizeTo.clientHeight
-	                );
-	            }
-	        }
-	    };
-
-	    // On resize
-	    this._resizeTo = null;
-	    this.resizeTo = options.resizeTo || null;
-	};
-
-	/**
-	 * Clean up the ticker, scoped to application
-	 * @static
-	 * @private
-	 */
-	ResizePlugin.destroy = function destroy ()
-	{
-	    this.resizeTo = null;
-	    this.resize = null;
-	};
-
-	Application.registerPlugin(ResizePlugin);
-
-	var app = ({
-		Application: Application
-	});
-
-	/*!
-	 * @pixi/extract - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/extract - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/extract is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -21073,13 +20894,2375 @@
 	    this.renderer = null;
 	};
 
-	var extract = ({
+	var extract_es = ({
 		Extract: Extract
 	});
 
 	/*!
-	 * @pixi/graphics - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/interaction - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
+	 *
+	 * @pixi/interaction is licensed under the MIT License.
+	 * http://www.opensource.org/licenses/mit-license
+	 */
+
+	/**
+	 * Holds all information related to an Interaction event
+	 *
+	 * @class
+	 * @memberof PIXI.interaction
+	 */
+	var InteractionData = function InteractionData()
+	{
+	    /**
+	     * This point stores the global coords of where the touch/mouse event happened
+	     *
+	     * @member {PIXI.Point}
+	     */
+	    this.global = new Point();
+
+	    /**
+	     * The target Sprite that was interacted with
+	     *
+	     * @member {PIXI.Sprite}
+	     */
+	    this.target = null;
+
+	    /**
+	     * When passed to an event handler, this will be the original DOM Event that was captured
+	     *
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent
+	     * @member {MouseEvent|TouchEvent|PointerEvent}
+	     */
+	    this.originalEvent = null;
+
+	    /**
+	     * Unique identifier for this interaction
+	     *
+	     * @member {number}
+	     */
+	    this.identifier = null;
+
+	    /**
+	     * Indicates whether or not the pointer device that created the event is the primary pointer.
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/isPrimary
+	     * @type {Boolean}
+	     */
+	    this.isPrimary = false;
+
+	    /**
+	     * Indicates which button was pressed on the mouse or pointer device to trigger the event.
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+	     * @type {number}
+	     */
+	    this.button = 0;
+
+	    /**
+	     * Indicates which buttons are pressed on the mouse or pointer device when the event is triggered.
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons
+	     * @type {number}
+	     */
+	    this.buttons = 0;
+
+	    /**
+	     * The width of the pointer's contact along the x-axis, measured in CSS pixels.
+	     * radiusX of TouchEvents will be represented by this value.
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/width
+	     * @type {number}
+	     */
+	    this.width = 0;
+
+	    /**
+	     * The height of the pointer's contact along the y-axis, measured in CSS pixels.
+	     * radiusY of TouchEvents will be represented by this value.
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/height
+	     * @type {number}
+	     */
+	    this.height = 0;
+
+	    /**
+	     * The angle, in degrees, between the pointer device and the screen.
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/tiltX
+	     * @type {number}
+	     */
+	    this.tiltX = 0;
+
+	    /**
+	     * The angle, in degrees, between the pointer device and the screen.
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/tiltY
+	     * @type {number}
+	     */
+	    this.tiltY = 0;
+
+	    /**
+	     * The type of pointer that triggered the event.
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/pointerType
+	     * @type {string}
+	     */
+	    this.pointerType = null;
+
+	    /**
+	     * Pressure applied by the pointing device during the event. A Touch's force property
+	     * will be represented by this value.
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/pressure
+	     * @type {number}
+	     */
+	    this.pressure = 0;
+
+	    /**
+	     * From TouchEvents (not PointerEvents triggered by touches), the rotationAngle of the Touch.
+	     * @see https://developer.mozilla.org/en-US/docs/Web/API/Touch/rotationAngle
+	     * @type {number}
+	     */
+	    this.rotationAngle = 0;
+
+	    /**
+	     * Twist of a stylus pointer.
+	     * @see https://w3c.github.io/pointerevents/#pointerevent-interface
+	     * @type {number}
+	     */
+	    this.twist = 0;
+
+	    /**
+	     * Barrel pressure on a stylus pointer.
+	     * @see https://w3c.github.io/pointerevents/#pointerevent-interface
+	     * @type {number}
+	     */
+	    this.tangentialPressure = 0;
+	};
+
+	var prototypeAccessors$5 = { pointerId: { configurable: true } };
+
+	/**
+	 * The unique identifier of the pointer. It will be the same as `identifier`.
+	 * @readonly
+	 * @member {number}
+	 * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/pointerId
+	 */
+	prototypeAccessors$5.pointerId.get = function ()
+	{
+	    return this.identifier;
+	};
+
+	/**
+	 * This will return the local coordinates of the specified displayObject for this InteractionData
+	 *
+	 * @param {PIXI.DisplayObject} displayObject - The DisplayObject that you would like the local
+	 *  coords off
+	 * @param {PIXI.Point} [point] - A Point object in which to store the value, optional (otherwise
+	 *  will create a new point)
+	 * @param {PIXI.Point} [globalPos] - A Point object containing your custom global coords, optional
+	 *  (otherwise will use the current global coords)
+	 * @return {PIXI.Point} A point containing the coordinates of the InteractionData position relative
+	 *  to the DisplayObject
+	 */
+	InteractionData.prototype.getLocalPosition = function getLocalPosition (displayObject, point, globalPos)
+	{
+	    return displayObject.worldTransform.applyInverse(globalPos || this.global, point);
+	};
+
+	/**
+	 * Copies properties from normalized event data.
+	 *
+	 * @param {Touch|MouseEvent|PointerEvent} event The normalized event data
+	 */
+	InteractionData.prototype.copyEvent = function copyEvent (event)
+	{
+	    // isPrimary should only change on touchstart/pointerdown, so we don't want to overwrite
+	    // it with "false" on later events when our shim for it on touch events might not be
+	    // accurate
+	    if (event.isPrimary)
+	    {
+	        this.isPrimary = true;
+	    }
+	    this.button = event.button;
+	    // event.buttons is not available in all browsers (ie. Safari), but it does have a non-standard
+	    // event.which property instead, which conveys the same information.
+	    this.buttons = Number.isInteger(event.buttons) ? event.buttons : event.which;
+	    this.width = event.width;
+	    this.height = event.height;
+	    this.tiltX = event.tiltX;
+	    this.tiltY = event.tiltY;
+	    this.pointerType = event.pointerType;
+	    this.pressure = event.pressure;
+	    this.rotationAngle = event.rotationAngle;
+	    this.twist = event.twist || 0;
+	    this.tangentialPressure = event.tangentialPressure || 0;
+	};
+
+	/**
+	 * Resets the data for pooling.
+	 */
+	InteractionData.prototype.reset = function reset ()
+	{
+	    // isPrimary is the only property that we really need to reset - everything else is
+	    // guaranteed to be overwritten
+	    this.isPrimary = false;
+	};
+
+	Object.defineProperties( InteractionData.prototype, prototypeAccessors$5 );
+
+	/**
+	 * Event class that mimics native DOM events.
+	 *
+	 * @class
+	 * @memberof PIXI.interaction
+	 */
+	var InteractionEvent = function InteractionEvent()
+	{
+	    /**
+	     * Whether this event will continue propagating in the tree
+	     *
+	     * @member {boolean}
+	     */
+	    this.stopped = false;
+
+	    /**
+	     * The object which caused this event to be dispatched.
+	     * For listener callback see {@link PIXI.interaction.InteractionEvent.currentTarget}.
+	     *
+	     * @member {PIXI.DisplayObject}
+	     */
+	    this.target = null;
+
+	    /**
+	     * The object whose event listener’s callback is currently being invoked.
+	     *
+	     * @member {PIXI.DisplayObject}
+	     */
+	    this.currentTarget = null;
+
+	    /**
+	     * Type of the event
+	     *
+	     * @member {string}
+	     */
+	    this.type = null;
+
+	    /**
+	     * InteractionData related to this event
+	     *
+	     * @member {PIXI.interaction.InteractionData}
+	     */
+	    this.data = null;
+	};
+
+	/**
+	 * Prevents event from reaching any objects other than the current object.
+	 *
+	 */
+	InteractionEvent.prototype.stopPropagation = function stopPropagation ()
+	{
+	    this.stopped = true;
+	};
+
+	/**
+	 * Resets the event.
+	 */
+	InteractionEvent.prototype.reset = function reset ()
+	{
+	    this.stopped = false;
+	    this.currentTarget = null;
+	    this.target = null;
+	};
+
+	/**
+	 * DisplayObjects with the {@link PIXI.interaction.interactiveTarget} mixin use this class to track interactions
+	 *
+	 * @class
+	 * @private
+	 * @memberof PIXI.interaction
+	 */
+	var InteractionTrackingData = function InteractionTrackingData(pointerId)
+	{
+	    this._pointerId = pointerId;
+	    this._flags = InteractionTrackingData.FLAGS.NONE;
+	};
+
+	var prototypeAccessors$1$3 = { pointerId: { configurable: true },flags: { configurable: true },none: { configurable: true },over: { configurable: true },rightDown: { configurable: true },leftDown: { configurable: true } };
+
+	/**
+	 *
+	 * @private
+	 * @param {number} flag - The interaction flag to set
+	 * @param {boolean} yn - Should the flag be set or unset
+	 */
+	InteractionTrackingData.prototype._doSet = function _doSet (flag, yn)
+	{
+	    if (yn)
+	    {
+	        this._flags = this._flags | flag;
+	    }
+	    else
+	    {
+	        this._flags = this._flags & (~flag);
+	    }
+	};
+
+	/**
+	 * Unique pointer id of the event
+	 *
+	 * @readonly
+	 * @private
+	 * @member {number}
+	 */
+	prototypeAccessors$1$3.pointerId.get = function ()
+	{
+	    return this._pointerId;
+	};
+
+	/**
+	 * State of the tracking data, expressed as bit flags
+	 *
+	 * @private
+	 * @member {number}
+	 */
+	prototypeAccessors$1$3.flags.get = function ()
+	{
+	    return this._flags;
+	};
+
+	prototypeAccessors$1$3.flags.set = function (flags) // eslint-disable-line require-jsdoc
+	{
+	    this._flags = flags;
+	};
+
+	/**
+	 * Is the tracked event inactive (not over or down)?
+	 *
+	 * @private
+	 * @member {number}
+	 */
+	prototypeAccessors$1$3.none.get = function ()
+	{
+	    return this._flags === this.constructor.FLAGS.NONE;
+	};
+
+	/**
+	 * Is the tracked event over the DisplayObject?
+	 *
+	 * @private
+	 * @member {boolean}
+	 */
+	prototypeAccessors$1$3.over.get = function ()
+	{
+	    return (this._flags & this.constructor.FLAGS.OVER) !== 0;
+	};
+
+	prototypeAccessors$1$3.over.set = function (yn) // eslint-disable-line require-jsdoc
+	{
+	    this._doSet(this.constructor.FLAGS.OVER, yn);
+	};
+
+	/**
+	 * Did the right mouse button come down in the DisplayObject?
+	 *
+	 * @private
+	 * @member {boolean}
+	 */
+	prototypeAccessors$1$3.rightDown.get = function ()
+	{
+	    return (this._flags & this.constructor.FLAGS.RIGHT_DOWN) !== 0;
+	};
+
+	prototypeAccessors$1$3.rightDown.set = function (yn) // eslint-disable-line require-jsdoc
+	{
+	    this._doSet(this.constructor.FLAGS.RIGHT_DOWN, yn);
+	};
+
+	/**
+	 * Did the left mouse button come down in the DisplayObject?
+	 *
+	 * @private
+	 * @member {boolean}
+	 */
+	prototypeAccessors$1$3.leftDown.get = function ()
+	{
+	    return (this._flags & this.constructor.FLAGS.LEFT_DOWN) !== 0;
+	};
+
+	prototypeAccessors$1$3.leftDown.set = function (yn) // eslint-disable-line require-jsdoc
+	{
+	    this._doSet(this.constructor.FLAGS.LEFT_DOWN, yn);
+	};
+
+	Object.defineProperties( InteractionTrackingData.prototype, prototypeAccessors$1$3 );
+
+	InteractionTrackingData.FLAGS = Object.freeze({
+	    NONE: 0,
+	    OVER: 1 << 0,
+	    LEFT_DOWN: 1 << 1,
+	    RIGHT_DOWN: 1 << 2,
+	});
+
+	/**
+	 * Default property values of interactive objects
+	 * Used by {@link PIXI.interaction.InteractionManager} to automatically give all DisplayObjects these properties
+	 *
+	 * @private
+	 * @name interactiveTarget
+	 * @type {Object}
+	 * @memberof PIXI.interaction
+	 * @example
+	 *      function MyObject() {}
+	 *
+	 *      Object.assign(
+	 *          DisplayObject.prototype,
+	 *          PIXI.interaction.interactiveTarget
+	 *      );
+	 */
+	var interactiveTarget = {
+
+	    /**
+	     * Enable interaction events for the DisplayObject. Touch, pointer and mouse
+	     * events will not be emitted unless `interactive` is set to `true`.
+	     *
+	     * @example
+	     * const sprite = new PIXI.Sprite(texture);
+	     * sprite.interactive = true;
+	     * sprite.on('tap', (event) => {
+	     *    //handle event
+	     * });
+	     * @member {boolean}
+	     * @memberof PIXI.DisplayObject#
+	     */
+	    interactive: false,
+
+	    /**
+	     * Determines if the children to the displayObject can be clicked/touched
+	     * Setting this to false allows PixiJS to bypass a recursive `hitTest` function
+	     *
+	     * @member {boolean}
+	     * @memberof PIXI.Container#
+	     */
+	    interactiveChildren: true,
+
+	    /**
+	     * Interaction shape. Children will be hit first, then this shape will be checked.
+	     * Setting this will cause this shape to be checked in hit tests rather than the displayObject's bounds.
+	     *
+	     * @example
+	     * const sprite = new PIXI.Sprite(texture);
+	     * sprite.interactive = true;
+	     * sprite.hitArea = new PIXI.Rectangle(0, 0, 100, 100);
+	     * @member {PIXI.Rectangle|PIXI.Circle|PIXI.Ellipse|PIXI.Polygon|PIXI.RoundedRectangle}
+	     * @memberof PIXI.DisplayObject#
+	     */
+	    hitArea: null,
+
+	    /**
+	     * If enabled, the mouse cursor use the pointer behavior when hovered over the displayObject if it is interactive
+	     * Setting this changes the 'cursor' property to `'pointer'`.
+	     *
+	     * @example
+	     * const sprite = new PIXI.Sprite(texture);
+	     * sprite.interactive = true;
+	     * sprite.buttonMode = true;
+	     * @member {boolean}
+	     * @memberof PIXI.DisplayObject#
+	     */
+	    get buttonMode()
+	    {
+	        return this.cursor === 'pointer';
+	    },
+	    set buttonMode(value)
+	    {
+	        if (value)
+	        {
+	            this.cursor = 'pointer';
+	        }
+	        else if (this.cursor === 'pointer')
+	        {
+	            this.cursor = null;
+	        }
+	    },
+
+	    /**
+	     * This defines what cursor mode is used when the mouse cursor
+	     * is hovered over the displayObject.
+	     *
+	     * @example
+	     * const sprite = new PIXI.Sprite(texture);
+	     * sprite.interactive = true;
+	     * sprite.cursor = 'wait';
+	     * @see https://developer.mozilla.org/en/docs/Web/CSS/cursor
+	     *
+	     * @member {string}
+	     * @memberof PIXI.DisplayObject#
+	     */
+	    cursor: null,
+
+	    /**
+	     * Internal set of all active pointers, by identifier
+	     *
+	     * @member {Map<number, InteractionTrackingData>}
+	     * @memberof PIXI.DisplayObject#
+	     * @private
+	     */
+	    get trackedPointers()
+	    {
+	        if (this._trackedPointers === undefined) { this._trackedPointers = {}; }
+
+	        return this._trackedPointers;
+	    },
+
+	    /**
+	     * Map of all tracked pointers, by identifier. Use trackedPointers to access.
+	     *
+	     * @private
+	     * @type {Map<number, InteractionTrackingData>}
+	     */
+	    _trackedPointers: undefined,
+	};
+
+	// Mix interactiveTarget into DisplayObject.prototype, after deprecation has been handled
+	mixins$1.delayMixin(
+	    DisplayObject.prototype,
+	    interactiveTarget
+	);
+
+	var MOUSE_POINTER_ID = 1;
+
+	// helpers for hitTest() - only used inside hitTest()
+	var hitTestEvent = {
+	    target: null,
+	    data: {
+	        global: null,
+	    },
+	};
+
+	/**
+	 * The interaction manager deals with mouse, touch and pointer events.
+	 *
+	 * Any DisplayObject can be interactive if its `interactive` property is set to true.
+	 *
+	 * This manager also supports multitouch.
+	 *
+	 * An instance of this class is automatically created by default, and can be found at `renderer.plugins.interaction`
+	 *
+	 * @class
+	 * @extends PIXI.utils.EventEmitter
+	 * @memberof PIXI.interaction
+	 */
+	var InteractionManager = /*@__PURE__*/(function (EventEmitter$$1) {
+	    function InteractionManager(renderer, options)
+	    {
+	        EventEmitter$$1.call(this);
+
+	        options = options || {};
+
+	        /**
+	         * The renderer this interaction manager works for.
+	         *
+	         * @member {PIXI.AbstractRenderer}
+	         */
+	        this.renderer = renderer;
+
+	        /**
+	         * Should default browser actions automatically be prevented.
+	         * Does not apply to pointer events for backwards compatibility
+	         * preventDefault on pointer events stops mouse events from firing
+	         * Thus, for every pointer event, there will always be either a mouse of touch event alongside it.
+	         *
+	         * @member {boolean}
+	         * @default true
+	         */
+	        this.autoPreventDefault = options.autoPreventDefault !== undefined ? options.autoPreventDefault : true;
+
+	        /**
+	         * Frequency in milliseconds that the mousemove, mouseover & mouseout interaction events will be checked.
+	         *
+	         * @member {number}
+	         * @default 10
+	         */
+	        this.interactionFrequency = options.interactionFrequency || 10;
+
+	        /**
+	         * The mouse data
+	         *
+	         * @member {PIXI.interaction.InteractionData}
+	         */
+	        this.mouse = new InteractionData();
+	        this.mouse.identifier = MOUSE_POINTER_ID;
+
+	        // setting the mouse to start off far off screen will mean that mouse over does
+	        //  not get called before we even move the mouse.
+	        this.mouse.global.set(-999999);
+
+	        /**
+	         * Actively tracked InteractionData
+	         *
+	         * @private
+	         * @member {Object.<number,PIXI.interaction.InteractionData>}
+	         */
+	        this.activeInteractionData = {};
+	        this.activeInteractionData[MOUSE_POINTER_ID] = this.mouse;
+
+	        /**
+	         * Pool of unused InteractionData
+	         *
+	         * @private
+	         * @member {PIXI.interaction.InteractionData[]}
+	         */
+	        this.interactionDataPool = [];
+
+	        /**
+	         * An event data object to handle all the event tracking/dispatching
+	         *
+	         * @member {object}
+	         */
+	        this.eventData = new InteractionEvent();
+
+	        /**
+	         * The DOM element to bind to.
+	         *
+	         * @protected
+	         * @member {HTMLElement}
+	         */
+	        this.interactionDOMElement = null;
+
+	        /**
+	         * This property determines if mousemove and touchmove events are fired only when the cursor
+	         * is over the object.
+	         * Setting to true will make things work more in line with how the DOM version works.
+	         * Setting to false can make things easier for things like dragging
+	         * It is currently set to false as this is how PixiJS used to work. This will be set to true in
+	         * future versions of pixi.
+	         *
+	         * @member {boolean}
+	         * @default false
+	         */
+	        this.moveWhenInside = false;
+
+	        /**
+	         * Have events been attached to the dom element?
+	         *
+	         * @protected
+	         * @member {boolean}
+	         */
+	        this.eventsAdded = false;
+
+	        /**
+	         * Is the mouse hovering over the renderer?
+	         *
+	         * @protected
+	         * @member {boolean}
+	         */
+	        this.mouseOverRenderer = false;
+
+	        /**
+	         * Does the device support touch events
+	         * https://www.w3.org/TR/touch-events/
+	         *
+	         * @readonly
+	         * @member {boolean}
+	         */
+	        this.supportsTouchEvents = 'ontouchstart' in window;
+
+	        /**
+	         * Does the device support pointer events
+	         * https://www.w3.org/Submission/pointer-events/
+	         *
+	         * @readonly
+	         * @member {boolean}
+	         */
+	        this.supportsPointerEvents = !!window.PointerEvent;
+
+	        // this will make it so that you don't have to call bind all the time
+
+	        /**
+	         * @private
+	         * @member {Function}
+	         */
+	        this.onPointerUp = this.onPointerUp.bind(this);
+	        this.processPointerUp = this.processPointerUp.bind(this);
+
+	        /**
+	         * @private
+	         * @member {Function}
+	         */
+	        this.onPointerCancel = this.onPointerCancel.bind(this);
+	        this.processPointerCancel = this.processPointerCancel.bind(this);
+
+	        /**
+	         * @private
+	         * @member {Function}
+	         */
+	        this.onPointerDown = this.onPointerDown.bind(this);
+	        this.processPointerDown = this.processPointerDown.bind(this);
+
+	        /**
+	         * @private
+	         * @member {Function}
+	         */
+	        this.onPointerMove = this.onPointerMove.bind(this);
+	        this.processPointerMove = this.processPointerMove.bind(this);
+
+	        /**
+	         * @private
+	         * @member {Function}
+	         */
+	        this.onPointerOut = this.onPointerOut.bind(this);
+	        this.processPointerOverOut = this.processPointerOverOut.bind(this);
+
+	        /**
+	         * @private
+	         * @member {Function}
+	         */
+	        this.onPointerOver = this.onPointerOver.bind(this);
+
+	        /**
+	         * Dictionary of how different cursor modes are handled. Strings are handled as CSS cursor
+	         * values, objects are handled as dictionaries of CSS values for interactionDOMElement,
+	         * and functions are called instead of changing the CSS.
+	         * Default CSS cursor values are provided for 'default' and 'pointer' modes.
+	         * @member {Object.<string, Object>}
+	         */
+	        this.cursorStyles = {
+	            default: 'inherit',
+	            pointer: 'pointer',
+	        };
+
+	        /**
+	         * The mode of the cursor that is being used.
+	         * The value of this is a key from the cursorStyles dictionary.
+	         *
+	         * @member {string}
+	         */
+	        this.currentCursorMode = null;
+
+	        /**
+	         * Internal cached let.
+	         *
+	         * @private
+	         * @member {string}
+	         */
+	        this.cursor = null;
+
+	        /**
+	         * Internal cached let.
+	         *
+	         * @private
+	         * @member {PIXI.Point}
+	         */
+	        this._tempPoint = new Point();
+
+	        /**
+	         * The current resolution / device pixel ratio.
+	         *
+	         * @member {number}
+	         * @default 1
+	         */
+	        this.resolution = 1;
+
+	        /**
+	         * Fired when a pointer device button (usually a mouse left-button) is pressed on the display
+	         * object.
+	         *
+	         * @event PIXI.interaction.InteractionManager#mousedown
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device secondary button (usually a mouse right-button) is pressed
+	         * on the display object.
+	         *
+	         * @event PIXI.interaction.InteractionManager#rightdown
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button (usually a mouse left-button) is released over the display
+	         * object.
+	         *
+	         * @event PIXI.interaction.InteractionManager#mouseup
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device secondary button (usually a mouse right-button) is released
+	         * over the display object.
+	         *
+	         * @event PIXI.interaction.InteractionManager#rightup
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button (usually a mouse left-button) is pressed and released on
+	         * the display object.
+	         *
+	         * @event PIXI.interaction.InteractionManager#click
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device secondary button (usually a mouse right-button) is pressed
+	         * and released on the display object.
+	         *
+	         * @event PIXI.interaction.InteractionManager#rightclick
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button (usually a mouse left-button) is released outside the
+	         * display object that initially registered a
+	         * [mousedown]{@link PIXI.interaction.InteractionManager#event:mousedown}.
+	         *
+	         * @event PIXI.interaction.InteractionManager#mouseupoutside
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device secondary button (usually a mouse right-button) is released
+	         * outside the display object that initially registered a
+	         * [rightdown]{@link PIXI.interaction.InteractionManager#event:rightdown}.
+	         *
+	         * @event PIXI.interaction.InteractionManager#rightupoutside
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device (usually a mouse) is moved while over the display object
+	         *
+	         * @event PIXI.interaction.InteractionManager#mousemove
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device (usually a mouse) is moved onto the display object
+	         *
+	         * @event PIXI.interaction.InteractionManager#mouseover
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device (usually a mouse) is moved off the display object
+	         *
+	         * @event PIXI.interaction.InteractionManager#mouseout
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button is pressed on the display object.
+	         *
+	         * @event PIXI.interaction.InteractionManager#pointerdown
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button is released over the display object.
+	         * Not always fired when some buttons are held down while others are released. In those cases,
+	         * use [mousedown]{@link PIXI.interaction.InteractionManager#event:mousedown} and
+	         * [mouseup]{@link PIXI.interaction.InteractionManager#event:mouseup} instead.
+	         *
+	         * @event PIXI.interaction.InteractionManager#pointerup
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when the operating system cancels a pointer event
+	         *
+	         * @event PIXI.interaction.InteractionManager#pointercancel
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button is pressed and released on the display object.
+	         *
+	         * @event PIXI.interaction.InteractionManager#pointertap
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button is released outside the display object that initially
+	         * registered a [pointerdown]{@link PIXI.interaction.InteractionManager#event:pointerdown}.
+	         *
+	         * @event PIXI.interaction.InteractionManager#pointerupoutside
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device is moved while over the display object
+	         *
+	         * @event PIXI.interaction.InteractionManager#pointermove
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device is moved onto the display object
+	         *
+	         * @event PIXI.interaction.InteractionManager#pointerover
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device is moved off the display object
+	         *
+	         * @event PIXI.interaction.InteractionManager#pointerout
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a touch point is placed on the display object.
+	         *
+	         * @event PIXI.interaction.InteractionManager#touchstart
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a touch point is removed from the display object.
+	         *
+	         * @event PIXI.interaction.InteractionManager#touchend
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when the operating system cancels a touch
+	         *
+	         * @event PIXI.interaction.InteractionManager#touchcancel
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a touch point is placed and removed from the display object.
+	         *
+	         * @event PIXI.interaction.InteractionManager#tap
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a touch point is removed outside of the display object that initially
+	         * registered a [touchstart]{@link PIXI.interaction.InteractionManager#event:touchstart}.
+	         *
+	         * @event PIXI.interaction.InteractionManager#touchendoutside
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a touch point is moved along the display object.
+	         *
+	         * @event PIXI.interaction.InteractionManager#touchmove
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button (usually a mouse left-button) is pressed on the display.
+	         * object. DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#mousedown
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device secondary button (usually a mouse right-button) is pressed
+	         * on the display object. DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#rightdown
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button (usually a mouse left-button) is released over the display
+	         * object. DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#mouseup
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device secondary button (usually a mouse right-button) is released
+	         * over the display object. DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#rightup
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button (usually a mouse left-button) is pressed and released on
+	         * the display object. DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#click
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device secondary button (usually a mouse right-button) is pressed
+	         * and released on the display object. DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#rightclick
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button (usually a mouse left-button) is released outside the
+	         * display object that initially registered a
+	         * [mousedown]{@link PIXI.DisplayObject#event:mousedown}.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#mouseupoutside
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device secondary button (usually a mouse right-button) is released
+	         * outside the display object that initially registered a
+	         * [rightdown]{@link PIXI.DisplayObject#event:rightdown}.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#rightupoutside
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device (usually a mouse) is moved while over the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#mousemove
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device (usually a mouse) is moved onto the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#mouseover
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device (usually a mouse) is moved off the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#mouseout
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button is pressed on the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#pointerdown
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button is released over the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#pointerup
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when the operating system cancels a pointer event.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#pointercancel
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button is pressed and released on the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#pointertap
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device button is released outside the display object that initially
+	         * registered a [pointerdown]{@link PIXI.DisplayObject#event:pointerdown}.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#pointerupoutside
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device is moved while over the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#pointermove
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device is moved onto the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#pointerover
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a pointer device is moved off the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#pointerout
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a touch point is placed on the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#touchstart
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a touch point is removed from the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#touchend
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when the operating system cancels a touch.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#touchcancel
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a touch point is placed and removed from the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#tap
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a touch point is removed outside of the display object that initially
+	         * registered a [touchstart]{@link PIXI.DisplayObject#event:touchstart}.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#touchendoutside
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        /**
+	         * Fired when a touch point is moved along the display object.
+	         * DisplayObject's `interactive` property must be set to `true` to fire event.
+	         *
+	         * @event PIXI.DisplayObject#touchmove
+	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
+	         */
+
+	        this.setTargetElement(this.renderer.view, this.renderer.resolution);
+	    }
+
+	    if ( EventEmitter$$1 ) { InteractionManager.__proto__ = EventEmitter$$1; }
+	    InteractionManager.prototype = Object.create( EventEmitter$$1 && EventEmitter$$1.prototype );
+	    InteractionManager.prototype.constructor = InteractionManager;
+
+	    /**
+	     * Hit tests a point against the display tree, returning the first interactive object that is hit.
+	     *
+	     * @param {PIXI.Point} globalPoint - A point to hit test with, in global space.
+	     * @param {PIXI.Container} [root] - The root display object to start from. If omitted, defaults
+	     * to the last rendered root of the associated renderer.
+	     * @return {PIXI.DisplayObject} The hit display object, if any.
+	     */
+	    InteractionManager.prototype.hitTest = function hitTest (globalPoint, root)
+	    {
+	        // clear the target for our hit test
+	        hitTestEvent.target = null;
+	        // assign the global point
+	        hitTestEvent.data.global = globalPoint;
+	        // ensure safety of the root
+	        if (!root)
+	        {
+	            root = this.renderer._lastObjectRendered;
+	        }
+	        // run the hit test
+	        this.processInteractive(hitTestEvent, root, null, true);
+	        // return our found object - it'll be null if we didn't hit anything
+
+	        return hitTestEvent.target;
+	    };
+
+	    /**
+	     * Sets the DOM element which will receive mouse/touch events. This is useful for when you have
+	     * other DOM elements on top of the renderers Canvas element. With this you'll be bale to delegate
+	     * another DOM element to receive those events.
+	     *
+	     * @param {HTMLCanvasElement} element - the DOM element which will receive mouse and touch events.
+	     * @param {number} [resolution=1] - The resolution / device pixel ratio of the new element (relative to the canvas).
+	     */
+	    InteractionManager.prototype.setTargetElement = function setTargetElement (element, resolution)
+	    {
+	        if ( resolution === void 0 ) { resolution = 1; }
+
+	        this.removeEvents();
+
+	        this.interactionDOMElement = element;
+
+	        this.resolution = resolution;
+
+	        this.addEvents();
+	    };
+
+	    /**
+	     * Registers all the DOM events
+	     *
+	     * @private
+	     */
+	    InteractionManager.prototype.addEvents = function addEvents ()
+	    {
+	        if (!this.interactionDOMElement)
+	        {
+	            return;
+	        }
+
+	        Ticker.system.add(this.update, this, UPDATE_PRIORITY.INTERACTION);
+
+	        if (window.navigator.msPointerEnabled)
+	        {
+	            this.interactionDOMElement.style['-ms-content-zooming'] = 'none';
+	            this.interactionDOMElement.style['-ms-touch-action'] = 'none';
+	        }
+	        else if (this.supportsPointerEvents)
+	        {
+	            this.interactionDOMElement.style['touch-action'] = 'none';
+	        }
+
+	        /**
+	         * These events are added first, so that if pointer events are normalized, they are fired
+	         * in the same order as non-normalized events. ie. pointer event 1st, mouse / touch 2nd
+	         */
+	        if (this.supportsPointerEvents)
+	        {
+	            window.document.addEventListener('pointermove', this.onPointerMove, true);
+	            this.interactionDOMElement.addEventListener('pointerdown', this.onPointerDown, true);
+	            // pointerout is fired in addition to pointerup (for touch events) and pointercancel
+	            // we already handle those, so for the purposes of what we do in onPointerOut, we only
+	            // care about the pointerleave event
+	            this.interactionDOMElement.addEventListener('pointerleave', this.onPointerOut, true);
+	            this.interactionDOMElement.addEventListener('pointerover', this.onPointerOver, true);
+	            window.addEventListener('pointercancel', this.onPointerCancel, true);
+	            window.addEventListener('pointerup', this.onPointerUp, true);
+	        }
+	        else
+	        {
+	            window.document.addEventListener('mousemove', this.onPointerMove, true);
+	            this.interactionDOMElement.addEventListener('mousedown', this.onPointerDown, true);
+	            this.interactionDOMElement.addEventListener('mouseout', this.onPointerOut, true);
+	            this.interactionDOMElement.addEventListener('mouseover', this.onPointerOver, true);
+	            window.addEventListener('mouseup', this.onPointerUp, true);
+	        }
+
+	        // always look directly for touch events so that we can provide original data
+	        // In a future version we should change this to being just a fallback and rely solely on
+	        // PointerEvents whenever available
+	        if (this.supportsTouchEvents)
+	        {
+	            this.interactionDOMElement.addEventListener('touchstart', this.onPointerDown, true);
+	            this.interactionDOMElement.addEventListener('touchcancel', this.onPointerCancel, true);
+	            this.interactionDOMElement.addEventListener('touchend', this.onPointerUp, true);
+	            this.interactionDOMElement.addEventListener('touchmove', this.onPointerMove, true);
+	        }
+
+	        this.eventsAdded = true;
+	    };
+
+	    /**
+	     * Removes all the DOM events that were previously registered
+	     *
+	     * @private
+	     */
+	    InteractionManager.prototype.removeEvents = function removeEvents ()
+	    {
+	        if (!this.interactionDOMElement)
+	        {
+	            return;
+	        }
+
+	        Ticker.system.remove(this.update, this);
+
+	        if (window.navigator.msPointerEnabled)
+	        {
+	            this.interactionDOMElement.style['-ms-content-zooming'] = '';
+	            this.interactionDOMElement.style['-ms-touch-action'] = '';
+	        }
+	        else if (this.supportsPointerEvents)
+	        {
+	            this.interactionDOMElement.style['touch-action'] = '';
+	        }
+
+	        if (this.supportsPointerEvents)
+	        {
+	            window.document.removeEventListener('pointermove', this.onPointerMove, true);
+	            this.interactionDOMElement.removeEventListener('pointerdown', this.onPointerDown, true);
+	            this.interactionDOMElement.removeEventListener('pointerleave', this.onPointerOut, true);
+	            this.interactionDOMElement.removeEventListener('pointerover', this.onPointerOver, true);
+	            window.removeEventListener('pointercancel', this.onPointerCancel, true);
+	            window.removeEventListener('pointerup', this.onPointerUp, true);
+	        }
+	        else
+	        {
+	            window.document.removeEventListener('mousemove', this.onPointerMove, true);
+	            this.interactionDOMElement.removeEventListener('mousedown', this.onPointerDown, true);
+	            this.interactionDOMElement.removeEventListener('mouseout', this.onPointerOut, true);
+	            this.interactionDOMElement.removeEventListener('mouseover', this.onPointerOver, true);
+	            window.removeEventListener('mouseup', this.onPointerUp, true);
+	        }
+
+	        if (this.supportsTouchEvents)
+	        {
+	            this.interactionDOMElement.removeEventListener('touchstart', this.onPointerDown, true);
+	            this.interactionDOMElement.removeEventListener('touchcancel', this.onPointerCancel, true);
+	            this.interactionDOMElement.removeEventListener('touchend', this.onPointerUp, true);
+	            this.interactionDOMElement.removeEventListener('touchmove', this.onPointerMove, true);
+	        }
+
+	        this.interactionDOMElement = null;
+
+	        this.eventsAdded = false;
+	    };
+
+	    /**
+	     * Updates the state of interactive objects.
+	     * Invoked by a throttled ticker update from {@link PIXI.Ticker.system}.
+	     *
+	     * @param {number} deltaTime - time delta since last tick
+	     */
+	    InteractionManager.prototype.update = function update (deltaTime)
+	    {
+	        this._deltaTime += deltaTime;
+
+	        if (this._deltaTime < this.interactionFrequency)
+	        {
+	            return;
+	        }
+
+	        this._deltaTime = 0;
+
+	        if (!this.interactionDOMElement)
+	        {
+	            return;
+	        }
+
+	        // if the user move the mouse this check has already been done using the mouse move!
+	        if (this.didMove)
+	        {
+	            this.didMove = false;
+
+	            return;
+	        }
+
+	        this.cursor = null;
+
+	        // Resets the flag as set by a stopPropagation call. This flag is usually reset by a user interaction of any kind,
+	        // but there was a scenario of a display object moving under a static mouse cursor.
+	        // In this case, mouseover and mouseevents would not pass the flag test in dispatchEvent function
+	        for (var k in this.activeInteractionData)
+	        {
+	            // eslint-disable-next-line no-prototype-builtins
+	            if (this.activeInteractionData.hasOwnProperty(k))
+	            {
+	                var interactionData = this.activeInteractionData[k];
+
+	                if (interactionData.originalEvent && interactionData.pointerType !== 'touch')
+	                {
+	                    var interactionEvent = this.configureInteractionEventForDOMEvent(
+	                        this.eventData,
+	                        interactionData.originalEvent,
+	                        interactionData
+	                    );
+
+	                    this.processInteractive(
+	                        interactionEvent,
+	                        this.renderer._lastObjectRendered,
+	                        this.processPointerOverOut,
+	                        true
+	                    );
+	                }
+	            }
+	        }
+
+	        this.setCursorMode(this.cursor);
+
+	        // TODO
+	    };
+
+	    /**
+	     * Sets the current cursor mode, handling any callbacks or CSS style changes.
+	     *
+	     * @param {string} mode - cursor mode, a key from the cursorStyles dictionary
+	     */
+	    InteractionManager.prototype.setCursorMode = function setCursorMode (mode)
+	    {
+	        mode = mode || 'default';
+	        // if the mode didn't actually change, bail early
+	        if (this.currentCursorMode === mode)
+	        {
+	            return;
+	        }
+	        this.currentCursorMode = mode;
+	        var style = this.cursorStyles[mode];
+
+	        // only do things if there is a cursor style for it
+	        if (style)
+	        {
+	            switch (typeof style)
+	            {
+	                case 'string':
+	                    // string styles are handled as cursor CSS
+	                    this.interactionDOMElement.style.cursor = style;
+	                    break;
+	                case 'function':
+	                    // functions are just called, and passed the cursor mode
+	                    style(mode);
+	                    break;
+	                case 'object':
+	                    // if it is an object, assume that it is a dictionary of CSS styles,
+	                    // apply it to the interactionDOMElement
+	                    Object.assign(this.interactionDOMElement.style, style);
+	                    break;
+	            }
+	        }
+	        else if (typeof mode === 'string' && !Object.prototype.hasOwnProperty.call(this.cursorStyles, mode))
+	        {
+	            // if it mode is a string (not a Symbol) and cursorStyles doesn't have any entry
+	            // for the mode, then assume that the dev wants it to be CSS for the cursor.
+	            this.interactionDOMElement.style.cursor = mode;
+	        }
+	    };
+
+	    /**
+	     * Dispatches an event on the display object that was interacted with
+	     *
+	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - the display object in question
+	     * @param {string} eventString - the name of the event (e.g, mousedown)
+	     * @param {object} eventData - the event data object
+	     * @private
+	     */
+	    InteractionManager.prototype.dispatchEvent = function dispatchEvent (displayObject, eventString, eventData)
+	    {
+	        if (!eventData.stopped)
+	        {
+	            eventData.currentTarget = displayObject;
+	            eventData.type = eventString;
+
+	            displayObject.emit(eventString, eventData);
+
+	            if (displayObject[eventString])
+	            {
+	                displayObject[eventString](eventData);
+	            }
+	        }
+	    };
+
+	    /**
+	     * Maps x and y coords from a DOM object and maps them correctly to the PixiJS view. The
+	     * resulting value is stored in the point. This takes into account the fact that the DOM
+	     * element could be scaled and positioned anywhere on the screen.
+	     *
+	     * @param  {PIXI.Point} point - the point that the result will be stored in
+	     * @param  {number} x - the x coord of the position to map
+	     * @param  {number} y - the y coord of the position to map
+	     */
+	    InteractionManager.prototype.mapPositionToPoint = function mapPositionToPoint (point, x, y)
+	    {
+	        var rect;
+
+	        // IE 11 fix
+	        if (!this.interactionDOMElement.parentElement)
+	        {
+	            rect = { x: 0, y: 0, width: 0, height: 0 };
+	        }
+	        else
+	        {
+	            rect = this.interactionDOMElement.getBoundingClientRect();
+	        }
+
+	        var resolutionMultiplier = 1.0 / this.resolution;
+
+	        point.x = ((x - rect.left) * (this.interactionDOMElement.width / rect.width)) * resolutionMultiplier;
+	        point.y = ((y - rect.top) * (this.interactionDOMElement.height / rect.height)) * resolutionMultiplier;
+	    };
+
+	    /**
+	     * This function is provides a neat way of crawling through the scene graph and running a
+	     * specified function on all interactive objects it finds. It will also take care of hit
+	     * testing the interactive objects and passes the hit across in the function.
+	     *
+	     * @protected
+	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - event containing the point that
+	     *  is tested for collision
+	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - the displayObject
+	     *  that will be hit test (recursively crawls its children)
+	     * @param {Function} [func] - the function that will be called on each interactive object. The
+	     *  interactionEvent, displayObject and hit will be passed to the function
+	     * @param {boolean} [hitTest] - this indicates if the objects inside should be hit test against the point
+	     * @param {boolean} [interactive] - Whether the displayObject is interactive
+	     * @return {boolean} returns true if the displayObject hit the point
+	     */
+	    InteractionManager.prototype.processInteractive = function processInteractive (interactionEvent, displayObject, func, hitTest, interactive)
+	    {
+	        if (!displayObject || !displayObject.visible)
+	        {
+	            return false;
+	        }
+
+	        var point = interactionEvent.data.global;
+
+	        // Took a little while to rework this function correctly! But now it is done and nice and optimized! ^_^
+	        //
+	        // This function will now loop through all objects and then only hit test the objects it HAS
+	        // to, not all of them. MUCH faster..
+	        // An object will be hit test if the following is true:
+	        //
+	        // 1: It is interactive.
+	        // 2: It belongs to a parent that is interactive AND one of the parents children have not already been hit.
+	        //
+	        // As another little optimization once an interactive object has been hit we can carry on
+	        // through the scenegraph, but we know that there will be no more hits! So we can avoid extra hit tests
+	        // A final optimization is that an object is not hit test directly if a child has already been hit.
+
+	        interactive = displayObject.interactive || interactive;
+
+	        var hit = false;
+	        var interactiveParent = interactive;
+
+	        // Flag here can set to false if the event is outside the parents hitArea or mask
+	        var hitTestChildren = true;
+
+	        // If there is a hitArea, no need to test against anything else if the pointer is not within the hitArea
+	        // There is also no longer a need to hitTest children.
+	        if (displayObject.hitArea)
+	        {
+	            if (hitTest)
+	            {
+	                displayObject.worldTransform.applyInverse(point, this._tempPoint);
+	                if (!displayObject.hitArea.contains(this._tempPoint.x, this._tempPoint.y))
+	                {
+	                    hitTest = false;
+	                    hitTestChildren = false;
+	                }
+	                else
+	                {
+	                    hit = true;
+	                }
+	            }
+	            interactiveParent = false;
+	        }
+	        // If there is a mask, no need to test against anything else if the pointer is not within the mask
+	        else if (displayObject._mask)
+	        {
+	            if (hitTest)
+	            {
+	                if (!(displayObject._mask.containsPoint && displayObject._mask.containsPoint(point)))
+	                {
+	                    hitTest = false;
+	                    hitTestChildren = false;
+	                }
+	            }
+	        }
+
+	        // ** FREE TIP **! If an object is not interactive or has no buttons in it
+	        // (such as a game scene!) set interactiveChildren to false for that displayObject.
+	        // This will allow PixiJS to completely ignore and bypass checking the displayObjects children.
+	        if (hitTestChildren && displayObject.interactiveChildren && displayObject.children)
+	        {
+	            var children = displayObject.children;
+
+	            for (var i = children.length - 1; i >= 0; i--)
+	            {
+	                var child = children[i];
+
+	                // time to get recursive.. if this function will return if something is hit..
+	                var childHit = this.processInteractive(interactionEvent, child, func, hitTest, interactiveParent);
+
+	                if (childHit)
+	                {
+	                    // its a good idea to check if a child has lost its parent.
+	                    // this means it has been removed whilst looping so its best
+	                    if (!child.parent)
+	                    {
+	                        continue;
+	                    }
+
+	                    // we no longer need to hit test any more objects in this container as we we
+	                    // now know the parent has been hit
+	                    interactiveParent = false;
+
+	                    // If the child is interactive , that means that the object hit was actually
+	                    // interactive and not just the child of an interactive object.
+	                    // This means we no longer need to hit test anything else. We still need to run
+	                    // through all objects, but we don't need to perform any hit tests.
+
+	                    if (childHit)
+	                    {
+	                        if (interactionEvent.target)
+	                        {
+	                            hitTest = false;
+	                        }
+	                        hit = true;
+	                    }
+	                }
+	            }
+	        }
+
+	        // no point running this if the item is not interactive or does not have an interactive parent.
+	        if (interactive)
+	        {
+	            // if we are hit testing (as in we have no hit any objects yet)
+	            // We also don't need to worry about hit testing if once of the displayObjects children
+	            // has already been hit - but only if it was interactive, otherwise we need to keep
+	            // looking for an interactive child, just in case we hit one
+	            if (hitTest && !interactionEvent.target)
+	            {
+	                // already tested against hitArea if it is defined
+	                if (!displayObject.hitArea && displayObject.containsPoint)
+	                {
+	                    if (displayObject.containsPoint(point))
+	                    {
+	                        hit = true;
+	                    }
+	                }
+	            }
+
+	            if (displayObject.interactive)
+	            {
+	                if (hit && !interactionEvent.target)
+	                {
+	                    interactionEvent.target = displayObject;
+	                }
+
+	                if (func)
+	                {
+	                    func(interactionEvent, displayObject, !!hit);
+	                }
+	            }
+	        }
+
+	        return hit;
+	    };
+
+	    /**
+	     * Is called when the pointer button is pressed down on the renderer element
+	     *
+	     * @private
+	     * @param {PointerEvent} originalEvent - The DOM event of a pointer button being pressed down
+	     */
+	    InteractionManager.prototype.onPointerDown = function onPointerDown (originalEvent)
+	    {
+	        // if we support touch events, then only use those for touch events, not pointer events
+	        if (this.supportsTouchEvents && originalEvent.pointerType === 'touch') { return; }
+
+	        var events = this.normalizeToPointerData(originalEvent);
+
+	        /**
+	         * No need to prevent default on natural pointer events, as there are no side effects
+	         * Normalized events, however, may have the double mousedown/touchstart issue on the native android browser,
+	         * so still need to be prevented.
+	         */
+
+	        // Guaranteed that there will be at least one event in events, and all events must have the same pointer type
+
+	        if (this.autoPreventDefault && events[0].isNormalized)
+	        {
+	            originalEvent.preventDefault();
+	        }
+
+	        var eventLen = events.length;
+
+	        for (var i = 0; i < eventLen; i++)
+	        {
+	            var event = events[i];
+
+	            var interactionData = this.getInteractionDataForPointerId(event);
+
+	            var interactionEvent = this.configureInteractionEventForDOMEvent(this.eventData, event, interactionData);
+
+	            interactionEvent.data.originalEvent = originalEvent;
+
+	            this.processInteractive(interactionEvent, this.renderer._lastObjectRendered, this.processPointerDown, true);
+
+	            this.emit('pointerdown', interactionEvent);
+	            if (event.pointerType === 'touch')
+	            {
+	                this.emit('touchstart', interactionEvent);
+	            }
+	            // emit a mouse event for "pen" pointers, the way a browser would emit a fallback event
+	            else if (event.pointerType === 'mouse' || event.pointerType === 'pen')
+	            {
+	                var isRightButton = event.button === 2;
+
+	                this.emit(isRightButton ? 'rightdown' : 'mousedown', this.eventData);
+	            }
+	        }
+	    };
+
+	    /**
+	     * Processes the result of the pointer down check and dispatches the event if need be
+	     *
+	     * @private
+	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - The interaction event wrapping the DOM event
+	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - The display object that was tested
+	     * @param {boolean} hit - the result of the hit test on the display object
+	     */
+	    InteractionManager.prototype.processPointerDown = function processPointerDown (interactionEvent, displayObject, hit)
+	    {
+	        var data = interactionEvent.data;
+	        var id = interactionEvent.data.identifier;
+
+	        if (hit)
+	        {
+	            if (!displayObject.trackedPointers[id])
+	            {
+	                displayObject.trackedPointers[id] = new InteractionTrackingData(id);
+	            }
+	            this.dispatchEvent(displayObject, 'pointerdown', interactionEvent);
+
+	            if (data.pointerType === 'touch')
+	            {
+	                this.dispatchEvent(displayObject, 'touchstart', interactionEvent);
+	            }
+	            else if (data.pointerType === 'mouse' || data.pointerType === 'pen')
+	            {
+	                var isRightButton = data.button === 2;
+
+	                if (isRightButton)
+	                {
+	                    displayObject.trackedPointers[id].rightDown = true;
+	                }
+	                else
+	                {
+	                    displayObject.trackedPointers[id].leftDown = true;
+	                }
+
+	                this.dispatchEvent(displayObject, isRightButton ? 'rightdown' : 'mousedown', interactionEvent);
+	            }
+	        }
+	    };
+
+	    /**
+	     * Is called when the pointer button is released on the renderer element
+	     *
+	     * @private
+	     * @param {PointerEvent} originalEvent - The DOM event of a pointer button being released
+	     * @param {boolean} cancelled - true if the pointer is cancelled
+	     * @param {Function} func - Function passed to {@link processInteractive}
+	     */
+	    InteractionManager.prototype.onPointerComplete = function onPointerComplete (originalEvent, cancelled, func)
+	    {
+	        var events = this.normalizeToPointerData(originalEvent);
+
+	        var eventLen = events.length;
+
+	        // if the event wasn't targeting our canvas, then consider it to be pointerupoutside
+	        // in all cases (unless it was a pointercancel)
+	        var eventAppend = originalEvent.target !== this.interactionDOMElement ? 'outside' : '';
+
+	        for (var i = 0; i < eventLen; i++)
+	        {
+	            var event = events[i];
+
+	            var interactionData = this.getInteractionDataForPointerId(event);
+
+	            var interactionEvent = this.configureInteractionEventForDOMEvent(this.eventData, event, interactionData);
+
+	            interactionEvent.data.originalEvent = originalEvent;
+
+	            // perform hit testing for events targeting our canvas or cancel events
+	            this.processInteractive(interactionEvent, this.renderer._lastObjectRendered, func, cancelled || !eventAppend);
+
+	            this.emit(cancelled ? 'pointercancel' : ("pointerup" + eventAppend), interactionEvent);
+
+	            if (event.pointerType === 'mouse' || event.pointerType === 'pen')
+	            {
+	                var isRightButton = event.button === 2;
+
+	                this.emit(isRightButton ? ("rightup" + eventAppend) : ("mouseup" + eventAppend), interactionEvent);
+	            }
+	            else if (event.pointerType === 'touch')
+	            {
+	                this.emit(cancelled ? 'touchcancel' : ("touchend" + eventAppend), interactionEvent);
+	                this.releaseInteractionDataForPointerId(event.pointerId, interactionData);
+	            }
+	        }
+	    };
+
+	    /**
+	     * Is called when the pointer button is cancelled
+	     *
+	     * @private
+	     * @param {PointerEvent} event - The DOM event of a pointer button being released
+	     */
+	    InteractionManager.prototype.onPointerCancel = function onPointerCancel (event)
+	    {
+	        // if we support touch events, then only use those for touch events, not pointer events
+	        if (this.supportsTouchEvents && event.pointerType === 'touch') { return; }
+
+	        this.onPointerComplete(event, true, this.processPointerCancel);
+	    };
+
+	    /**
+	     * Processes the result of the pointer cancel check and dispatches the event if need be
+	     *
+	     * @private
+	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - The interaction event wrapping the DOM event
+	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - The display object that was tested
+	     */
+	    InteractionManager.prototype.processPointerCancel = function processPointerCancel (interactionEvent, displayObject)
+	    {
+	        var data = interactionEvent.data;
+
+	        var id = interactionEvent.data.identifier;
+
+	        if (displayObject.trackedPointers[id] !== undefined)
+	        {
+	            delete displayObject.trackedPointers[id];
+	            this.dispatchEvent(displayObject, 'pointercancel', interactionEvent);
+
+	            if (data.pointerType === 'touch')
+	            {
+	                this.dispatchEvent(displayObject, 'touchcancel', interactionEvent);
+	            }
+	        }
+	    };
+
+	    /**
+	     * Is called when the pointer button is released on the renderer element
+	     *
+	     * @private
+	     * @param {PointerEvent} event - The DOM event of a pointer button being released
+	     */
+	    InteractionManager.prototype.onPointerUp = function onPointerUp (event)
+	    {
+	        // if we support touch events, then only use those for touch events, not pointer events
+	        if (this.supportsTouchEvents && event.pointerType === 'touch') { return; }
+
+	        this.onPointerComplete(event, false, this.processPointerUp);
+	    };
+
+	    /**
+	     * Processes the result of the pointer up check and dispatches the event if need be
+	     *
+	     * @private
+	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - The interaction event wrapping the DOM event
+	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - The display object that was tested
+	     * @param {boolean} hit - the result of the hit test on the display object
+	     */
+	    InteractionManager.prototype.processPointerUp = function processPointerUp (interactionEvent, displayObject, hit)
+	    {
+	        var data = interactionEvent.data;
+
+	        var id = interactionEvent.data.identifier;
+
+	        var trackingData = displayObject.trackedPointers[id];
+
+	        var isTouch = data.pointerType === 'touch';
+
+	        var isMouse = (data.pointerType === 'mouse' || data.pointerType === 'pen');
+	        // need to track mouse down status in the mouse block so that we can emit
+	        // event in a later block
+	        var isMouseTap = false;
+
+	        // Mouse only
+	        if (isMouse)
+	        {
+	            var isRightButton = data.button === 2;
+
+	            var flags = InteractionTrackingData.FLAGS;
+
+	            var test = isRightButton ? flags.RIGHT_DOWN : flags.LEFT_DOWN;
+
+	            var isDown = trackingData !== undefined && (trackingData.flags & test);
+
+	            if (hit)
+	            {
+	                this.dispatchEvent(displayObject, isRightButton ? 'rightup' : 'mouseup', interactionEvent);
+
+	                if (isDown)
+	                {
+	                    this.dispatchEvent(displayObject, isRightButton ? 'rightclick' : 'click', interactionEvent);
+	                    // because we can confirm that the mousedown happened on this object, flag for later emit of pointertap
+	                    isMouseTap = true;
+	                }
+	            }
+	            else if (isDown)
+	            {
+	                this.dispatchEvent(displayObject, isRightButton ? 'rightupoutside' : 'mouseupoutside', interactionEvent);
+	            }
+	            // update the down state of the tracking data
+	            if (trackingData)
+	            {
+	                if (isRightButton)
+	                {
+	                    trackingData.rightDown = false;
+	                }
+	                else
+	                {
+	                    trackingData.leftDown = false;
+	                }
+	            }
+	        }
+
+	        // Pointers and Touches, and Mouse
+	        if (hit)
+	        {
+	            this.dispatchEvent(displayObject, 'pointerup', interactionEvent);
+	            if (isTouch) { this.dispatchEvent(displayObject, 'touchend', interactionEvent); }
+
+	            if (trackingData)
+	            {
+	                // emit pointertap if not a mouse, or if the mouse block decided it was a tap
+	                if (!isMouse || isMouseTap)
+	                {
+	                    this.dispatchEvent(displayObject, 'pointertap', interactionEvent);
+	                }
+	                if (isTouch)
+	                {
+	                    this.dispatchEvent(displayObject, 'tap', interactionEvent);
+	                    // touches are no longer over (if they ever were) when we get the touchend
+	                    // so we should ensure that we don't keep pretending that they are
+	                    trackingData.over = false;
+	                }
+	            }
+	        }
+	        else if (trackingData)
+	        {
+	            this.dispatchEvent(displayObject, 'pointerupoutside', interactionEvent);
+	            if (isTouch) { this.dispatchEvent(displayObject, 'touchendoutside', interactionEvent); }
+	        }
+	        // Only remove the tracking data if there is no over/down state still associated with it
+	        if (trackingData && trackingData.none)
+	        {
+	            delete displayObject.trackedPointers[id];
+	        }
+	    };
+
+	    /**
+	     * Is called when the pointer moves across the renderer element
+	     *
+	     * @private
+	     * @param {PointerEvent} originalEvent - The DOM event of a pointer moving
+	     */
+	    InteractionManager.prototype.onPointerMove = function onPointerMove (originalEvent)
+	    {
+	        // if we support touch events, then only use those for touch events, not pointer events
+	        if (this.supportsTouchEvents && originalEvent.pointerType === 'touch') { return; }
+
+	        var events = this.normalizeToPointerData(originalEvent);
+
+	        if (events[0].pointerType === 'mouse' || events[0].pointerType === 'pen')
+	        {
+	            this.didMove = true;
+
+	            this.cursor = null;
+	        }
+
+	        var eventLen = events.length;
+
+	        for (var i = 0; i < eventLen; i++)
+	        {
+	            var event = events[i];
+
+	            var interactionData = this.getInteractionDataForPointerId(event);
+
+	            var interactionEvent = this.configureInteractionEventForDOMEvent(this.eventData, event, interactionData);
+
+	            interactionEvent.data.originalEvent = originalEvent;
+
+	            var interactive = event.pointerType === 'touch' ? this.moveWhenInside : true;
+
+	            this.processInteractive(
+	                interactionEvent,
+	                this.renderer._lastObjectRendered,
+	                this.processPointerMove,
+	                interactive
+	            );
+	            this.emit('pointermove', interactionEvent);
+	            if (event.pointerType === 'touch') { this.emit('touchmove', interactionEvent); }
+	            if (event.pointerType === 'mouse' || event.pointerType === 'pen') { this.emit('mousemove', interactionEvent); }
+	        }
+
+	        if (events[0].pointerType === 'mouse')
+	        {
+	            this.setCursorMode(this.cursor);
+
+	            // TODO BUG for parents interactive object (border order issue)
+	        }
+	    };
+
+	    /**
+	     * Processes the result of the pointer move check and dispatches the event if need be
+	     *
+	     * @private
+	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - The interaction event wrapping the DOM event
+	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - The display object that was tested
+	     * @param {boolean} hit - the result of the hit test on the display object
+	     */
+	    InteractionManager.prototype.processPointerMove = function processPointerMove (interactionEvent, displayObject, hit)
+	    {
+	        var data = interactionEvent.data;
+
+	        var isTouch = data.pointerType === 'touch';
+
+	        var isMouse = (data.pointerType === 'mouse' || data.pointerType === 'pen');
+
+	        if (isMouse)
+	        {
+	            this.processPointerOverOut(interactionEvent, displayObject, hit);
+	        }
+
+	        if (!this.moveWhenInside || hit)
+	        {
+	            this.dispatchEvent(displayObject, 'pointermove', interactionEvent);
+	            if (isTouch) { this.dispatchEvent(displayObject, 'touchmove', interactionEvent); }
+	            if (isMouse) { this.dispatchEvent(displayObject, 'mousemove', interactionEvent); }
+	        }
+	    };
+
+	    /**
+	     * Is called when the pointer is moved out of the renderer element
+	     *
+	     * @private
+	     * @param {PointerEvent} originalEvent - The DOM event of a pointer being moved out
+	     */
+	    InteractionManager.prototype.onPointerOut = function onPointerOut (originalEvent)
+	    {
+	        // if we support touch events, then only use those for touch events, not pointer events
+	        if (this.supportsTouchEvents && originalEvent.pointerType === 'touch') { return; }
+
+	        var events = this.normalizeToPointerData(originalEvent);
+
+	        // Only mouse and pointer can call onPointerOut, so events will always be length 1
+	        var event = events[0];
+
+	        if (event.pointerType === 'mouse')
+	        {
+	            this.mouseOverRenderer = false;
+	            this.setCursorMode(null);
+	        }
+
+	        var interactionData = this.getInteractionDataForPointerId(event);
+
+	        var interactionEvent = this.configureInteractionEventForDOMEvent(this.eventData, event, interactionData);
+
+	        interactionEvent.data.originalEvent = event;
+
+	        this.processInteractive(interactionEvent, this.renderer._lastObjectRendered, this.processPointerOverOut, false);
+
+	        this.emit('pointerout', interactionEvent);
+	        if (event.pointerType === 'mouse' || event.pointerType === 'pen')
+	        {
+	            this.emit('mouseout', interactionEvent);
+	        }
+	        else
+	        {
+	            // we can get touchleave events after touchend, so we want to make sure we don't
+	            // introduce memory leaks
+	            this.releaseInteractionDataForPointerId(interactionData.identifier);
+	        }
+	    };
+
+	    /**
+	     * Processes the result of the pointer over/out check and dispatches the event if need be
+	     *
+	     * @private
+	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - The interaction event wrapping the DOM event
+	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - The display object that was tested
+	     * @param {boolean} hit - the result of the hit test on the display object
+	     */
+	    InteractionManager.prototype.processPointerOverOut = function processPointerOverOut (interactionEvent, displayObject, hit)
+	    {
+	        var data = interactionEvent.data;
+
+	        var id = interactionEvent.data.identifier;
+
+	        var isMouse = (data.pointerType === 'mouse' || data.pointerType === 'pen');
+
+	        var trackingData = displayObject.trackedPointers[id];
+
+	        // if we just moused over the display object, then we need to track that state
+	        if (hit && !trackingData)
+	        {
+	            trackingData = displayObject.trackedPointers[id] = new InteractionTrackingData(id);
+	        }
+
+	        if (trackingData === undefined) { return; }
+
+	        if (hit && this.mouseOverRenderer)
+	        {
+	            if (!trackingData.over)
+	            {
+	                trackingData.over = true;
+	                this.dispatchEvent(displayObject, 'pointerover', interactionEvent);
+	                if (isMouse)
+	                {
+	                    this.dispatchEvent(displayObject, 'mouseover', interactionEvent);
+	                }
+	            }
+
+	            // only change the cursor if it has not already been changed (by something deeper in the
+	            // display tree)
+	            if (isMouse && this.cursor === null)
+	            {
+	                this.cursor = displayObject.cursor;
+	            }
+	        }
+	        else if (trackingData.over)
+	        {
+	            trackingData.over = false;
+	            this.dispatchEvent(displayObject, 'pointerout', this.eventData);
+	            if (isMouse)
+	            {
+	                this.dispatchEvent(displayObject, 'mouseout', interactionEvent);
+	            }
+	            // if there is no mouse down information for the pointer, then it is safe to delete
+	            if (trackingData.none)
+	            {
+	                delete displayObject.trackedPointers[id];
+	            }
+	        }
+	    };
+
+	    /**
+	     * Is called when the pointer is moved into the renderer element
+	     *
+	     * @private
+	     * @param {PointerEvent} originalEvent - The DOM event of a pointer button being moved into the renderer view
+	     */
+	    InteractionManager.prototype.onPointerOver = function onPointerOver (originalEvent)
+	    {
+	        var events = this.normalizeToPointerData(originalEvent);
+
+	        // Only mouse and pointer can call onPointerOver, so events will always be length 1
+	        var event = events[0];
+
+	        var interactionData = this.getInteractionDataForPointerId(event);
+
+	        var interactionEvent = this.configureInteractionEventForDOMEvent(this.eventData, event, interactionData);
+
+	        interactionEvent.data.originalEvent = event;
+
+	        if (event.pointerType === 'mouse')
+	        {
+	            this.mouseOverRenderer = true;
+	        }
+
+	        this.emit('pointerover', interactionEvent);
+	        if (event.pointerType === 'mouse' || event.pointerType === 'pen')
+	        {
+	            this.emit('mouseover', interactionEvent);
+	        }
+	    };
+
+	    /**
+	     * Get InteractionData for a given pointerId. Store that data as well
+	     *
+	     * @private
+	     * @param {PointerEvent} event - Normalized pointer event, output from normalizeToPointerData
+	     * @return {PIXI.interaction.InteractionData} - Interaction data for the given pointer identifier
+	     */
+	    InteractionManager.prototype.getInteractionDataForPointerId = function getInteractionDataForPointerId (event)
+	    {
+	        var pointerId = event.pointerId;
+
+	        var interactionData;
+
+	        if (pointerId === MOUSE_POINTER_ID || event.pointerType === 'mouse')
+	        {
+	            interactionData = this.mouse;
+	        }
+	        else if (this.activeInteractionData[pointerId])
+	        {
+	            interactionData = this.activeInteractionData[pointerId];
+	        }
+	        else
+	        {
+	            interactionData = this.interactionDataPool.pop() || new InteractionData();
+	            interactionData.identifier = pointerId;
+	            this.activeInteractionData[pointerId] = interactionData;
+	        }
+	        // copy properties from the event, so that we can make sure that touch/pointer specific
+	        // data is available
+	        interactionData.copyEvent(event);
+
+	        return interactionData;
+	    };
+
+	    /**
+	     * Return unused InteractionData to the pool, for a given pointerId
+	     *
+	     * @private
+	     * @param {number} pointerId - Identifier from a pointer event
+	     */
+	    InteractionManager.prototype.releaseInteractionDataForPointerId = function releaseInteractionDataForPointerId (pointerId)
+	    {
+	        var interactionData = this.activeInteractionData[pointerId];
+
+	        if (interactionData)
+	        {
+	            delete this.activeInteractionData[pointerId];
+	            interactionData.reset();
+	            this.interactionDataPool.push(interactionData);
+	        }
+	    };
+
+	    /**
+	     * Configure an InteractionEvent to wrap a DOM PointerEvent and InteractionData
+	     *
+	     * @private
+	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - The event to be configured
+	     * @param {PointerEvent} pointerEvent - The DOM event that will be paired with the InteractionEvent
+	     * @param {PIXI.interaction.InteractionData} interactionData - The InteractionData that will be paired
+	     *        with the InteractionEvent
+	     * @return {PIXI.interaction.InteractionEvent} the interaction event that was passed in
+	     */
+	    InteractionManager.prototype.configureInteractionEventForDOMEvent = function configureInteractionEventForDOMEvent (interactionEvent, pointerEvent, interactionData)
+	    {
+	        interactionEvent.data = interactionData;
+
+	        this.mapPositionToPoint(interactionData.global, pointerEvent.clientX, pointerEvent.clientY);
+
+	        // Not really sure why this is happening, but it's how a previous version handled things
+	        if (pointerEvent.pointerType === 'touch')
+	        {
+	            pointerEvent.globalX = interactionData.global.x;
+	            pointerEvent.globalY = interactionData.global.y;
+	        }
+
+	        interactionData.originalEvent = pointerEvent;
+	        interactionEvent.reset();
+
+	        return interactionEvent;
+	    };
+
+	    /**
+	     * Ensures that the original event object contains all data that a regular pointer event would have
+	     *
+	     * @private
+	     * @param {TouchEvent|MouseEvent|PointerEvent} event - The original event data from a touch or mouse event
+	     * @return {PointerEvent[]} An array containing a single normalized pointer event, in the case of a pointer
+	     *  or mouse event, or a multiple normalized pointer events if there are multiple changed touches
+	     */
+	    InteractionManager.prototype.normalizeToPointerData = function normalizeToPointerData (event)
+	    {
+	        var normalizedEvents = [];
+
+	        if (this.supportsTouchEvents && event instanceof TouchEvent)
+	        {
+	            for (var i = 0, li = event.changedTouches.length; i < li; i++)
+	            {
+	                var touch = event.changedTouches[i];
+
+	                if (typeof touch.button === 'undefined') { touch.button = event.touches.length ? 1 : 0; }
+	                if (typeof touch.buttons === 'undefined') { touch.buttons = event.touches.length ? 1 : 0; }
+	                if (typeof touch.isPrimary === 'undefined')
+	                {
+	                    touch.isPrimary = event.touches.length === 1 && event.type === 'touchstart';
+	                }
+	                if (typeof touch.width === 'undefined') { touch.width = touch.radiusX || 1; }
+	                if (typeof touch.height === 'undefined') { touch.height = touch.radiusY || 1; }
+	                if (typeof touch.tiltX === 'undefined') { touch.tiltX = 0; }
+	                if (typeof touch.tiltY === 'undefined') { touch.tiltY = 0; }
+	                if (typeof touch.pointerType === 'undefined') { touch.pointerType = 'touch'; }
+	                if (typeof touch.pointerId === 'undefined') { touch.pointerId = touch.identifier || 0; }
+	                if (typeof touch.pressure === 'undefined') { touch.pressure = touch.force || 0.5; }
+	                if (typeof touch.twist === 'undefined') { touch.twist = 0; }
+	                if (typeof touch.tangentialPressure === 'undefined') { touch.tangentialPressure = 0; }
+	                // TODO: Remove these, as layerX/Y is not a standard, is deprecated, has uneven
+	                // support, and the fill ins are not quite the same
+	                // offsetX/Y might be okay, but is not the same as clientX/Y when the canvas's top
+	                // left is not 0,0 on the page
+	                if (typeof touch.layerX === 'undefined') { touch.layerX = touch.offsetX = touch.clientX; }
+	                if (typeof touch.layerY === 'undefined') { touch.layerY = touch.offsetY = touch.clientY; }
+
+	                // mark the touch as normalized, just so that we know we did it
+	                touch.isNormalized = true;
+
+	                normalizedEvents.push(touch);
+	            }
+	        }
+	        // apparently PointerEvent subclasses MouseEvent, so yay
+	        else if (event instanceof MouseEvent && (!this.supportsPointerEvents || !(event instanceof window.PointerEvent)))
+	        {
+	            if (typeof event.isPrimary === 'undefined') { event.isPrimary = true; }
+	            if (typeof event.width === 'undefined') { event.width = 1; }
+	            if (typeof event.height === 'undefined') { event.height = 1; }
+	            if (typeof event.tiltX === 'undefined') { event.tiltX = 0; }
+	            if (typeof event.tiltY === 'undefined') { event.tiltY = 0; }
+	            if (typeof event.pointerType === 'undefined') { event.pointerType = 'mouse'; }
+	            if (typeof event.pointerId === 'undefined') { event.pointerId = MOUSE_POINTER_ID; }
+	            if (typeof event.pressure === 'undefined') { event.pressure = 0.5; }
+	            if (typeof event.twist === 'undefined') { event.twist = 0; }
+	            if (typeof event.tangentialPressure === 'undefined') { event.tangentialPressure = 0; }
+
+	            // mark the mouse event as normalized, just so that we know we did it
+	            event.isNormalized = true;
+
+	            normalizedEvents.push(event);
+	        }
+	        else
+	        {
+	            normalizedEvents.push(event);
+	        }
+
+	        return normalizedEvents;
+	    };
+
+	    /**
+	     * Destroys the interaction manager
+	     *
+	     */
+	    InteractionManager.prototype.destroy = function destroy ()
+	    {
+	        this.removeEvents();
+
+	        this.removeAllListeners();
+
+	        this.renderer = null;
+
+	        this.mouse = null;
+
+	        this.eventData = null;
+
+	        this.interactionDOMElement = null;
+
+	        this.onPointerDown = null;
+	        this.processPointerDown = null;
+
+	        this.onPointerUp = null;
+	        this.processPointerUp = null;
+
+	        this.onPointerCancel = null;
+	        this.processPointerCancel = null;
+
+	        this.onPointerMove = null;
+	        this.processPointerMove = null;
+
+	        this.onPointerOut = null;
+	        this.processPointerOverOut = null;
+
+	        this.onPointerOver = null;
+
+	        this._tempPoint = null;
+	    };
+
+	    return InteractionManager;
+	}(eventemitter3));
+
+	var interaction_es = ({
+		InteractionData: InteractionData,
+		InteractionManager: InteractionManager,
+		interactiveTarget: interactiveTarget,
+		InteractionTrackingData: InteractionTrackingData,
+		InteractionEvent: InteractionEvent
+	});
+
+	/*!
+	 * @pixi/graphics - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/graphics is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -21101,7 +23284,7 @@
 	 * @property {number} maxSegments=2048 - maximal number of segments in the curve (if adaptive = false, ignored)
 	 */
 	var GRAPHICS_CURVES = {
-	    adaptive: false,
+	    adaptive: true,
 	    maxLength: 10,
 	    minSegments: 8,
 	    maxSegments: 2048,
@@ -21109,7 +23292,7 @@
 	    {
 	        if ( defaultSegments === void 0 ) { defaultSegments = 20; }
 
-	        if (this.adaptive)
+	        if (!this.adaptive)
 	        {
 	            return defaultSegments;
 	        }
@@ -21411,13 +23594,13 @@
 	 *
 	 * @ignore
 	 * @private
-	 * @param {PIXI.WebGLGraphicsData} graphicsData - The graphics object containing all the necessary properties
-	 * @param {object} webGLData - an object containing all the WebGL-specific information to create this shape
+	 * @param {PIXI.GraphicsData} graphicsData - The graphics object containing all the necessary properties
+	 * @param {PIXI.GraphicsGeometry} graphicsGeometry - Geometry where to append output
 	 */
 	function buildLine$1(graphicsData, graphicsGeometry)
 	{
-	    // TODO OPTIMISE!
-	    var points = graphicsData.points || graphicsData.shape.points.slice();
+	    var shape = graphicsData.shape;
+	    var points = graphicsData.points || shape.points.slice();
 
 	    if (points.length === 0)
 	    {
@@ -21438,17 +23621,21 @@
 	    // get first and last point.. figure out the middle!
 	    var firstPoint = new Point(points[0], points[1]);
 	    var lastPoint = new Point(points[points.length - 2], points[points.length - 1]);
+	    var closedShape = shape.type !== SHAPES.POLY;
+	    var closedPath = firstPoint.x === lastPoint.x && firstPoint.y === lastPoint.y;
 
 	    // if the first point is the last point - gonna have issues :)
-	    if (firstPoint.x === lastPoint.x && firstPoint.y === lastPoint.y)
+	    if (closedPath || closedShape)
 	    {
 	        // need to clone as we are going to slightly modify the shape..
 	        points = points.slice();
 
-	        points.pop();
-	        points.pop();
-
-	        lastPoint = new Point(points[points.length - 2], points[points.length - 1]);
+	        if (closedPath)
+	        {
+	            points.pop();
+	            points.pop();
+	            lastPoint.set(points[points.length - 2], points[points.length - 1]);
+	        }
 
 	        var midPointX = lastPoint.x + ((firstPoint.x - lastPoint.x) * 0.5);
 	        var midPointY = lastPoint.y + ((firstPoint.y - lastPoint.y) * 0.5);
@@ -22494,12 +24681,14 @@
 
 	        currentGroup.textureCount = 0;
 	        currentGroup.start = 0;
+	        currentGroup.size = 0;
+	        currentGroup.type = DRAW_MODES.TRIANGLES;
 
 	        var textureCount = 0;
 	        var currentTexture = null;
 	        var textureId = 0;
 	        var native = false;
-	        var drawMode = 4;
+	        var drawMode = DRAW_MODES.TRIANGLES;
 
 	        var index$$1 = 0;
 
@@ -22520,7 +24709,7 @@
 	            if (native !== style.native)
 	            {
 	                native = style.native;
-	                drawMode = native ? 1 : 4;
+	                drawMode = native ? DRAW_MODES.LINES : DRAW_MODES.TRIANGLES;
 
 	                // force the batch to break!
 	                currentTexture = null;
@@ -23034,10 +25223,10 @@
 
 	QuadraticUtils.curveLength = function curveLength (fromX, fromY, cpX, cpY, toX, toY)
 	{
-	    var ax = fromX - ((2.0 * cpX) + toX);
-	    var ay = fromY - ((2.0 * cpY) + toY);
-	    var bx = 2.0 * ((cpX - 2.0) * fromX);
-	    var by = 2.0 * ((cpY - 2.0) * fromY);
+	    var ax = fromX - (2.0 * cpX) + toX;
+	    var ay = fromY - (2.0 * cpY) + toY;
+	    var bx = (2.0 * cpX) - (2.0 * fromX);
+	    var by = (2.0 * cpY) - (2.0 * fromY);
 	    var a = 4.0 * ((ax * ax) + (ay * ay));
 	    var b = 4.0 * ((ax * bx) + (ay * by));
 	    var c = (bx * bx) + (by * by);
@@ -24399,2383 +26588,3759 @@
 	 */
 	Graphics._TEMP_POINT = new Point();
 
-	var graphics = ({
-		Graphics: Graphics,
-		GraphicsData: GraphicsData,
-		GraphicsGeometry: GraphicsGeometry,
-		GRAPHICS_CURVES: GRAPHICS_CURVES
-	});
+	/*!
+	 * @pixi/sprite - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
+	 *
+	 * @pixi/sprite is licensed under the MIT License.
+	 * http://www.opensource.org/licenses/mit-license
+	 */
+
+	var tempPoint = new Point();
+	var indices = new Uint16Array([0, 1, 2, 0, 2, 3]);
+
+	/**
+	 * The Sprite object is the base for all textured objects that are rendered to the screen
+	*
+	 * A sprite can be created directly from an image like this:
+	 *
+	 * ```js
+	 * let sprite = new PIXI.Sprite.from('assets/image.png');
+	 * ```
+	 *
+	 * The more efficient way to create sprites is using a {@link PIXI.Spritesheet},
+	 * as swapping base textures when rendering to the screen is inefficient.
+	 *
+	 * ```js
+	 * PIXI.loader.add("assets/spritesheet.json").load(setup);
+	 *
+	 * function setup() {
+	 *   let sheet = PIXI.loader.resources["assets/spritesheet.json"].spritesheet;
+	 *   let sprite = new PIXI.Sprite(sheet.textures["image.png"]);
+	 *   ...
+	 * }
+	 * ```
+	 *
+	 * @class
+	 * @extends PIXI.Container
+	 * @memberof PIXI
+	 */
+	var Sprite = /*@__PURE__*/(function (Container$$1) {
+	    function Sprite(texture)
+	    {
+	        Container$$1.call(this);
+
+	        /**
+	         * The anchor sets the origin point of the texture.
+	         * The default is 0,0 or taken from the {@link PIXI.Texture#defaultAnchor|Texture}
+	         * passed to the constructor. A value of 0,0 means the texture's origin is the top left.
+	         * Setting the anchor to 0.5,0.5 means the texture's origin is centered.
+	         * Setting the anchor to 1,1 would mean the texture's origin point will be the bottom right corner.
+	         * Note: Updating the {@link PIXI.Texture#defaultAnchor} after a Texture is
+	         * created does _not_ update the Sprite's anchor values.
+	         *
+	         * @member {PIXI.ObservablePoint}
+	         * @private
+	         */
+	        this._anchor = new ObservablePoint(
+	            this._onAnchorUpdate,
+	            this,
+	            (texture ? texture.defaultAnchor.x : 0),
+	            (texture ? texture.defaultAnchor.y : 0)
+	        );
+
+	        /**
+	         * The texture that the sprite is using
+	         *
+	         * @private
+	         * @member {PIXI.Texture}
+	         */
+	        this._texture = null;
+
+	        /**
+	         * The width of the sprite (this is initially set by the texture)
+	         *
+	         * @private
+	         * @member {number}
+	         */
+	        this._width = 0;
+
+	        /**
+	         * The height of the sprite (this is initially set by the texture)
+	         *
+	         * @private
+	         * @member {number}
+	         */
+	        this._height = 0;
+
+	        /**
+	         * The tint applied to the sprite. This is a hex value. A value of 0xFFFFFF will remove any tint effect.
+	         *
+	         * @private
+	         * @member {number}
+	         * @default 0xFFFFFF
+	         */
+	        this._tint = null;
+	        this._tintRGB = null;
+	        this.tint = 0xFFFFFF;
+
+	        /**
+	         * The blend mode to be applied to the sprite. Apply a value of `PIXI.BLEND_MODES.NORMAL` to reset the blend mode.
+	         *
+	         * @member {number}
+	         * @default PIXI.BLEND_MODES.NORMAL
+	         * @see PIXI.BLEND_MODES
+	         */
+	        this.blendMode = BLEND_MODES.NORMAL;
+
+	        /**
+	         * The shader that will be used to render the sprite. Set to null to remove a current shader.
+	         *
+	         * @member {PIXI.Filter|PIXI.Shader}
+	         */
+	        this.shader = null;
+
+	        /**
+	         * An internal cached value of the tint.
+	         *
+	         * @private
+	         * @member {number}
+	         * @default 0xFFFFFF
+	         */
+	        this.cachedTint = 0xFFFFFF;
+
+	        this.uvs = null;
+
+	        // call texture setter
+	        this.texture = texture || Texture.EMPTY;
+
+	        /**
+	         * this is used to store the vertex data of the sprite (basically a quad)
+	         *
+	         * @private
+	         * @member {Float32Array}
+	         */
+	        this.vertexData = new Float32Array(8);
+
+	        /**
+	         * This is used to calculate the bounds of the object IF it is a trimmed sprite
+	         *
+	         * @private
+	         * @member {Float32Array}
+	         */
+	        this.vertexTrimmedData = null;
+
+	        this._transformID = -1;
+	        this._textureID = -1;
+
+	        this._transformTrimmedID = -1;
+	        this._textureTrimmedID = -1;
+
+	        // Batchable stuff..
+	        // TODO could make this a mixin?
+	        this.indices = indices;
+	        this.size = 4;
+	        this.start = 0;
+
+	        /**
+	         * Plugin that is responsible for rendering this element.
+	         * Allows to customize the rendering process without overriding '_render' & '_renderCanvas' methods.
+	         *
+	         * @member {string}
+	         * @default 'sprite'
+	         */
+	        this.pluginName = 'batch';
+
+	        /**
+	         * used to fast check if a sprite is.. a sprite!
+	         * @member {boolean}
+	         */
+	        this.isSprite = true;
+
+	        /**
+	         * Internal roundPixels field
+	         *
+	         * @member {boolean}
+	         * @private
+	         */
+	        this._roundPixels = settings.ROUND_PIXELS;
+	    }
+
+	    if ( Container$$1 ) { Sprite.__proto__ = Container$$1; }
+	    Sprite.prototype = Object.create( Container$$1 && Container$$1.prototype );
+	    Sprite.prototype.constructor = Sprite;
+
+	    var prototypeAccessors = { roundPixels: { configurable: true },width: { configurable: true },height: { configurable: true },anchor: { configurable: true },tint: { configurable: true },texture: { configurable: true } };
+
+	    /**
+	     * When the texture is updated, this event will fire to update the scale and frame
+	     *
+	     * @private
+	     */
+	    Sprite.prototype._onTextureUpdate = function _onTextureUpdate ()
+	    {
+	        this._textureID = -1;
+	        this._textureTrimmedID = -1;
+	        this.cachedTint = 0xFFFFFF;
+
+	        this.uvs = this._texture._uvs.uvsFloat32;
+	        // so if _width is 0 then width was not set..
+	        if (this._width)
+	        {
+	            this.scale.x = sign(this.scale.x) * this._width / this._texture.orig.width;
+	        }
+
+	        if (this._height)
+	        {
+	            this.scale.y = sign(this.scale.y) * this._height / this._texture.orig.height;
+	        }
+	    };
+
+	    /**
+	     * Called when the anchor position updates.
+	     *
+	     * @private
+	     */
+	    Sprite.prototype._onAnchorUpdate = function _onAnchorUpdate ()
+	    {
+	        this._transformID = -1;
+	        this._transformTrimmedID = -1;
+	    };
+
+	    /**
+	     * calculates worldTransform * vertices, store it in vertexData
+	     */
+	    Sprite.prototype.calculateVertices = function calculateVertices ()
+	    {
+	        var texture = this._texture;
+
+	        if (this._transformID === this.transform._worldID && this._textureID === texture._updateID)
+	        {
+	            return;
+	        }
+
+	        this._transformID = this.transform._worldID;
+	        this._textureID = texture._updateID;
+
+	        // set the vertex data
+
+	        var wt = this.transform.worldTransform;
+	        var a = wt.a;
+	        var b = wt.b;
+	        var c = wt.c;
+	        var d = wt.d;
+	        var tx = wt.tx;
+	        var ty = wt.ty;
+	        var vertexData = this.vertexData;
+	        var trim = texture.trim;
+	        var orig = texture.orig;
+	        var anchor = this._anchor;
+
+	        var w0 = 0;
+	        var w1 = 0;
+	        var h0 = 0;
+	        var h1 = 0;
+
+	        if (trim)
+	        {
+	            // if the sprite is trimmed and is not a tilingsprite then we need to add the extra
+	            // space before transforming the sprite coords.
+	            w1 = trim.x - (anchor._x * orig.width);
+	            w0 = w1 + trim.width;
+
+	            h1 = trim.y - (anchor._y * orig.height);
+	            h0 = h1 + trim.height;
+	        }
+	        else
+	        {
+	            w1 = -anchor._x * orig.width;
+	            w0 = w1 + orig.width;
+
+	            h1 = -anchor._y * orig.height;
+	            h0 = h1 + orig.height;
+	        }
+
+	        // xy
+	        vertexData[0] = (a * w1) + (c * h1) + tx;
+	        vertexData[1] = (d * h1) + (b * w1) + ty;
+
+	        // xy
+	        vertexData[2] = (a * w0) + (c * h1) + tx;
+	        vertexData[3] = (d * h1) + (b * w0) + ty;
+
+	        // xy
+	        vertexData[4] = (a * w0) + (c * h0) + tx;
+	        vertexData[5] = (d * h0) + (b * w0) + ty;
+
+	        // xy
+	        vertexData[6] = (a * w1) + (c * h0) + tx;
+	        vertexData[7] = (d * h0) + (b * w1) + ty;
+
+	        if (this._roundPixels)
+	        {
+	            for (var i = 0; i < 8; i++)
+	            {
+	                vertexData[i] = Math.round(vertexData[i]);
+	            }
+	        }
+	    };
+
+	    /**
+	     * calculates worldTransform * vertices for a non texture with a trim. store it in vertexTrimmedData
+	     * This is used to ensure that the true width and height of a trimmed texture is respected
+	     */
+	    Sprite.prototype.calculateTrimmedVertices = function calculateTrimmedVertices ()
+	    {
+	        if (!this.vertexTrimmedData)
+	        {
+	            this.vertexTrimmedData = new Float32Array(8);
+	        }
+	        else if (this._transformTrimmedID === this.transform._worldID && this._textureTrimmedID === this._texture._updateID)
+	        {
+	            return;
+	        }
+
+	        this._transformTrimmedID = this.transform._worldID;
+	        this._textureTrimmedID = this._texture._updateID;
+
+	        // lets do some special trim code!
+	        var texture = this._texture;
+	        var vertexData = this.vertexTrimmedData;
+	        var orig = texture.orig;
+	        var anchor = this._anchor;
+
+	        // lets calculate the new untrimmed bounds..
+	        var wt = this.transform.worldTransform;
+	        var a = wt.a;
+	        var b = wt.b;
+	        var c = wt.c;
+	        var d = wt.d;
+	        var tx = wt.tx;
+	        var ty = wt.ty;
+
+	        var w1 = -anchor._x * orig.width;
+	        var w0 = w1 + orig.width;
+
+	        var h1 = -anchor._y * orig.height;
+	        var h0 = h1 + orig.height;
+
+	        // xy
+	        vertexData[0] = (a * w1) + (c * h1) + tx;
+	        vertexData[1] = (d * h1) + (b * w1) + ty;
+
+	        // xy
+	        vertexData[2] = (a * w0) + (c * h1) + tx;
+	        vertexData[3] = (d * h1) + (b * w0) + ty;
+
+	        // xy
+	        vertexData[4] = (a * w0) + (c * h0) + tx;
+	        vertexData[5] = (d * h0) + (b * w0) + ty;
+
+	        // xy
+	        vertexData[6] = (a * w1) + (c * h0) + tx;
+	        vertexData[7] = (d * h0) + (b * w1) + ty;
+	    };
+
+	    /**
+	    *
+	    * Renders the object using the WebGL renderer
+	    *
+	    * @protected
+	    * @param {PIXI.Renderer} renderer - The webgl renderer to use.
+	    */
+	    Sprite.prototype._render = function _render (renderer)
+	    {
+	        this.calculateVertices();
+
+	        renderer.batch.setObjectRenderer(renderer.plugins[this.pluginName]);
+	        renderer.plugins[this.pluginName].render(this);
+	    };
+
+	    /**
+	     * Updates the bounds of the sprite.
+	     *
+	     * @protected
+	     */
+	    Sprite.prototype._calculateBounds = function _calculateBounds ()
+	    {
+	        var trim = this._texture.trim;
+	        var orig = this._texture.orig;
+
+	        // First lets check to see if the current texture has a trim..
+	        if (!trim || (trim.width === orig.width && trim.height === orig.height))
+	        {
+	            // no trim! lets use the usual calculations..
+	            this.calculateVertices();
+	            this._bounds.addQuad(this.vertexData);
+	        }
+	        else
+	        {
+	            // lets calculate a special trimmed bounds...
+	            this.calculateTrimmedVertices();
+	            this._bounds.addQuad(this.vertexTrimmedData);
+	        }
+	    };
+
+	    /**
+	     * Gets the local bounds of the sprite object.
+	     *
+	     * @param {PIXI.Rectangle} rect - The output rectangle.
+	     * @return {PIXI.Rectangle} The bounds.
+	     */
+	    Sprite.prototype.getLocalBounds = function getLocalBounds (rect)
+	    {
+	        // we can do a fast local bounds if the sprite has no children!
+	        if (this.children.length === 0)
+	        {
+	            this._bounds.minX = this._texture.orig.width * -this._anchor._x;
+	            this._bounds.minY = this._texture.orig.height * -this._anchor._y;
+	            this._bounds.maxX = this._texture.orig.width * (1 - this._anchor._x);
+	            this._bounds.maxY = this._texture.orig.height * (1 - this._anchor._y);
+
+	            if (!rect)
+	            {
+	                if (!this._localBoundsRect)
+	                {
+	                    this._localBoundsRect = new Rectangle();
+	                }
+
+	                rect = this._localBoundsRect;
+	            }
+
+	            return this._bounds.getRectangle(rect);
+	        }
+
+	        return Container$$1.prototype.getLocalBounds.call(this, rect);
+	    };
+
+	    /**
+	     * Tests if a point is inside this sprite
+	     *
+	     * @param {PIXI.Point} point - the point to test
+	     * @return {boolean} the result of the test
+	     */
+	    Sprite.prototype.containsPoint = function containsPoint (point)
+	    {
+	        this.worldTransform.applyInverse(point, tempPoint);
+
+	        var width = this._texture.orig.width;
+	        var height = this._texture.orig.height;
+	        var x1 = -width * this.anchor.x;
+	        var y1 = 0;
+
+	        if (tempPoint.x >= x1 && tempPoint.x < x1 + width)
+	        {
+	            y1 = -height * this.anchor.y;
+
+	            if (tempPoint.y >= y1 && tempPoint.y < y1 + height)
+	            {
+	                return true;
+	            }
+	        }
+
+	        return false;
+	    };
+
+	    /**
+	     * Destroys this sprite and optionally its texture and children
+	     *
+	     * @param {object|boolean} [options] - Options parameter. A boolean will act as if all options
+	     *  have been set to that value
+	     * @param {boolean} [options.children=false] - if set to true, all the children will have their destroy
+	     *      method called as well. 'options' will be passed on to those calls.
+	     * @param {boolean} [options.texture=false] - Should it destroy the current texture of the sprite as well
+	     * @param {boolean} [options.baseTexture=false] - Should it destroy the base texture of the sprite as well
+	     */
+	    Sprite.prototype.destroy = function destroy (options)
+	    {
+	        Container$$1.prototype.destroy.call(this, options);
+
+	        this._texture.off('update', this._onTextureUpdate, this);
+
+	        this._anchor = null;
+
+	        var destroyTexture = typeof options === 'boolean' ? options : options && options.texture;
+
+	        if (destroyTexture)
+	        {
+	            var destroyBaseTexture = typeof options === 'boolean' ? options : options && options.baseTexture;
+
+	            this._texture.destroy(!!destroyBaseTexture);
+	        }
+
+	        this._texture = null;
+	        this.shader = null;
+	    };
+
+	    // some helper functions..
+
+	    /**
+	     * Helper function that creates a new sprite based on the source you provide.
+	     * The source can be - frame id, image url, video url, canvas element, video element, base texture
+	     *
+	     * @static
+	     * @param {number|string|PIXI.Texture|HTMLCanvasElement|HTMLVideoElement} source Source to create texture from
+	     * @param {object} [options] See {@link PIXI.BaseTexture}'s constructor for options.
+	     * @return {PIXI.Sprite} The newly created sprite
+	     */
+	    Sprite.from = function from (source, options)
+	    {
+	        var texture = (source instanceof Texture)
+	            ? source
+	            : new Texture.from(source, options);
+
+	        return new Sprite(texture);
+	    };
+
+	    /**
+	     * If true PixiJS will Math.floor() x/y values when rendering, stopping pixel interpolation.
+	     * Advantages can include sharper image quality (like text) and faster rendering on canvas.
+	     * The main disadvantage is movement of objects may appear less smooth.
+	     * To set the global default, change {@link PIXI.settings.ROUND_PIXELS}
+	     *
+	     * @member {boolean}
+	     * @default false
+	     */
+	    prototypeAccessors.roundPixels.set = function (value)
+	    {
+	        if (this._roundPixels !== value)
+	        {
+	            this._transformID = -1;
+	        }
+	        this._roundPixels = value;
+	    };
+
+	    prototypeAccessors.roundPixels.get = function ()
+	    {
+	        return this._roundPixels;
+	    };
+
+	    /**
+	     * The width of the sprite, setting this will actually modify the scale to achieve the value set
+	     *
+	     * @member {number}
+	     */
+	    prototypeAccessors.width.get = function ()
+	    {
+	        return Math.abs(this.scale.x) * this._texture.orig.width;
+	    };
+
+	    prototypeAccessors.width.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        var s = sign(this.scale.x) || 1;
+
+	        this.scale.x = s * value / this._texture.orig.width;
+	        this._width = value;
+	    };
+
+	    /**
+	     * The height of the sprite, setting this will actually modify the scale to achieve the value set
+	     *
+	     * @member {number}
+	     */
+	    prototypeAccessors.height.get = function ()
+	    {
+	        return Math.abs(this.scale.y) * this._texture.orig.height;
+	    };
+
+	    prototypeAccessors.height.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        var s = sign(this.scale.y) || 1;
+
+	        this.scale.y = s * value / this._texture.orig.height;
+	        this._height = value;
+	    };
+
+	    /**
+	     * The anchor sets the origin point of the text. The default value is taken from the {@link PIXI.Texture|Texture}
+	     * and passed to the constructor.
+	     *
+	     * The default is `(0,0)`, this means the text's origin is the top left.
+	     *
+	     * Setting the anchor to `(0.5,0.5)` means the text's origin is centered.
+	     *
+	     * Setting the anchor to `(1,1)` would mean the text's origin point will be the bottom right corner.
+	     *
+	     * If you pass only single parameter, it will set both x and y to the same value as shown in the example below.
+	     *
+	     * @example
+	     * const sprite = new PIXI.Sprite(texture);
+	     * sprite.anchor.set(0.5); // This will set the origin to center. (0.5) is same as (0.5, 0.5).
+	     *
+	     * @member {PIXI.ObservablePoint}
+	     */
+	    prototypeAccessors.anchor.get = function ()
+	    {
+	        return this._anchor;
+	    };
+
+	    prototypeAccessors.anchor.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        this._anchor.copyFrom(value);
+	    };
+
+	    /**
+	     * The tint applied to the sprite. This is a hex value.
+	     * A value of 0xFFFFFF will remove any tint effect.
+	     *
+	     * @member {number}
+	     * @default 0xFFFFFF
+	     */
+	    prototypeAccessors.tint.get = function ()
+	    {
+	        return this._tint;
+	    };
+
+	    prototypeAccessors.tint.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        this._tint = value;
+	        this._tintRGB = (value >> 16) + (value & 0xff00) + ((value & 0xff) << 16);
+	    };
+
+	    /**
+	     * The texture that the sprite is using
+	     *
+	     * @member {PIXI.Texture}
+	     */
+	    prototypeAccessors.texture.get = function ()
+	    {
+	        return this._texture;
+	    };
+
+	    prototypeAccessors.texture.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        if (this._texture === value)
+	        {
+	            return;
+	        }
+
+	        this._texture = value || Texture.EMPTY;
+	        this.cachedTint = 0xFFFFFF;
+
+	        this._textureID = -1;
+	        this._textureTrimmedID = -1;
+
+	        if (value)
+	        {
+	            // wait for the texture to load
+	            if (value.baseTexture.valid)
+	            {
+	                this._onTextureUpdate();
+	            }
+	            else
+	            {
+	                value.once('update', this._onTextureUpdate, this);
+	            }
+	        }
+	    };
+
+	    Object.defineProperties( Sprite.prototype, prototypeAccessors );
+
+	    return Sprite;
+	}(Container));
 
 	/*!
-	 * @pixi/interaction - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/text - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
-	 * @pixi/interaction is licensed under the MIT License.
+	 * @pixi/text is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
 	 */
 
 	/**
-	 * Holds all information related to an Interaction event
+	 * Constants that define the type of gradient on text.
+	 *
+	 * @static
+	 * @constant
+	 * @name TEXT_GRADIENT
+	 * @memberof PIXI
+	 * @type {object}
+	 * @property {number} LINEAR_VERTICAL Vertical gradient
+	 * @property {number} LINEAR_HORIZONTAL Linear gradient
+	 */
+	var TEXT_GRADIENT = {
+	    LINEAR_VERTICAL: 0,
+	    LINEAR_HORIZONTAL: 1,
+	};
+
+	// disabling eslint for now, going to rewrite this in v5
+
+	var defaultStyle = {
+	    align: 'left',
+	    breakWords: false,
+	    dropShadow: false,
+	    dropShadowAlpha: 1,
+	    dropShadowAngle: Math.PI / 6,
+	    dropShadowBlur: 0,
+	    dropShadowColor: 'black',
+	    dropShadowDistance: 5,
+	    fill: 'black',
+	    fillGradientType: TEXT_GRADIENT.LINEAR_VERTICAL,
+	    fillGradientStops: [],
+	    fontFamily: 'Arial',
+	    fontSize: 26,
+	    fontStyle: 'normal',
+	    fontVariant: 'normal',
+	    fontWeight: 'normal',
+	    letterSpacing: 0,
+	    lineHeight: 0,
+	    lineJoin: 'miter',
+	    miterLimit: 10,
+	    padding: 0,
+	    stroke: 'black',
+	    strokeThickness: 0,
+	    textBaseline: 'alphabetic',
+	    trim: false,
+	    whiteSpace: 'pre',
+	    wordWrap: false,
+	    wordWrapWidth: 100,
+	    leading: 0,
+	};
+
+	/**
+	 * A TextStyle Object contains information to decorate a Text objects.
+	 *
+	 * An instance can be shared between multiple Text objects; then changing the style will update all text objects using it.
+	 *
+	 * A tool can be used to generate a text style [here](https://pixijs.io/pixi-text-style).
 	 *
 	 * @class
-	 * @memberof PIXI.interaction
+	 * @memberof PIXI
 	 */
-	var InteractionData = function InteractionData()
+	var TextStyle = function TextStyle(style)
 	{
-	    /**
-	     * This point stores the global coords of where the touch/mouse event happened
-	     *
-	     * @member {PIXI.Point}
-	     */
-	    this.global = new Point();
+	    this.styleID = 0;
 
-	    /**
-	     * The target Sprite that was interacted with
-	     *
-	     * @member {PIXI.Sprite}
-	     */
-	    this.target = null;
+	    this.reset();
 
-	    /**
-	     * When passed to an event handler, this will be the original DOM Event that was captured
-	     *
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent
-	     * @member {MouseEvent|TouchEvent|PointerEvent}
-	     */
-	    this.originalEvent = null;
-
-	    /**
-	     * Unique identifier for this interaction
-	     *
-	     * @member {number}
-	     */
-	    this.identifier = null;
-
-	    /**
-	     * Indicates whether or not the pointer device that created the event is the primary pointer.
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/isPrimary
-	     * @type {Boolean}
-	     */
-	    this.isPrimary = false;
-
-	    /**
-	     * Indicates which button was pressed on the mouse or pointer device to trigger the event.
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
-	     * @type {number}
-	     */
-	    this.button = 0;
-
-	    /**
-	     * Indicates which buttons are pressed on the mouse or pointer device when the event is triggered.
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons
-	     * @type {number}
-	     */
-	    this.buttons = 0;
-
-	    /**
-	     * The width of the pointer's contact along the x-axis, measured in CSS pixels.
-	     * radiusX of TouchEvents will be represented by this value.
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/width
-	     * @type {number}
-	     */
-	    this.width = 0;
-
-	    /**
-	     * The height of the pointer's contact along the y-axis, measured in CSS pixels.
-	     * radiusY of TouchEvents will be represented by this value.
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/height
-	     * @type {number}
-	     */
-	    this.height = 0;
-
-	    /**
-	     * The angle, in degrees, between the pointer device and the screen.
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/tiltX
-	     * @type {number}
-	     */
-	    this.tiltX = 0;
-
-	    /**
-	     * The angle, in degrees, between the pointer device and the screen.
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/tiltY
-	     * @type {number}
-	     */
-	    this.tiltY = 0;
-
-	    /**
-	     * The type of pointer that triggered the event.
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/pointerType
-	     * @type {string}
-	     */
-	    this.pointerType = null;
-
-	    /**
-	     * Pressure applied by the pointing device during the event. A Touch's force property
-	     * will be represented by this value.
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/pressure
-	     * @type {number}
-	     */
-	    this.pressure = 0;
-
-	    /**
-	     * From TouchEvents (not PointerEvents triggered by touches), the rotationAngle of the Touch.
-	     * @see https://developer.mozilla.org/en-US/docs/Web/API/Touch/rotationAngle
-	     * @type {number}
-	     */
-	    this.rotationAngle = 0;
-
-	    /**
-	     * Twist of a stylus pointer.
-	     * @see https://w3c.github.io/pointerevents/#pointerevent-interface
-	     * @type {number}
-	     */
-	    this.twist = 0;
-
-	    /**
-	     * Barrel pressure on a stylus pointer.
-	     * @see https://w3c.github.io/pointerevents/#pointerevent-interface
-	     * @type {number}
-	     */
-	    this.tangentialPressure = 0;
+	    deepCopyProperties(this, style, style);
 	};
 
-	var prototypeAccessors$6 = { pointerId: { configurable: true } };
+	var prototypeAccessors$6 = { align: { configurable: true },breakWords: { configurable: true },dropShadow: { configurable: true },dropShadowAlpha: { configurable: true },dropShadowAngle: { configurable: true },dropShadowBlur: { configurable: true },dropShadowColor: { configurable: true },dropShadowDistance: { configurable: true },fill: { configurable: true },fillGradientType: { configurable: true },fillGradientStops: { configurable: true },fontFamily: { configurable: true },fontSize: { configurable: true },fontStyle: { configurable: true },fontVariant: { configurable: true },fontWeight: { configurable: true },letterSpacing: { configurable: true },lineHeight: { configurable: true },leading: { configurable: true },lineJoin: { configurable: true },miterLimit: { configurable: true },padding: { configurable: true },stroke: { configurable: true },strokeThickness: { configurable: true },textBaseline: { configurable: true },trim: { configurable: true },whiteSpace: { configurable: true },wordWrap: { configurable: true },wordWrapWidth: { configurable: true } };
 
 	/**
-	 * The unique identifier of the pointer. It will be the same as `identifier`.
-	 * @readonly
-	 * @member {number}
-	 * @see https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/pointerId
-	 */
-	prototypeAccessors$6.pointerId.get = function ()
-	{
-	    return this.identifier;
-	};
-
-	/**
-	 * This will return the local coordinates of the specified displayObject for this InteractionData
+	 * Creates a new TextStyle object with the same values as this one.
+	 * Note that the only the properties of the object are cloned.
 	 *
-	 * @param {PIXI.DisplayObject} displayObject - The DisplayObject that you would like the local
-	 *  coords off
-	 * @param {PIXI.Point} [point] - A Point object in which to store the value, optional (otherwise
-	 *  will create a new point)
-	 * @param {PIXI.Point} [globalPos] - A Point object containing your custom global coords, optional
-	 *  (otherwise will use the current global coords)
-	 * @return {PIXI.Point} A point containing the coordinates of the InteractionData position relative
-	 *  to the DisplayObject
+	 * @return {PIXI.TextStyle} New cloned TextStyle object
 	 */
-	InteractionData.prototype.getLocalPosition = function getLocalPosition (displayObject, point, globalPos)
+	TextStyle.prototype.clone = function clone ()
 	{
-	    return displayObject.worldTransform.applyInverse(globalPos || this.global, point);
+	    var clonedProperties = {};
+
+	    deepCopyProperties(clonedProperties, this, defaultStyle);
+
+	    return new TextStyle(clonedProperties);
 	};
 
 	/**
-	 * Copies properties from normalized event data.
-	 *
-	 * @param {Touch|MouseEvent|PointerEvent} event The normalized event data
+	 * Resets all properties to the defaults specified in TextStyle.prototype._default
 	 */
-	InteractionData.prototype.copyEvent = function copyEvent (event)
+	TextStyle.prototype.reset = function reset ()
 	{
-	    // isPrimary should only change on touchstart/pointerdown, so we don't want to overwrite
-	    // it with "false" on later events when our shim for it on touch events might not be
-	    // accurate
-	    if (event.isPrimary)
+	    deepCopyProperties(this, defaultStyle, defaultStyle);
+	};
+
+	/**
+	 * Alignment for multiline text ('left', 'center' or 'right'), does not affect single line text
+	 *
+	 * @member {string}
+	 */
+	prototypeAccessors$6.align.get = function ()
+	{
+	    return this._align;
+	};
+	prototypeAccessors$6.align.set = function (align) // eslint-disable-line require-jsdoc
+	{
+	    if (this._align !== align)
 	    {
-	        this.isPrimary = true;
+	        this._align = align;
+	        this.styleID++;
 	    }
-	    this.button = event.button;
-	    // event.buttons is not available in all browsers (ie. Safari), but it does have a non-standard
-	    // event.which property instead, which conveys the same information.
-	    this.buttons = Number.isInteger(event.buttons) ? event.buttons : event.which;
-	    this.width = event.width;
-	    this.height = event.height;
-	    this.tiltX = event.tiltX;
-	    this.tiltY = event.tiltY;
-	    this.pointerType = event.pointerType;
-	    this.pressure = event.pressure;
-	    this.rotationAngle = event.rotationAngle;
-	    this.twist = event.twist || 0;
-	    this.tangentialPressure = event.tangentialPressure || 0;
 	};
 
 	/**
-	 * Resets the data for pooling.
-	 */
-	InteractionData.prototype.reset = function reset ()
-	{
-	    // isPrimary is the only property that we really need to reset - everything else is
-	    // guaranteed to be overwritten
-	    this.isPrimary = false;
-	};
-
-	Object.defineProperties( InteractionData.prototype, prototypeAccessors$6 );
-
-	/**
-	 * Event class that mimics native DOM events.
+	 * Indicates if lines can be wrapped within words, it needs wordWrap to be set to true
 	 *
-	 * @class
-	 * @memberof PIXI.interaction
+	 * @member {boolean}
 	 */
-	var InteractionEvent = function InteractionEvent()
+	prototypeAccessors$6.breakWords.get = function ()
 	{
-	    /**
-	     * Whether this event will continue propagating in the tree
-	     *
-	     * @member {boolean}
-	     */
-	    this.stopped = false;
-
-	    /**
-	     * The object which caused this event to be dispatched.
-	     * For listener callback see {@link PIXI.interaction.InteractionEvent.currentTarget}.
-	     *
-	     * @member {PIXI.DisplayObject}
-	     */
-	    this.target = null;
-
-	    /**
-	     * The object whose event listener’s callback is currently being invoked.
-	     *
-	     * @member {PIXI.DisplayObject}
-	     */
-	    this.currentTarget = null;
-
-	    /**
-	     * Type of the event
-	     *
-	     * @member {string}
-	     */
-	    this.type = null;
-
-	    /**
-	     * InteractionData related to this event
-	     *
-	     * @member {PIXI.interaction.InteractionData}
-	     */
-	    this.data = null;
+	    return this._breakWords;
 	};
-
-	/**
-	 * Prevents event from reaching any objects other than the current object.
-	 *
-	 */
-	InteractionEvent.prototype.stopPropagation = function stopPropagation ()
+	prototypeAccessors$6.breakWords.set = function (breakWords) // eslint-disable-line require-jsdoc
 	{
-	    this.stopped = true;
-	};
-
-	/**
-	 * Resets the event.
-	 */
-	InteractionEvent.prototype.reset = function reset ()
-	{
-	    this.stopped = false;
-	    this.currentTarget = null;
-	    this.target = null;
-	};
-
-	/**
-	 * DisplayObjects with the {@link PIXI.interaction.interactiveTarget} mixin use this class to track interactions
-	 *
-	 * @class
-	 * @private
-	 * @memberof PIXI.interaction
-	 */
-	var InteractionTrackingData = function InteractionTrackingData(pointerId)
-	{
-	    this._pointerId = pointerId;
-	    this._flags = InteractionTrackingData.FLAGS.NONE;
-	};
-
-	var prototypeAccessors$1$3 = { pointerId: { configurable: true },flags: { configurable: true },none: { configurable: true },over: { configurable: true },rightDown: { configurable: true },leftDown: { configurable: true } };
-
-	/**
-	 *
-	 * @private
-	 * @param {number} flag - The interaction flag to set
-	 * @param {boolean} yn - Should the flag be set or unset
-	 */
-	InteractionTrackingData.prototype._doSet = function _doSet (flag, yn)
-	{
-	    if (yn)
+	    if (this._breakWords !== breakWords)
 	    {
-	        this._flags = this._flags | flag;
+	        this._breakWords = breakWords;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * Set a drop shadow for the text
+	 *
+	 * @member {boolean}
+	 */
+	prototypeAccessors$6.dropShadow.get = function ()
+	{
+	    return this._dropShadow;
+	};
+	prototypeAccessors$6.dropShadow.set = function (dropShadow) // eslint-disable-line require-jsdoc
+	{
+	    if (this._dropShadow !== dropShadow)
+	    {
+	        this._dropShadow = dropShadow;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * Set alpha for the drop shadow
+	 *
+	 * @member {number}
+	 */
+	prototypeAccessors$6.dropShadowAlpha.get = function ()
+	{
+	    return this._dropShadowAlpha;
+	};
+	prototypeAccessors$6.dropShadowAlpha.set = function (dropShadowAlpha) // eslint-disable-line require-jsdoc
+	{
+	    if (this._dropShadowAlpha !== dropShadowAlpha)
+	    {
+	        this._dropShadowAlpha = dropShadowAlpha;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * Set a angle of the drop shadow
+	 *
+	 * @member {number}
+	 */
+	prototypeAccessors$6.dropShadowAngle.get = function ()
+	{
+	    return this._dropShadowAngle;
+	};
+	prototypeAccessors$6.dropShadowAngle.set = function (dropShadowAngle) // eslint-disable-line require-jsdoc
+	{
+	    if (this._dropShadowAngle !== dropShadowAngle)
+	    {
+	        this._dropShadowAngle = dropShadowAngle;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * Set a shadow blur radius
+	 *
+	 * @member {number}
+	 */
+	prototypeAccessors$6.dropShadowBlur.get = function ()
+	{
+	    return this._dropShadowBlur;
+	};
+	prototypeAccessors$6.dropShadowBlur.set = function (dropShadowBlur) // eslint-disable-line require-jsdoc
+	{
+	    if (this._dropShadowBlur !== dropShadowBlur)
+	    {
+	        this._dropShadowBlur = dropShadowBlur;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * A fill style to be used on the dropshadow e.g 'red', '#00FF00'
+	 *
+	 * @member {string|number}
+	 */
+	prototypeAccessors$6.dropShadowColor.get = function ()
+	{
+	    return this._dropShadowColor;
+	};
+	prototypeAccessors$6.dropShadowColor.set = function (dropShadowColor) // eslint-disable-line require-jsdoc
+	{
+	    var outputColor = getColor(dropShadowColor);
+	    if (this._dropShadowColor !== outputColor)
+	    {
+	        this._dropShadowColor = outputColor;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * Set a distance of the drop shadow
+	 *
+	 * @member {number}
+	 */
+	prototypeAccessors$6.dropShadowDistance.get = function ()
+	{
+	    return this._dropShadowDistance;
+	};
+	prototypeAccessors$6.dropShadowDistance.set = function (dropShadowDistance) // eslint-disable-line require-jsdoc
+	{
+	    if (this._dropShadowDistance !== dropShadowDistance)
+	    {
+	        this._dropShadowDistance = dropShadowDistance;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * A canvas fillstyle that will be used on the text e.g 'red', '#00FF00'.
+	 * Can be an array to create a gradient eg ['#000000','#FFFFFF']
+	 * {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle|MDN}
+	 *
+	 * @member {string|string[]|number|number[]|CanvasGradient|CanvasPattern}
+	 */
+	prototypeAccessors$6.fill.get = function ()
+	{
+	    return this._fill;
+	};
+	prototypeAccessors$6.fill.set = function (fill) // eslint-disable-line require-jsdoc
+	{
+	    var outputColor = getColor(fill);
+	    if (this._fill !== outputColor)
+	    {
+	        this._fill = outputColor;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * If fill is an array of colours to create a gradient, this can change the type/direction of the gradient.
+	 * See {@link PIXI.TEXT_GRADIENT}
+	 *
+	 * @member {number}
+	 */
+	prototypeAccessors$6.fillGradientType.get = function ()
+	{
+	    return this._fillGradientType;
+	};
+	prototypeAccessors$6.fillGradientType.set = function (fillGradientType) // eslint-disable-line require-jsdoc
+	{
+	    if (this._fillGradientType !== fillGradientType)
+	    {
+	        this._fillGradientType = fillGradientType;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * If fill is an array of colours to create a gradient, this array can set the stop points
+	 * (numbers between 0 and 1) for the color, overriding the default behaviour of evenly spacing them.
+	 *
+	 * @member {number[]}
+	 */
+	prototypeAccessors$6.fillGradientStops.get = function ()
+	{
+	    return this._fillGradientStops;
+	};
+	prototypeAccessors$6.fillGradientStops.set = function (fillGradientStops) // eslint-disable-line require-jsdoc
+	{
+	    if (!areArraysEqual(this._fillGradientStops,fillGradientStops))
+	    {
+	        this._fillGradientStops = fillGradientStops;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * The font family
+	 *
+	 * @member {string|string[]}
+	 */
+	prototypeAccessors$6.fontFamily.get = function ()
+	{
+	    return this._fontFamily;
+	};
+	prototypeAccessors$6.fontFamily.set = function (fontFamily) // eslint-disable-line require-jsdoc
+	{
+	    if (this.fontFamily !== fontFamily)
+	    {
+	        this._fontFamily = fontFamily;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * The font size
+	 * (as a number it converts to px, but as a string, equivalents are '26px','20pt','160%' or '1.6em')
+	 *
+	 * @member {number|string}
+	 */
+	prototypeAccessors$6.fontSize.get = function ()
+	{
+	    return this._fontSize;
+	};
+	prototypeAccessors$6.fontSize.set = function (fontSize) // eslint-disable-line require-jsdoc
+	{
+	    if (this._fontSize !== fontSize)
+	    {
+	        this._fontSize = fontSize;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * The font style
+	 * ('normal', 'italic' or 'oblique')
+	 *
+	 * @member {string}
+	 */
+	prototypeAccessors$6.fontStyle.get = function ()
+	{
+	    return this._fontStyle;
+	};
+	prototypeAccessors$6.fontStyle.set = function (fontStyle) // eslint-disable-line require-jsdoc
+	{
+	    if (this._fontStyle !== fontStyle)
+	    {
+	        this._fontStyle = fontStyle;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * The font variant
+	 * ('normal' or 'small-caps')
+	 *
+	 * @member {string}
+	 */
+	prototypeAccessors$6.fontVariant.get = function ()
+	{
+	    return this._fontVariant;
+	};
+	prototypeAccessors$6.fontVariant.set = function (fontVariant) // eslint-disable-line require-jsdoc
+	{
+	    if (this._fontVariant !== fontVariant)
+	    {
+	        this._fontVariant = fontVariant;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * The font weight
+	 * ('normal', 'bold', 'bolder', 'lighter' and '100', '200', '300', '400', '500', '600', '700', 800' or '900')
+	 *
+	 * @member {string}
+	 */
+	prototypeAccessors$6.fontWeight.get = function ()
+	{
+	    return this._fontWeight;
+	};
+	prototypeAccessors$6.fontWeight.set = function (fontWeight) // eslint-disable-line require-jsdoc
+	{
+	    if (this._fontWeight !== fontWeight)
+	    {
+	        this._fontWeight = fontWeight;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * The amount of spacing between letters, default is 0
+	 *
+	 * @member {number}
+	 */
+	prototypeAccessors$6.letterSpacing.get = function ()
+	{
+	    return this._letterSpacing;
+	};
+	prototypeAccessors$6.letterSpacing.set = function (letterSpacing) // eslint-disable-line require-jsdoc
+	{
+	    if (this._letterSpacing !== letterSpacing)
+	    {
+	        this._letterSpacing = letterSpacing;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * The line height, a number that represents the vertical space that a letter uses
+	 *
+	 * @member {number}
+	 */
+	prototypeAccessors$6.lineHeight.get = function ()
+	{
+	    return this._lineHeight;
+	};
+	prototypeAccessors$6.lineHeight.set = function (lineHeight) // eslint-disable-line require-jsdoc
+	{
+	    if (this._lineHeight !== lineHeight)
+	    {
+	        this._lineHeight = lineHeight;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * The space between lines
+	 *
+	 * @member {number}
+	 */
+	prototypeAccessors$6.leading.get = function ()
+	{
+	    return this._leading;
+	};
+	prototypeAccessors$6.leading.set = function (leading) // eslint-disable-line require-jsdoc
+	{
+	    if (this._leading !== leading)
+	    {
+	        this._leading = leading;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * The lineJoin property sets the type of corner created, it can resolve spiked text issues.
+	 * Default is 'miter' (creates a sharp corner).
+	 *
+	 * @member {string}
+	 */
+	prototypeAccessors$6.lineJoin.get = function ()
+	{
+	    return this._lineJoin;
+	};
+	prototypeAccessors$6.lineJoin.set = function (lineJoin) // eslint-disable-line require-jsdoc
+	{
+	    if (this._lineJoin !== lineJoin)
+	    {
+	        this._lineJoin = lineJoin;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * The miter limit to use when using the 'miter' lineJoin mode
+	 * This can reduce or increase the spikiness of rendered text.
+	 *
+	 * @member {number}
+	 */
+	prototypeAccessors$6.miterLimit.get = function ()
+	{
+	    return this._miterLimit;
+	};
+	prototypeAccessors$6.miterLimit.set = function (miterLimit) // eslint-disable-line require-jsdoc
+	{
+	    if (this._miterLimit !== miterLimit)
+	    {
+	        this._miterLimit = miterLimit;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * Occasionally some fonts are cropped. Adding some padding will prevent this from happening
+	 * by adding padding to all sides of the text.
+	 *
+	 * @member {number}
+	 */
+	prototypeAccessors$6.padding.get = function ()
+	{
+	    return this._padding;
+	};
+	prototypeAccessors$6.padding.set = function (padding) // eslint-disable-line require-jsdoc
+	{
+	    if (this._padding !== padding)
+	    {
+	        this._padding = padding;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * A canvas fillstyle that will be used on the text stroke
+	 * e.g 'blue', '#FCFF00'
+	 *
+	 * @member {string|number}
+	 */
+	prototypeAccessors$6.stroke.get = function ()
+	{
+	    return this._stroke;
+	};
+	prototypeAccessors$6.stroke.set = function (stroke) // eslint-disable-line require-jsdoc
+	{
+	    var outputColor = getColor(stroke);
+	    if (this._stroke !== outputColor)
+	    {
+	        this._stroke = outputColor;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * A number that represents the thickness of the stroke.
+	 * Default is 0 (no stroke)
+	 *
+	 * @member {number}
+	 */
+	prototypeAccessors$6.strokeThickness.get = function ()
+	{
+	    return this._strokeThickness;
+	};
+	prototypeAccessors$6.strokeThickness.set = function (strokeThickness) // eslint-disable-line require-jsdoc
+	{
+	    if (this._strokeThickness !== strokeThickness)
+	    {
+	        this._strokeThickness = strokeThickness;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * The baseline of the text that is rendered.
+	 *
+	 * @member {string}
+	 */
+	prototypeAccessors$6.textBaseline.get = function ()
+	{
+	    return this._textBaseline;
+	};
+	prototypeAccessors$6.textBaseline.set = function (textBaseline) // eslint-disable-line require-jsdoc
+	{
+	    if (this._textBaseline !== textBaseline)
+	    {
+	        this._textBaseline = textBaseline;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * Trim transparent borders
+	 *
+	 * @member {boolean}
+	 */
+	prototypeAccessors$6.trim.get = function ()
+	{
+	    return this._trim;
+	};
+	prototypeAccessors$6.trim.set = function (trim) // eslint-disable-line require-jsdoc
+	{
+	    if (this._trim !== trim)
+	    {
+	        this._trim = trim;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * How newlines and spaces should be handled.
+	 * Default is 'pre' (preserve, preserve).
+	 *
+	 *  value   | New lines |   Spaces
+	 *  ---     | ---       |   ---
+	 * 'normal' | Collapse  |   Collapse
+	 * 'pre'    | Preserve  |   Preserve
+	 * 'pre-line'   | Preserve  |   Collapse
+	 *
+	 * @member {string}
+	 */
+	prototypeAccessors$6.whiteSpace.get = function ()
+	{
+	    return this._whiteSpace;
+	};
+	prototypeAccessors$6.whiteSpace.set = function (whiteSpace) // eslint-disable-line require-jsdoc
+	{
+	    if (this._whiteSpace !== whiteSpace)
+	    {
+	        this._whiteSpace = whiteSpace;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * Indicates if word wrap should be used
+	 *
+	 * @member {boolean}
+	 */
+	prototypeAccessors$6.wordWrap.get = function ()
+	{
+	    return this._wordWrap;
+	};
+	prototypeAccessors$6.wordWrap.set = function (wordWrap) // eslint-disable-line require-jsdoc
+	{
+	    if (this._wordWrap !== wordWrap)
+	    {
+	        this._wordWrap = wordWrap;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * The width at which text will wrap, it needs wordWrap to be set to true
+	 *
+	 * @member {number}
+	 */
+	prototypeAccessors$6.wordWrapWidth.get = function ()
+	{
+	    return this._wordWrapWidth;
+	};
+	prototypeAccessors$6.wordWrapWidth.set = function (wordWrapWidth) // eslint-disable-line require-jsdoc
+	{
+	    if (this._wordWrapWidth !== wordWrapWidth)
+	    {
+	        this._wordWrapWidth = wordWrapWidth;
+	        this.styleID++;
+	    }
+	};
+
+	/**
+	 * Generates a font style string to use for `TextMetrics.measureFont()`.
+	 *
+	 * @return {string} Font style string, for passing to `TextMetrics.measureFont()`
+	 */
+	TextStyle.prototype.toFontString = function toFontString ()
+	{
+	    // build canvas api font setting from individual components. Convert a numeric this.fontSize to px
+	    var fontSizeString = (typeof this.fontSize === 'number') ? ((this.fontSize) + "px") : this.fontSize;
+
+	    // Clean-up fontFamily property by quoting each font name
+	    // this will support font names with spaces
+	    var fontFamilies = this.fontFamily;
+
+	    if (!Array.isArray(this.fontFamily))
+	    {
+	        fontFamilies = this.fontFamily.split(',');
+	    }
+
+	    for (var i = fontFamilies.length - 1; i >= 0; i--)
+	    {
+	        // Trim any extra white-space
+	        var fontFamily = fontFamilies[i].trim();
+
+	        // Check if font already contains strings
+	        if (!(/([\"\'])[^\'\"]+\1/).test(fontFamily))
+	        {
+	            fontFamily = "\"" + fontFamily + "\"";
+	        }
+	        fontFamilies[i] = fontFamily;
+	    }
+
+	    return ((this.fontStyle) + " " + (this.fontVariant) + " " + (this.fontWeight) + " " + fontSizeString + " " + (fontFamilies.join(',')));
+	};
+
+	Object.defineProperties( TextStyle.prototype, prototypeAccessors$6 );
+
+	/**
+	 * Utility function to convert hexadecimal colors to strings, and simply return the color if it's a string.
+	 * @private
+	 * @param {number|number[]} color
+	 * @return {string} The color as a string.
+	 */
+	function getSingleColor(color)
+	{
+	    if (typeof color === 'number')
+	    {
+	        return hex2string(color);
+	    }
+	    else if ( typeof color === 'string' )
+	    {
+	        if ( color.indexOf('0x') === 0 )
+	        {
+	            color = color.replace('0x', '#');
+	        }
+	    }
+
+	    return color;
+	}
+
+	/**
+	 * Utility function to convert hexadecimal colors to strings, and simply return the color if it's a string.
+	 * This version can also convert array of colors
+	 * @private
+	 * @param {number|number[]} color
+	 * @return {string} The color as a string.
+	 */
+	function getColor(color)
+	{
+	    if (!Array.isArray(color))
+	    {
+	        return getSingleColor(color);
 	    }
 	    else
 	    {
-	        this._flags = this._flags & (~flag);
+	        for (var i = 0; i < color.length; ++i)
+	        {
+	            color[i] = getSingleColor(color[i]);
+	        }
+
+	        return color;
 	    }
-	};
+	}
 
 	/**
-	 * Unique pointer id of the event
-	 *
-	 * @readonly
+	 * Utility function to convert hexadecimal colors to strings, and simply return the color if it's a string.
+	 * This version can also convert array of colors
 	 * @private
-	 * @member {number}
+	 * @param {Array} array1 First array to compare
+	 * @param {Array} array2 Second array to compare
+	 * @return {boolean} Do the arrays contain the same values in the same order
 	 */
-	prototypeAccessors$1$3.pointerId.get = function ()
+	function areArraysEqual(array1, array2)
 	{
-	    return this._pointerId;
-	};
-
-	/**
-	 * State of the tracking data, expressed as bit flags
-	 *
-	 * @private
-	 * @member {number}
-	 */
-	prototypeAccessors$1$3.flags.get = function ()
-	{
-	    return this._flags;
-	};
-
-	prototypeAccessors$1$3.flags.set = function (flags) // eslint-disable-line require-jsdoc
-	{
-	    this._flags = flags;
-	};
-
-	/**
-	 * Is the tracked event inactive (not over or down)?
-	 *
-	 * @private
-	 * @member {number}
-	 */
-	prototypeAccessors$1$3.none.get = function ()
-	{
-	    return this._flags === this.constructor.FLAGS.NONE;
-	};
-
-	/**
-	 * Is the tracked event over the DisplayObject?
-	 *
-	 * @private
-	 * @member {boolean}
-	 */
-	prototypeAccessors$1$3.over.get = function ()
-	{
-	    return (this._flags & this.constructor.FLAGS.OVER) !== 0;
-	};
-
-	prototypeAccessors$1$3.over.set = function (yn) // eslint-disable-line require-jsdoc
-	{
-	    this._doSet(this.constructor.FLAGS.OVER, yn);
-	};
-
-	/**
-	 * Did the right mouse button come down in the DisplayObject?
-	 *
-	 * @private
-	 * @member {boolean}
-	 */
-	prototypeAccessors$1$3.rightDown.get = function ()
-	{
-	    return (this._flags & this.constructor.FLAGS.RIGHT_DOWN) !== 0;
-	};
-
-	prototypeAccessors$1$3.rightDown.set = function (yn) // eslint-disable-line require-jsdoc
-	{
-	    this._doSet(this.constructor.FLAGS.RIGHT_DOWN, yn);
-	};
-
-	/**
-	 * Did the left mouse button come down in the DisplayObject?
-	 *
-	 * @private
-	 * @member {boolean}
-	 */
-	prototypeAccessors$1$3.leftDown.get = function ()
-	{
-	    return (this._flags & this.constructor.FLAGS.LEFT_DOWN) !== 0;
-	};
-
-	prototypeAccessors$1$3.leftDown.set = function (yn) // eslint-disable-line require-jsdoc
-	{
-	    this._doSet(this.constructor.FLAGS.LEFT_DOWN, yn);
-	};
-
-	Object.defineProperties( InteractionTrackingData.prototype, prototypeAccessors$1$3 );
-
-	InteractionTrackingData.FLAGS = Object.freeze({
-	    NONE: 0,
-	    OVER: 1 << 0,
-	    LEFT_DOWN: 1 << 1,
-	    RIGHT_DOWN: 1 << 2,
-	});
-
-	/**
-	 * Default property values of interactive objects
-	 * Used by {@link PIXI.interaction.InteractionManager} to automatically give all DisplayObjects these properties
-	 *
-	 * @private
-	 * @name interactiveTarget
-	 * @type {Object}
-	 * @memberof PIXI.interaction
-	 * @example
-	 *      function MyObject() {}
-	 *
-	 *      Object.assign(
-	 *          DisplayObject.prototype,
-	 *          PIXI.interaction.interactiveTarget
-	 *      );
-	 */
-	var interactiveTarget = {
-
-	    /**
-	     * Enable interaction events for the DisplayObject. Touch, pointer and mouse
-	     * events will not be emitted unless `interactive` is set to `true`.
-	     *
-	     * @example
-	     * const sprite = new PIXI.Sprite(texture);
-	     * sprite.interactive = true;
-	     * sprite.on('tap', (event) => {
-	     *    //handle event
-	     * });
-	     * @member {boolean}
-	     * @memberof PIXI.DisplayObject#
-	     */
-	    interactive: false,
-
-	    /**
-	     * Determines if the children to the displayObject can be clicked/touched
-	     * Setting this to false allows PixiJS to bypass a recursive `hitTest` function
-	     *
-	     * @member {boolean}
-	     * @memberof PIXI.Container#
-	     */
-	    interactiveChildren: true,
-
-	    /**
-	     * Interaction shape. Children will be hit first, then this shape will be checked.
-	     * Setting this will cause this shape to be checked in hit tests rather than the displayObject's bounds.
-	     *
-	     * @example
-	     * const sprite = new PIXI.Sprite(texture);
-	     * sprite.interactive = true;
-	     * sprite.hitArea = new PIXI.Rectangle(0, 0, 100, 100);
-	     * @member {PIXI.Rectangle|PIXI.Circle|PIXI.Ellipse|PIXI.Polygon|PIXI.RoundedRectangle}
-	     * @memberof PIXI.DisplayObject#
-	     */
-	    hitArea: null,
-
-	    /**
-	     * If enabled, the mouse cursor use the pointer behavior when hovered over the displayObject if it is interactive
-	     * Setting this changes the 'cursor' property to `'pointer'`.
-	     *
-	     * @example
-	     * const sprite = new PIXI.Sprite(texture);
-	     * sprite.interactive = true;
-	     * sprite.buttonMode = true;
-	     * @member {boolean}
-	     * @memberof PIXI.DisplayObject#
-	     */
-	    get buttonMode()
+	    if (!Array.isArray(array1) || !Array.isArray(array2))
 	    {
-	        return this.cursor === 'pointer';
-	    },
-	    set buttonMode(value)
-	    {
-	        if (value)
-	        {
-	            this.cursor = 'pointer';
-	        }
-	        else if (this.cursor === 'pointer')
-	        {
-	            this.cursor = null;
-	        }
-	    },
-
-	    /**
-	     * This defines what cursor mode is used when the mouse cursor
-	     * is hovered over the displayObject.
-	     *
-	     * @example
-	     * const sprite = new PIXI.Sprite(texture);
-	     * sprite.interactive = true;
-	     * sprite.cursor = 'wait';
-	     * @see https://developer.mozilla.org/en/docs/Web/CSS/cursor
-	     *
-	     * @member {string}
-	     * @memberof PIXI.DisplayObject#
-	     */
-	    cursor: null,
-
-	    /**
-	     * Internal set of all active pointers, by identifier
-	     *
-	     * @member {Map<number, InteractionTrackingData>}
-	     * @memberof PIXI.DisplayObject#
-	     * @private
-	     */
-	    get trackedPointers()
-	    {
-	        if (this._trackedPointers === undefined) { this._trackedPointers = {}; }
-
-	        return this._trackedPointers;
-	    },
-
-	    /**
-	     * Map of all tracked pointers, by identifier. Use trackedPointers to access.
-	     *
-	     * @private
-	     * @type {Map<number, InteractionTrackingData>}
-	     */
-	    _trackedPointers: undefined,
-	};
-
-	// Mix interactiveTarget into DisplayObject.prototype, after deprecation has been handled
-	mixins$1.delayMixin(
-	    DisplayObject.prototype,
-	    interactiveTarget
-	);
-
-	var MOUSE_POINTER_ID = 1;
-
-	// helpers for hitTest() - only used inside hitTest()
-	var hitTestEvent = {
-	    target: null,
-	    data: {
-	        global: null,
-	    },
-	};
-
-	/**
-	 * The interaction manager deals with mouse, touch and pointer events.
-	 *
-	 * Any DisplayObject can be interactive if its `interactive` property is set to true.
-	 *
-	 * This manager also supports multitouch.
-	 *
-	 * An instance of this class is automatically created by default, and can be found at `renderer.plugins.interaction`
-	 *
-	 * @class
-	 * @extends PIXI.utils.EventEmitter
-	 * @memberof PIXI.interaction
-	 */
-	var InteractionManager = /*@__PURE__*/(function (EventEmitter$$1) {
-	    function InteractionManager(renderer, options)
-	    {
-	        EventEmitter$$1.call(this);
-
-	        options = options || {};
-
-	        /**
-	         * The renderer this interaction manager works for.
-	         *
-	         * @member {PIXI.AbstractRenderer}
-	         */
-	        this.renderer = renderer;
-
-	        /**
-	         * Should default browser actions automatically be prevented.
-	         * Does not apply to pointer events for backwards compatibility
-	         * preventDefault on pointer events stops mouse events from firing
-	         * Thus, for every pointer event, there will always be either a mouse of touch event alongside it.
-	         *
-	         * @member {boolean}
-	         * @default true
-	         */
-	        this.autoPreventDefault = options.autoPreventDefault !== undefined ? options.autoPreventDefault : true;
-
-	        /**
-	         * Frequency in milliseconds that the mousemove, mouseover & mouseout interaction events will be checked.
-	         *
-	         * @member {number}
-	         * @default 10
-	         */
-	        this.interactionFrequency = options.interactionFrequency || 10;
-
-	        /**
-	         * The mouse data
-	         *
-	         * @member {PIXI.interaction.InteractionData}
-	         */
-	        this.mouse = new InteractionData();
-	        this.mouse.identifier = MOUSE_POINTER_ID;
-
-	        // setting the mouse to start off far off screen will mean that mouse over does
-	        //  not get called before we even move the mouse.
-	        this.mouse.global.set(-999999);
-
-	        /**
-	         * Actively tracked InteractionData
-	         *
-	         * @private
-	         * @member {Object.<number,PIXI.interaction.InteractionData>}
-	         */
-	        this.activeInteractionData = {};
-	        this.activeInteractionData[MOUSE_POINTER_ID] = this.mouse;
-
-	        /**
-	         * Pool of unused InteractionData
-	         *
-	         * @private
-	         * @member {PIXI.interaction.InteractionData[]}
-	         */
-	        this.interactionDataPool = [];
-
-	        /**
-	         * An event data object to handle all the event tracking/dispatching
-	         *
-	         * @member {object}
-	         */
-	        this.eventData = new InteractionEvent();
-
-	        /**
-	         * The DOM element to bind to.
-	         *
-	         * @protected
-	         * @member {HTMLElement}
-	         */
-	        this.interactionDOMElement = null;
-
-	        /**
-	         * This property determines if mousemove and touchmove events are fired only when the cursor
-	         * is over the object.
-	         * Setting to true will make things work more in line with how the DOM version works.
-	         * Setting to false can make things easier for things like dragging
-	         * It is currently set to false as this is how PixiJS used to work. This will be set to true in
-	         * future versions of pixi.
-	         *
-	         * @member {boolean}
-	         * @default false
-	         */
-	        this.moveWhenInside = false;
-
-	        /**
-	         * Have events been attached to the dom element?
-	         *
-	         * @protected
-	         * @member {boolean}
-	         */
-	        this.eventsAdded = false;
-
-	        /**
-	         * Is the mouse hovering over the renderer?
-	         *
-	         * @protected
-	         * @member {boolean}
-	         */
-	        this.mouseOverRenderer = false;
-
-	        /**
-	         * Does the device support touch events
-	         * https://www.w3.org/TR/touch-events/
-	         *
-	         * @readonly
-	         * @member {boolean}
-	         */
-	        this.supportsTouchEvents = 'ontouchstart' in window;
-
-	        /**
-	         * Does the device support pointer events
-	         * https://www.w3.org/Submission/pointer-events/
-	         *
-	         * @readonly
-	         * @member {boolean}
-	         */
-	        this.supportsPointerEvents = !!window.PointerEvent;
-
-	        // this will make it so that you don't have to call bind all the time
-
-	        /**
-	         * @private
-	         * @member {Function}
-	         */
-	        this.onPointerUp = this.onPointerUp.bind(this);
-	        this.processPointerUp = this.processPointerUp.bind(this);
-
-	        /**
-	         * @private
-	         * @member {Function}
-	         */
-	        this.onPointerCancel = this.onPointerCancel.bind(this);
-	        this.processPointerCancel = this.processPointerCancel.bind(this);
-
-	        /**
-	         * @private
-	         * @member {Function}
-	         */
-	        this.onPointerDown = this.onPointerDown.bind(this);
-	        this.processPointerDown = this.processPointerDown.bind(this);
-
-	        /**
-	         * @private
-	         * @member {Function}
-	         */
-	        this.onPointerMove = this.onPointerMove.bind(this);
-	        this.processPointerMove = this.processPointerMove.bind(this);
-
-	        /**
-	         * @private
-	         * @member {Function}
-	         */
-	        this.onPointerOut = this.onPointerOut.bind(this);
-	        this.processPointerOverOut = this.processPointerOverOut.bind(this);
-
-	        /**
-	         * @private
-	         * @member {Function}
-	         */
-	        this.onPointerOver = this.onPointerOver.bind(this);
-
-	        /**
-	         * Dictionary of how different cursor modes are handled. Strings are handled as CSS cursor
-	         * values, objects are handled as dictionaries of CSS values for interactionDOMElement,
-	         * and functions are called instead of changing the CSS.
-	         * Default CSS cursor values are provided for 'default' and 'pointer' modes.
-	         * @member {Object.<string, Object>}
-	         */
-	        this.cursorStyles = {
-	            default: 'inherit',
-	            pointer: 'pointer',
-	        };
-
-	        /**
-	         * The mode of the cursor that is being used.
-	         * The value of this is a key from the cursorStyles dictionary.
-	         *
-	         * @member {string}
-	         */
-	        this.currentCursorMode = null;
-
-	        /**
-	         * Internal cached let.
-	         *
-	         * @private
-	         * @member {string}
-	         */
-	        this.cursor = null;
-
-	        /**
-	         * Internal cached let.
-	         *
-	         * @private
-	         * @member {PIXI.Point}
-	         */
-	        this._tempPoint = new Point();
-
-	        /**
-	         * The current resolution / device pixel ratio.
-	         *
-	         * @member {number}
-	         * @default 1
-	         */
-	        this.resolution = 1;
-
-	        /**
-	         * Fired when a pointer device button (usually a mouse left-button) is pressed on the display
-	         * object.
-	         *
-	         * @event PIXI.interaction.InteractionManager#mousedown
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device secondary button (usually a mouse right-button) is pressed
-	         * on the display object.
-	         *
-	         * @event PIXI.interaction.InteractionManager#rightdown
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button (usually a mouse left-button) is released over the display
-	         * object.
-	         *
-	         * @event PIXI.interaction.InteractionManager#mouseup
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device secondary button (usually a mouse right-button) is released
-	         * over the display object.
-	         *
-	         * @event PIXI.interaction.InteractionManager#rightup
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button (usually a mouse left-button) is pressed and released on
-	         * the display object.
-	         *
-	         * @event PIXI.interaction.InteractionManager#click
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device secondary button (usually a mouse right-button) is pressed
-	         * and released on the display object.
-	         *
-	         * @event PIXI.interaction.InteractionManager#rightclick
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button (usually a mouse left-button) is released outside the
-	         * display object that initially registered a
-	         * [mousedown]{@link PIXI.interaction.InteractionManager#event:mousedown}.
-	         *
-	         * @event PIXI.interaction.InteractionManager#mouseupoutside
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device secondary button (usually a mouse right-button) is released
-	         * outside the display object that initially registered a
-	         * [rightdown]{@link PIXI.interaction.InteractionManager#event:rightdown}.
-	         *
-	         * @event PIXI.interaction.InteractionManager#rightupoutside
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device (usually a mouse) is moved while over the display object
-	         *
-	         * @event PIXI.interaction.InteractionManager#mousemove
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device (usually a mouse) is moved onto the display object
-	         *
-	         * @event PIXI.interaction.InteractionManager#mouseover
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device (usually a mouse) is moved off the display object
-	         *
-	         * @event PIXI.interaction.InteractionManager#mouseout
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button is pressed on the display object.
-	         *
-	         * @event PIXI.interaction.InteractionManager#pointerdown
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button is released over the display object.
-	         * Not always fired when some buttons are held down while others are released. In those cases,
-	         * use [mousedown]{@link PIXI.interaction.InteractionManager#event:mousedown} and
-	         * [mouseup]{@link PIXI.interaction.InteractionManager#event:mouseup} instead.
-	         *
-	         * @event PIXI.interaction.InteractionManager#pointerup
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when the operating system cancels a pointer event
-	         *
-	         * @event PIXI.interaction.InteractionManager#pointercancel
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button is pressed and released on the display object.
-	         *
-	         * @event PIXI.interaction.InteractionManager#pointertap
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button is released outside the display object that initially
-	         * registered a [pointerdown]{@link PIXI.interaction.InteractionManager#event:pointerdown}.
-	         *
-	         * @event PIXI.interaction.InteractionManager#pointerupoutside
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device is moved while over the display object
-	         *
-	         * @event PIXI.interaction.InteractionManager#pointermove
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device is moved onto the display object
-	         *
-	         * @event PIXI.interaction.InteractionManager#pointerover
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device is moved off the display object
-	         *
-	         * @event PIXI.interaction.InteractionManager#pointerout
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a touch point is placed on the display object.
-	         *
-	         * @event PIXI.interaction.InteractionManager#touchstart
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a touch point is removed from the display object.
-	         *
-	         * @event PIXI.interaction.InteractionManager#touchend
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when the operating system cancels a touch
-	         *
-	         * @event PIXI.interaction.InteractionManager#touchcancel
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a touch point is placed and removed from the display object.
-	         *
-	         * @event PIXI.interaction.InteractionManager#tap
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a touch point is removed outside of the display object that initially
-	         * registered a [touchstart]{@link PIXI.interaction.InteractionManager#event:touchstart}.
-	         *
-	         * @event PIXI.interaction.InteractionManager#touchendoutside
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a touch point is moved along the display object.
-	         *
-	         * @event PIXI.interaction.InteractionManager#touchmove
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button (usually a mouse left-button) is pressed on the display.
-	         * object. DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#mousedown
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device secondary button (usually a mouse right-button) is pressed
-	         * on the display object. DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#rightdown
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button (usually a mouse left-button) is released over the display
-	         * object. DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#mouseup
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device secondary button (usually a mouse right-button) is released
-	         * over the display object. DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#rightup
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button (usually a mouse left-button) is pressed and released on
-	         * the display object. DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#click
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device secondary button (usually a mouse right-button) is pressed
-	         * and released on the display object. DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#rightclick
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button (usually a mouse left-button) is released outside the
-	         * display object that initially registered a
-	         * [mousedown]{@link PIXI.DisplayObject#event:mousedown}.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#mouseupoutside
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device secondary button (usually a mouse right-button) is released
-	         * outside the display object that initially registered a
-	         * [rightdown]{@link PIXI.DisplayObject#event:rightdown}.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#rightupoutside
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device (usually a mouse) is moved while over the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#mousemove
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device (usually a mouse) is moved onto the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#mouseover
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device (usually a mouse) is moved off the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#mouseout
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button is pressed on the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#pointerdown
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button is released over the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#pointerup
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when the operating system cancels a pointer event.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#pointercancel
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button is pressed and released on the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#pointertap
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device button is released outside the display object that initially
-	         * registered a [pointerdown]{@link PIXI.DisplayObject#event:pointerdown}.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#pointerupoutside
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device is moved while over the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#pointermove
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device is moved onto the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#pointerover
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a pointer device is moved off the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#pointerout
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a touch point is placed on the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#touchstart
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a touch point is removed from the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#touchend
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when the operating system cancels a touch.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#touchcancel
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a touch point is placed and removed from the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#tap
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a touch point is removed outside of the display object that initially
-	         * registered a [touchstart]{@link PIXI.DisplayObject#event:touchstart}.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#touchendoutside
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        /**
-	         * Fired when a touch point is moved along the display object.
-	         * DisplayObject's `interactive` property must be set to `true` to fire event.
-	         *
-	         * @event PIXI.DisplayObject#touchmove
-	         * @param {PIXI.interaction.InteractionEvent} event - Interaction event
-	         */
-
-	        this.setTargetElement(this.renderer.view, this.renderer.resolution);
+	        return false;
 	    }
 
-	    if ( EventEmitter$$1 ) { InteractionManager.__proto__ = EventEmitter$$1; }
-	    InteractionManager.prototype = Object.create( EventEmitter$$1 && EventEmitter$$1.prototype );
-	    InteractionManager.prototype.constructor = InteractionManager;
-
-	    /**
-	     * Hit tests a point against the display tree, returning the first interactive object that is hit.
-	     *
-	     * @param {PIXI.Point} globalPoint - A point to hit test with, in global space.
-	     * @param {PIXI.Container} [root] - The root display object to start from. If omitted, defaults
-	     * to the last rendered root of the associated renderer.
-	     * @return {PIXI.DisplayObject} The hit display object, if any.
-	     */
-	    InteractionManager.prototype.hitTest = function hitTest (globalPoint, root)
+	    if (array1.length !== array2.length)
 	    {
-	        // clear the target for our hit test
-	        hitTestEvent.target = null;
-	        // assign the global point
-	        hitTestEvent.data.global = globalPoint;
-	        // ensure safety of the root
-	        if (!root)
-	        {
-	            root = this.renderer._lastObjectRendered;
-	        }
-	        // run the hit test
-	        this.processInteractive(hitTestEvent, root, null, true);
-	        // return our found object - it'll be null if we didn't hit anything
+	        return false;
+	    }
 
-	        return hitTestEvent.target;
-	    };
-
-	    /**
-	     * Sets the DOM element which will receive mouse/touch events. This is useful for when you have
-	     * other DOM elements on top of the renderers Canvas element. With this you'll be bale to delegate
-	     * another DOM element to receive those events.
-	     *
-	     * @param {HTMLCanvasElement} element - the DOM element which will receive mouse and touch events.
-	     * @param {number} [resolution=1] - The resolution / device pixel ratio of the new element (relative to the canvas).
-	     */
-	    InteractionManager.prototype.setTargetElement = function setTargetElement (element, resolution)
+	    for (var i = 0; i < array1.length; ++i)
 	    {
-	        if ( resolution === void 0 ) { resolution = 1; }
-
-	        this.removeEvents();
-
-	        this.interactionDOMElement = element;
-
-	        this.resolution = resolution;
-
-	        this.addEvents();
-	    };
-
-	    /**
-	     * Registers all the DOM events
-	     *
-	     * @private
-	     */
-	    InteractionManager.prototype.addEvents = function addEvents ()
-	    {
-	        if (!this.interactionDOMElement)
-	        {
-	            return;
-	        }
-
-	        Ticker.system.add(this.update, this, UPDATE_PRIORITY.INTERACTION);
-
-	        if (window.navigator.msPointerEnabled)
-	        {
-	            this.interactionDOMElement.style['-ms-content-zooming'] = 'none';
-	            this.interactionDOMElement.style['-ms-touch-action'] = 'none';
-	        }
-	        else if (this.supportsPointerEvents)
-	        {
-	            this.interactionDOMElement.style['touch-action'] = 'none';
-	        }
-
-	        /**
-	         * These events are added first, so that if pointer events are normalized, they are fired
-	         * in the same order as non-normalized events. ie. pointer event 1st, mouse / touch 2nd
-	         */
-	        if (this.supportsPointerEvents)
-	        {
-	            window.document.addEventListener('pointermove', this.onPointerMove, true);
-	            this.interactionDOMElement.addEventListener('pointerdown', this.onPointerDown, true);
-	            // pointerout is fired in addition to pointerup (for touch events) and pointercancel
-	            // we already handle those, so for the purposes of what we do in onPointerOut, we only
-	            // care about the pointerleave event
-	            this.interactionDOMElement.addEventListener('pointerleave', this.onPointerOut, true);
-	            this.interactionDOMElement.addEventListener('pointerover', this.onPointerOver, true);
-	            window.addEventListener('pointercancel', this.onPointerCancel, true);
-	            window.addEventListener('pointerup', this.onPointerUp, true);
-	        }
-	        else
-	        {
-	            window.document.addEventListener('mousemove', this.onPointerMove, true);
-	            this.interactionDOMElement.addEventListener('mousedown', this.onPointerDown, true);
-	            this.interactionDOMElement.addEventListener('mouseout', this.onPointerOut, true);
-	            this.interactionDOMElement.addEventListener('mouseover', this.onPointerOver, true);
-	            window.addEventListener('mouseup', this.onPointerUp, true);
-	        }
-
-	        // always look directly for touch events so that we can provide original data
-	        // In a future version we should change this to being just a fallback and rely solely on
-	        // PointerEvents whenever available
-	        if (this.supportsTouchEvents)
-	        {
-	            this.interactionDOMElement.addEventListener('touchstart', this.onPointerDown, true);
-	            this.interactionDOMElement.addEventListener('touchcancel', this.onPointerCancel, true);
-	            this.interactionDOMElement.addEventListener('touchend', this.onPointerUp, true);
-	            this.interactionDOMElement.addEventListener('touchmove', this.onPointerMove, true);
-	        }
-
-	        this.eventsAdded = true;
-	    };
-
-	    /**
-	     * Removes all the DOM events that were previously registered
-	     *
-	     * @private
-	     */
-	    InteractionManager.prototype.removeEvents = function removeEvents ()
-	    {
-	        if (!this.interactionDOMElement)
-	        {
-	            return;
-	        }
-
-	        Ticker.system.remove(this.update, this);
-
-	        if (window.navigator.msPointerEnabled)
-	        {
-	            this.interactionDOMElement.style['-ms-content-zooming'] = '';
-	            this.interactionDOMElement.style['-ms-touch-action'] = '';
-	        }
-	        else if (this.supportsPointerEvents)
-	        {
-	            this.interactionDOMElement.style['touch-action'] = '';
-	        }
-
-	        if (this.supportsPointerEvents)
-	        {
-	            window.document.removeEventListener('pointermove', this.onPointerMove, true);
-	            this.interactionDOMElement.removeEventListener('pointerdown', this.onPointerDown, true);
-	            this.interactionDOMElement.removeEventListener('pointerleave', this.onPointerOut, true);
-	            this.interactionDOMElement.removeEventListener('pointerover', this.onPointerOver, true);
-	            window.removeEventListener('pointercancel', this.onPointerCancel, true);
-	            window.removeEventListener('pointerup', this.onPointerUp, true);
-	        }
-	        else
-	        {
-	            window.document.removeEventListener('mousemove', this.onPointerMove, true);
-	            this.interactionDOMElement.removeEventListener('mousedown', this.onPointerDown, true);
-	            this.interactionDOMElement.removeEventListener('mouseout', this.onPointerOut, true);
-	            this.interactionDOMElement.removeEventListener('mouseover', this.onPointerOver, true);
-	            window.removeEventListener('mouseup', this.onPointerUp, true);
-	        }
-
-	        if (this.supportsTouchEvents)
-	        {
-	            this.interactionDOMElement.removeEventListener('touchstart', this.onPointerDown, true);
-	            this.interactionDOMElement.removeEventListener('touchcancel', this.onPointerCancel, true);
-	            this.interactionDOMElement.removeEventListener('touchend', this.onPointerUp, true);
-	            this.interactionDOMElement.removeEventListener('touchmove', this.onPointerMove, true);
-	        }
-
-	        this.interactionDOMElement = null;
-
-	        this.eventsAdded = false;
-	    };
-
-	    /**
-	     * Updates the state of interactive objects.
-	     * Invoked by a throttled ticker update from {@link PIXI.Ticker.system}.
-	     *
-	     * @param {number} deltaTime - time delta since last tick
-	     */
-	    InteractionManager.prototype.update = function update (deltaTime)
-	    {
-	        this._deltaTime += deltaTime;
-
-	        if (this._deltaTime < this.interactionFrequency)
-	        {
-	            return;
-	        }
-
-	        this._deltaTime = 0;
-
-	        if (!this.interactionDOMElement)
-	        {
-	            return;
-	        }
-
-	        // if the user move the mouse this check has already been done using the mouse move!
-	        if (this.didMove)
-	        {
-	            this.didMove = false;
-
-	            return;
-	        }
-
-	        this.cursor = null;
-
-	        // Resets the flag as set by a stopPropagation call. This flag is usually reset by a user interaction of any kind,
-	        // but there was a scenario of a display object moving under a static mouse cursor.
-	        // In this case, mouseover and mouseevents would not pass the flag test in dispatchEvent function
-	        for (var k in this.activeInteractionData)
-	        {
-	            // eslint-disable-next-line no-prototype-builtins
-	            if (this.activeInteractionData.hasOwnProperty(k))
-	            {
-	                var interactionData = this.activeInteractionData[k];
-
-	                if (interactionData.originalEvent && interactionData.pointerType !== 'touch')
-	                {
-	                    var interactionEvent = this.configureInteractionEventForDOMEvent(
-	                        this.eventData,
-	                        interactionData.originalEvent,
-	                        interactionData
-	                    );
-
-	                    this.processInteractive(
-	                        interactionEvent,
-	                        this.renderer._lastObjectRendered,
-	                        this.processPointerOverOut,
-	                        true
-	                    );
-	                }
-	            }
-	        }
-
-	        this.setCursorMode(this.cursor);
-
-	        // TODO
-	    };
-
-	    /**
-	     * Sets the current cursor mode, handling any callbacks or CSS style changes.
-	     *
-	     * @param {string} mode - cursor mode, a key from the cursorStyles dictionary
-	     */
-	    InteractionManager.prototype.setCursorMode = function setCursorMode (mode)
-	    {
-	        mode = mode || 'default';
-	        // if the mode didn't actually change, bail early
-	        if (this.currentCursorMode === mode)
-	        {
-	            return;
-	        }
-	        this.currentCursorMode = mode;
-	        var style = this.cursorStyles[mode];
-
-	        // only do things if there is a cursor style for it
-	        if (style)
-	        {
-	            switch (typeof style)
-	            {
-	                case 'string':
-	                    // string styles are handled as cursor CSS
-	                    this.interactionDOMElement.style.cursor = style;
-	                    break;
-	                case 'function':
-	                    // functions are just called, and passed the cursor mode
-	                    style(mode);
-	                    break;
-	                case 'object':
-	                    // if it is an object, assume that it is a dictionary of CSS styles,
-	                    // apply it to the interactionDOMElement
-	                    Object.assign(this.interactionDOMElement.style, style);
-	                    break;
-	            }
-	        }
-	        else if (typeof mode === 'string' && !Object.prototype.hasOwnProperty.call(this.cursorStyles, mode))
-	        {
-	            // if it mode is a string (not a Symbol) and cursorStyles doesn't have any entry
-	            // for the mode, then assume that the dev wants it to be CSS for the cursor.
-	            this.interactionDOMElement.style.cursor = mode;
-	        }
-	    };
-
-	    /**
-	     * Dispatches an event on the display object that was interacted with
-	     *
-	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - the display object in question
-	     * @param {string} eventString - the name of the event (e.g, mousedown)
-	     * @param {object} eventData - the event data object
-	     * @private
-	     */
-	    InteractionManager.prototype.dispatchEvent = function dispatchEvent (displayObject, eventString, eventData)
-	    {
-	        if (!eventData.stopped)
-	        {
-	            eventData.currentTarget = displayObject;
-	            eventData.type = eventString;
-
-	            displayObject.emit(eventString, eventData);
-
-	            if (displayObject[eventString])
-	            {
-	                displayObject[eventString](eventData);
-	            }
-	        }
-	    };
-
-	    /**
-	     * Maps x and y coords from a DOM object and maps them correctly to the PixiJS view. The
-	     * resulting value is stored in the point. This takes into account the fact that the DOM
-	     * element could be scaled and positioned anywhere on the screen.
-	     *
-	     * @param  {PIXI.Point} point - the point that the result will be stored in
-	     * @param  {number} x - the x coord of the position to map
-	     * @param  {number} y - the y coord of the position to map
-	     */
-	    InteractionManager.prototype.mapPositionToPoint = function mapPositionToPoint (point, x, y)
-	    {
-	        var rect;
-
-	        // IE 11 fix
-	        if (!this.interactionDOMElement.parentElement)
-	        {
-	            rect = { x: 0, y: 0, width: 0, height: 0 };
-	        }
-	        else
-	        {
-	            rect = this.interactionDOMElement.getBoundingClientRect();
-	        }
-
-	        var resolutionMultiplier = navigator.isCocoonJS ? this.resolution : (1.0 / this.resolution);
-
-	        point.x = ((x - rect.left) * (this.interactionDOMElement.width / rect.width)) * resolutionMultiplier;
-	        point.y = ((y - rect.top) * (this.interactionDOMElement.height / rect.height)) * resolutionMultiplier;
-	    };
-
-	    /**
-	     * This function is provides a neat way of crawling through the scene graph and running a
-	     * specified function on all interactive objects it finds. It will also take care of hit
-	     * testing the interactive objects and passes the hit across in the function.
-	     *
-	     * @protected
-	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - event containing the point that
-	     *  is tested for collision
-	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - the displayObject
-	     *  that will be hit test (recursively crawls its children)
-	     * @param {Function} [func] - the function that will be called on each interactive object. The
-	     *  interactionEvent, displayObject and hit will be passed to the function
-	     * @param {boolean} [hitTest] - this indicates if the objects inside should be hit test against the point
-	     * @param {boolean} [interactive] - Whether the displayObject is interactive
-	     * @return {boolean} returns true if the displayObject hit the point
-	     */
-	    InteractionManager.prototype.processInteractive = function processInteractive (interactionEvent, displayObject, func, hitTest, interactive)
-	    {
-	        if (!displayObject || !displayObject.visible)
+	        if (array1[i] !== array2[i])
 	        {
 	            return false;
 	        }
+	    }
 
-	        var point = interactionEvent.data.global;
+	    return true;
+	}
 
-	        // Took a little while to rework this function correctly! But now it is done and nice and optimized! ^_^
-	        //
-	        // This function will now loop through all objects and then only hit test the objects it HAS
-	        // to, not all of them. MUCH faster..
-	        // An object will be hit test if the following is true:
-	        //
-	        // 1: It is interactive.
-	        // 2: It belongs to a parent that is interactive AND one of the parents children have not already been hit.
-	        //
-	        // As another little optimization once an interactive object has been hit we can carry on
-	        // through the scenegraph, but we know that there will be no more hits! So we can avoid extra hit tests
-	        // A final optimization is that an object is not hit test directly if a child has already been hit.
-
-	        interactive = displayObject.interactive || interactive;
-
-	        var hit = false;
-	        var interactiveParent = interactive;
-
-	        // Flag here can set to false if the event is outside the parents hitArea or mask
-	        var hitTestChildren = true;
-
-	        // If there is a hitArea, no need to test against anything else if the pointer is not within the hitArea
-	        // There is also no longer a need to hitTest children.
-	        if (displayObject.hitArea)
-	        {
-	            if (hitTest)
-	            {
-	                displayObject.worldTransform.applyInverse(point, this._tempPoint);
-	                if (!displayObject.hitArea.contains(this._tempPoint.x, this._tempPoint.y))
-	                {
-	                    hitTest = false;
-	                    hitTestChildren = false;
-	                }
-	                else
-	                {
-	                    hit = true;
-	                }
-	            }
-	            interactiveParent = false;
+	/**
+	 * Utility function to ensure that object properties are copied by value, and not by reference
+	 * @private
+	 * @param {Object} target Target object to copy properties into
+	 * @param {Object} source Source object for the properties to copy
+	 * @param {string} propertyObj Object containing properties names we want to loop over
+	 */
+	function deepCopyProperties(target, source, propertyObj) {
+	    for (var prop in propertyObj) {
+	        if (Array.isArray(source[prop])) {
+	            target[prop] = source[prop].slice();
+	        } else {
+	            target[prop] = source[prop];
 	        }
-	        // If there is a mask, no need to test against anything else if the pointer is not within the mask
-	        else if (displayObject._mask)
-	        {
-	            if (hitTest)
-	            {
-	                if (!(displayObject._mask.containsPoint && displayObject._mask.containsPoint(point)))
-	                {
-	                    hitTest = false;
-	                    hitTestChildren = false;
-	                }
-	            }
-	        }
+	    }
+	}
 
-	        // ** FREE TIP **! If an object is not interactive or has no buttons in it
-	        // (such as a game scene!) set interactiveChildren to false for that displayObject.
-	        // This will allow PixiJS to completely ignore and bypass checking the displayObjects children.
-	        if (hitTestChildren && displayObject.interactiveChildren && displayObject.children)
-	        {
-	            var children = displayObject.children;
+	/**
+	 * The TextMetrics object represents the measurement of a block of text with a specified style.
+	 *
+	 * ```js
+	 * let style = new PIXI.TextStyle({fontFamily : 'Arial', fontSize: 24, fill : 0xff1010, align : 'center'})
+	 * let textMetrics = PIXI.TextMetrics.measureText('Your text', style)
+	 * ```
+	 *
+	 * @class
+	 * @memberof PIXI
+	 */
+	var TextMetrics = function TextMetrics(text, style, width, height, lines, lineWidths, lineHeight, maxLineWidth, fontProperties)
+	{
+	    this.text = text;
+	    this.style = style;
+	    this.width = width;
+	    this.height = height;
+	    this.lines = lines;
+	    this.lineWidths = lineWidths;
+	    this.lineHeight = lineHeight;
+	    this.maxLineWidth = maxLineWidth;
+	    this.fontProperties = fontProperties;
+	};
 
-	            for (var i = children.length - 1; i >= 0; i--)
-	            {
-	                var child = children[i];
+	/**
+	 * Measures the supplied string of text and returns a Rectangle.
+	 *
+	 * @param {string} text - the text to measure.
+	 * @param {PIXI.TextStyle} style - the text style to use for measuring
+	 * @param {boolean} [wordWrap] - optional override for if word-wrap should be applied to the text.
+	 * @param {HTMLCanvasElement} [canvas] - optional specification of the canvas to use for measuring.
+	 * @return {PIXI.TextMetrics} measured width and height of the text.
+	 */
+	TextMetrics.measureText = function measureText (text, style, wordWrap, canvas)
+	{
+	        if ( canvas === void 0 ) { canvas = TextMetrics._canvas; }
 
-	                // time to get recursive.. if this function will return if something is hit..
-	                var childHit = this.processInteractive(interactionEvent, child, func, hitTest, interactiveParent);
+	    wordWrap = (wordWrap === undefined || wordWrap === null) ? style.wordWrap : wordWrap;
+	    var font = style.toFontString();
+	    var fontProperties = TextMetrics.measureFont(font);
 
-	                if (childHit)
-	                {
-	                    // its a good idea to check if a child has lost its parent.
-	                    // this means it has been removed whilst looping so its best
-	                    if (!child.parent)
-	                    {
-	                        continue;
-	                    }
-
-	                    // we no longer need to hit test any more objects in this container as we we
-	                    // now know the parent has been hit
-	                    interactiveParent = false;
-
-	                    // If the child is interactive , that means that the object hit was actually
-	                    // interactive and not just the child of an interactive object.
-	                    // This means we no longer need to hit test anything else. We still need to run
-	                    // through all objects, but we don't need to perform any hit tests.
-
-	                    if (childHit)
-	                    {
-	                        if (interactionEvent.target)
-	                        {
-	                            hitTest = false;
-	                        }
-	                        hit = true;
-	                    }
-	                }
-	            }
-	        }
-
-	        // no point running this if the item is not interactive or does not have an interactive parent.
-	        if (interactive)
-	        {
-	            // if we are hit testing (as in we have no hit any objects yet)
-	            // We also don't need to worry about hit testing if once of the displayObjects children
-	            // has already been hit - but only if it was interactive, otherwise we need to keep
-	            // looking for an interactive child, just in case we hit one
-	            if (hitTest && !interactionEvent.target)
-	            {
-	                // already tested against hitArea if it is defined
-	                if (!displayObject.hitArea && displayObject.containsPoint)
-	                {
-	                    if (displayObject.containsPoint(point))
-	                    {
-	                        hit = true;
-	                    }
-	                }
-	            }
-
-	            if (displayObject.interactive)
-	            {
-	                if (hit && !interactionEvent.target)
-	                {
-	                    interactionEvent.target = displayObject;
-	                }
-
-	                if (func)
-	                {
-	                    func(interactionEvent, displayObject, !!hit);
-	                }
-	            }
-	        }
-
-	        return hit;
-	    };
-
-	    /**
-	     * Is called when the pointer button is pressed down on the renderer element
-	     *
-	     * @private
-	     * @param {PointerEvent} originalEvent - The DOM event of a pointer button being pressed down
-	     */
-	    InteractionManager.prototype.onPointerDown = function onPointerDown (originalEvent)
+	    // fallback in case UA disallow canvas data extraction
+	    // (toDataURI, getImageData functions)
+	    if (fontProperties.fontSize === 0)
 	    {
-	        // if we support touch events, then only use those for touch events, not pointer events
-	        if (this.supportsTouchEvents && originalEvent.pointerType === 'touch') { return; }
+	        fontProperties.fontSize = style.fontSize;
+	        fontProperties.ascent = style.fontSize;
+	    }
 
-	        var events = this.normalizeToPointerData(originalEvent);
+	    var context = canvas.getContext('2d');
+
+	    context.font = font;
+
+	    var outputText = wordWrap ? TextMetrics.wordWrap(text, style, canvas) : text;
+	    var lines = outputText.split(/(?:\r\n|\r|\n)/);
+	    var lineWidths = new Array(lines.length);
+	    var maxLineWidth = 0;
+
+	    for (var i = 0; i < lines.length; i++)
+	    {
+	        var lineWidth = context.measureText(lines[i]).width + ((lines[i].length - 1) * style.letterSpacing);
+
+	        lineWidths[i] = lineWidth;
+	        maxLineWidth = Math.max(maxLineWidth, lineWidth);
+	    }
+	    var width = maxLineWidth + style.strokeThickness;
+
+	    if (style.dropShadow)
+	    {
+	        width += style.dropShadowDistance;
+	    }
+
+	    var lineHeight = style.lineHeight || fontProperties.fontSize + style.strokeThickness;
+	    var height = Math.max(lineHeight, fontProperties.fontSize + style.strokeThickness)
+	        + ((lines.length - 1) * (lineHeight + style.leading));
+
+	    if (style.dropShadow)
+	    {
+	        height += style.dropShadowDistance;
+	    }
+
+	    return new TextMetrics(
+	        text,
+	        style,
+	        width,
+	        height,
+	        lines,
+	        lineWidths,
+	        lineHeight + style.leading,
+	        maxLineWidth,
+	        fontProperties
+	    );
+	};
+
+	/**
+	 * Applies newlines to a string to have it optimally fit into the horizontal
+	 * bounds set by the Text object's wordWrapWidth property.
+	 *
+	 * @private
+	 * @param {string} text - String to apply word wrapping to
+	 * @param {PIXI.TextStyle} style - the style to use when wrapping
+	 * @param {HTMLCanvasElement} [canvas] - optional specification of the canvas to use for measuring.
+	 * @return {string} New string with new lines applied where required
+	 */
+	TextMetrics.wordWrap = function wordWrap (text, style, canvas)
+	{
+	        if ( canvas === void 0 ) { canvas = TextMetrics._canvas; }
+
+	    var context = canvas.getContext('2d');
+
+	    var width = 0;
+	    var line = '';
+	    var lines = '';
+
+	    var cache = {};
+	    var letterSpacing = style.letterSpacing;
+	        var whiteSpace = style.whiteSpace;
+
+	    // How to handle whitespaces
+	    var collapseSpaces = TextMetrics.collapseSpaces(whiteSpace);
+	    var collapseNewlines = TextMetrics.collapseNewlines(whiteSpace);
+
+	    // whether or not spaces may be added to the beginning of lines
+	    var canPrependSpaces = !collapseSpaces;
+
+	    // There is letterSpacing after every char except the last one
+	    // t_h_i_s_' '_i_s_' '_a_n_' '_e_x_a_m_p_l_e_' '_!
+	    // so for convenience the above needs to be compared to width + 1 extra letterSpace
+	    // t_h_i_s_' '_i_s_' '_a_n_' '_e_x_a_m_p_l_e_' '_!_
+	    // ________________________________________________
+	    // And then the final space is simply no appended to each line
+	    var wordWrapWidth = style.wordWrapWidth + letterSpacing;
+
+	    // break text into words, spaces and newline chars
+	    var tokens = TextMetrics.tokenize(text);
+
+	    for (var i = 0; i < tokens.length; i++)
+	    {
+	        // get the word, space or newlineChar
+	        var token = tokens[i];
+
+	        // if word is a new line
+	        if (TextMetrics.isNewline(token))
+	        {
+	            // keep the new line
+	            if (!collapseNewlines)
+	            {
+	                lines += TextMetrics.addLine(line);
+	                canPrependSpaces = !collapseSpaces;
+	                line = '';
+	                width = 0;
+	                continue;
+	            }
+
+	            // if we should collapse new lines
+	            // we simply convert it into a space
+	            token = ' ';
+	        }
+
+	        // if we should collapse repeated whitespaces
+	        if (collapseSpaces)
+	        {
+	            // check both this and the last tokens for spaces
+	            var currIsBreakingSpace = TextMetrics.isBreakingSpace(token);
+	            var lastIsBreakingSpace = TextMetrics.isBreakingSpace(line[line.length - 1]);
+
+	            if (currIsBreakingSpace && lastIsBreakingSpace)
+	            {
+	                continue;
+	            }
+	        }
+
+	        // get word width from cache if possible
+	        var tokenWidth = TextMetrics.getFromCache(token, letterSpacing, cache, context);
+
+	        // word is longer than desired bounds
+	        if (tokenWidth > wordWrapWidth)
+	        {
+	            // if we are not already at the beginning of a line
+	            if (line !== '')
+	            {
+	                // start newlines for overflow words
+	                lines += TextMetrics.addLine(line);
+	                line = '';
+	                width = 0;
+	            }
+
+	            // break large word over multiple lines
+	            if (TextMetrics.canBreakWords(token, style.breakWords))
+	            {
+	                // break word into characters
+	                var characters = token.split('');
+
+	                // loop the characters
+	                for (var j = 0; j < characters.length; j++)
+	                {
+	                    var char = characters[j];
+
+	                    var k = 1;
+	                    // we are not at the end of the token
+
+	                    while (characters[j + k])
+	                    {
+	                        var nextChar = characters[j + k];
+	                        var lastChar = char[char.length - 1];
+
+	                        // should not split chars
+	                        if (!TextMetrics.canBreakChars(lastChar, nextChar, token, j, style.breakWords))
+	                        {
+	                            // combine chars & move forward one
+	                            char += nextChar;
+	                        }
+	                        else
+	                        {
+	                            break;
+	                        }
+
+	                        k++;
+	                    }
+
+	                    j += char.length - 1;
+
+	                    var characterWidth = TextMetrics.getFromCache(char, letterSpacing, cache, context);
+
+	                    if (characterWidth + width > wordWrapWidth)
+	                    {
+	                        lines += TextMetrics.addLine(line);
+	                        canPrependSpaces = false;
+	                        line = '';
+	                        width = 0;
+	                    }
+
+	                    line += char;
+	                    width += characterWidth;
+	                }
+	            }
+
+	            // run word out of the bounds
+	            else
+	            {
+	                // if there are words in this line already
+	                // finish that line and start a new one
+	                if (line.length > 0)
+	                {
+	                    lines += TextMetrics.addLine(line);
+	                    line = '';
+	                    width = 0;
+	                }
+
+	                var isLastToken = i === tokens.length - 1;
+
+	                // give it its own line if it's not the end
+	                lines += TextMetrics.addLine(token, !isLastToken);
+	                canPrependSpaces = false;
+	                line = '';
+	                width = 0;
+	            }
+	        }
+
+	        // word could fit
+	        else
+	        {
+	            // word won't fit because of existing words
+	            // start a new line
+	            if (tokenWidth + width > wordWrapWidth)
+	            {
+	                // if its a space we don't want it
+	                canPrependSpaces = false;
+
+	                // add a new line
+	                lines += TextMetrics.addLine(line);
+
+	                // start a new line
+	                line = '';
+	                width = 0;
+	            }
+
+	            // don't add spaces to the beginning of lines
+	            if (line.length > 0 || !TextMetrics.isBreakingSpace(token) || canPrependSpaces)
+	            {
+	                // add the word to the current line
+	                line += token;
+
+	                // update width counter
+	                width += tokenWidth;
+	            }
+	        }
+	    }
+
+	    lines += TextMetrics.addLine(line, false);
+
+	    return lines;
+	};
+
+	/**
+	 * Convienience function for logging each line added during the wordWrap
+	 * method
+	 *
+	 * @private
+	 * @param  {string}   line    - The line of text to add
+	 * @param  {boolean}  newLine - Add new line character to end
+	 * @return {string}   A formatted line
+	 */
+	TextMetrics.addLine = function addLine (line, newLine)
+	{
+	        if ( newLine === void 0 ) { newLine = true; }
+
+	    line = TextMetrics.trimRight(line);
+
+	    line = (newLine) ? (line + "\n") : line;
+
+	    return line;
+	};
+
+	/**
+	 * Gets & sets the widths of calculated characters in a cache object
+	 *
+	 * @private
+	 * @param  {string}                key        The key
+	 * @param  {number}                letterSpacing  The letter spacing
+	 * @param  {object}                cache      The cache
+	 * @param  {CanvasRenderingContext2D}  context    The canvas context
+	 * @return {number}                The from cache.
+	 */
+	TextMetrics.getFromCache = function getFromCache (key, letterSpacing, cache, context)
+	{
+	    var width = cache[key];
+
+	    if (width === undefined)
+	    {
+	        var spacing = ((key.length) * letterSpacing);
+
+	        width = context.measureText(key).width + spacing;
+	        cache[key] = width;
+	    }
+
+	    return width;
+	};
+
+	/**
+	 * Determines whether we should collapse breaking spaces
+	 *
+	 * @private
+	 * @param  {string}   whiteSpace  The TextStyle property whiteSpace
+	 * @return {boolean}  should collapse
+	 */
+	TextMetrics.collapseSpaces = function collapseSpaces (whiteSpace)
+	{
+	    return (whiteSpace === 'normal' || whiteSpace === 'pre-line');
+	};
+
+	/**
+	 * Determines whether we should collapse newLine chars
+	 *
+	 * @private
+	 * @param  {string}   whiteSpace  The white space
+	 * @return {boolean}  should collapse
+	 */
+	TextMetrics.collapseNewlines = function collapseNewlines (whiteSpace)
+	{
+	    return (whiteSpace === 'normal');
+	};
+
+	/**
+	 * trims breaking whitespaces from string
+	 *
+	 * @private
+	 * @param  {string}  text  The text
+	 * @return {string}  trimmed string
+	 */
+	TextMetrics.trimRight = function trimRight (text)
+	{
+	    if (typeof text !== 'string')
+	    {
+	        return '';
+	    }
+
+	    for (var i = text.length - 1; i >= 0; i--)
+	    {
+	        var char = text[i];
+
+	        if (!TextMetrics.isBreakingSpace(char))
+	        {
+	            break;
+	        }
+
+	        text = text.slice(0, -1);
+	    }
+
+	    return text;
+	};
+
+	/**
+	 * Determines if char is a newline.
+	 *
+	 * @private
+	 * @param  {string}  char  The character
+	 * @return {boolean}  True if newline, False otherwise.
+	 */
+	TextMetrics.isNewline = function isNewline (char)
+	{
+	    if (typeof char !== 'string')
+	    {
+	        return false;
+	    }
+
+	    return (TextMetrics._newlines.indexOf(char.charCodeAt(0)) >= 0);
+	};
+
+	/**
+	 * Determines if char is a breaking whitespace.
+	 *
+	 * @private
+	 * @param  {string}  char  The character
+	 * @return {boolean}  True if whitespace, False otherwise.
+	 */
+	TextMetrics.isBreakingSpace = function isBreakingSpace (char)
+	{
+	    if (typeof char !== 'string')
+	    {
+	        return false;
+	    }
+
+	    return (TextMetrics._breakingSpaces.indexOf(char.charCodeAt(0)) >= 0);
+	};
+
+	/**
+	 * Splits a string into words, breaking-spaces and newLine characters
+	 *
+	 * @private
+	 * @param  {string}  text   The text
+	 * @return {string[]}  A tokenized array
+	 */
+	TextMetrics.tokenize = function tokenize (text)
+	{
+	    var tokens = [];
+	    var token = '';
+
+	    if (typeof text !== 'string')
+	    {
+	        return tokens;
+	    }
+
+	    for (var i = 0; i < text.length; i++)
+	    {
+	        var char = text[i];
+
+	        if (TextMetrics.isBreakingSpace(char) || TextMetrics.isNewline(char))
+	        {
+	            if (token !== '')
+	            {
+	                tokens.push(token);
+	                token = '';
+	            }
+
+	            tokens.push(char);
+
+	            continue;
+	        }
+
+	        token += char;
+	    }
+
+	    if (token !== '')
+	    {
+	        tokens.push(token);
+	    }
+
+	    return tokens;
+	};
+
+	/**
+	 * This method exists to be easily overridden
+	 * It allows one to customise which words should break
+	 * Examples are if the token is CJK or numbers.
+	 * It must return a boolean.
+	 *
+	 * @private
+	 * @param  {string}  token   The token
+	 * @param  {boolean}  breakWords  The style attr break words
+	 * @return {boolean} whether to break word or not
+	 */
+	TextMetrics.canBreakWords = function canBreakWords (token, breakWords)
+	{
+	    return breakWords;
+	};
+
+	/**
+	 * This method exists to be easily overridden
+	 * It allows one to determine whether a pair of characters
+	 * should be broken by newlines
+	 * For example certain characters in CJK langs or numbers.
+	 * It must return a boolean.
+	 *
+	 * @private
+	 * @param  {string}  char  The character
+	 * @param  {string}  nextChar  The next character
+	 * @param  {string}  token The token/word the characters are from
+	 * @param  {number}  index The index in the token of the char
+	 * @param  {boolean}  breakWords  The style attr break words
+	 * @return {boolean} whether to break word or not
+	 */
+	TextMetrics.canBreakChars = function canBreakChars (char, nextChar, token, index$$1, breakWords) // eslint-disable-line no-unused-vars
+	{
+	    return true;
+	};
+
+	/**
+	 * Calculates the ascent, descent and fontSize of a given font-style
+	 *
+	 * @static
+	 * @param {string} font - String representing the style of the font
+	 * @return {PIXI.IFontMetrics} Font properties object
+	 */
+	TextMetrics.measureFont = function measureFont (font)
+	{
+	    // as this method is used for preparing assets, don't recalculate things if we don't need to
+	    if (TextMetrics._fonts[font])
+	    {
+	        return TextMetrics._fonts[font];
+	    }
+
+	    var properties = {};
+
+	    var canvas = TextMetrics._canvas;
+	    var context = TextMetrics._context;
+
+	    context.font = font;
+
+	    var metricsString = TextMetrics.METRICS_STRING + TextMetrics.BASELINE_SYMBOL;
+	    var width = Math.ceil(context.measureText(metricsString).width);
+	    var baseline = Math.ceil(context.measureText(TextMetrics.BASELINE_SYMBOL).width);
+	    var height = 2 * baseline;
+
+	    baseline = baseline * TextMetrics.BASELINE_MULTIPLIER | 0;
+
+	    canvas.width = width;
+	    canvas.height = height;
+
+	    context.fillStyle = '#f00';
+	    context.fillRect(0, 0, width, height);
+
+	    context.font = font;
+
+	    context.textBaseline = 'alphabetic';
+	    context.fillStyle = '#000';
+	    context.fillText(metricsString, 0, baseline);
+
+	    var imagedata = context.getImageData(0, 0, width, height).data;
+	    var pixels = imagedata.length;
+	    var line = width * 4;
+
+	    var i = 0;
+	    var idx = 0;
+	    var stop = false;
+
+	    // ascent. scan from top to bottom until we find a non red pixel
+	    for (i = 0; i < baseline; ++i)
+	    {
+	        for (var j = 0; j < line; j += 4)
+	        {
+	            if (imagedata[idx + j] !== 255)
+	            {
+	                stop = true;
+	                break;
+	            }
+	        }
+	        if (!stop)
+	        {
+	            idx += line;
+	        }
+	        else
+	        {
+	            break;
+	        }
+	    }
+
+	    properties.ascent = baseline - i;
+
+	    idx = pixels - line;
+	    stop = false;
+
+	    // descent. scan from bottom to top until we find a non red pixel
+	    for (i = height; i > baseline; --i)
+	    {
+	        for (var j$1 = 0; j$1 < line; j$1 += 4)
+	        {
+	            if (imagedata[idx + j$1] !== 255)
+	            {
+	                stop = true;
+	                break;
+	            }
+	        }
+
+	        if (!stop)
+	        {
+	            idx -= line;
+	        }
+	        else
+	        {
+	            break;
+	        }
+	    }
+
+	    properties.descent = i - baseline;
+	    properties.fontSize = properties.ascent + properties.descent;
+
+	    TextMetrics._fonts[font] = properties;
+
+	    return properties;
+	};
+
+	/**
+	 * Clear font metrics in metrics cache.
+	 *
+	 * @static
+	 * @param {string} [font] - font name. If font name not set then clear cache for all fonts.
+	 */
+	TextMetrics.clearMetrics = function clearMetrics (font)
+	{
+	        if ( font === void 0 ) { font = ''; }
+
+	    if (font)
+	    {
+	        delete TextMetrics._fonts[font];
+	    }
+	    else
+	    {
+	        TextMetrics._fonts = {};
+	    }
+	};
+
+	/**
+	 * Internal return object for {@link PIXI.TextMetrics.measureFont `TextMetrics.measureFont`}.
+	 *
+	 * @typedef {object} FontMetrics
+	 * @property {number} ascent - The ascent distance
+	 * @property {number} descent - The descent distance
+	 * @property {number} fontSize - Font size from ascent to descent
+	 * @memberof PIXI.TextMetrics
+	 * @private
+	 */
+
+	var canvas = document.createElement('canvas');
+
+	canvas.width = canvas.height = 10;
+
+	/**
+	 * Cached canvas element for measuring text
+	 * @memberof PIXI.TextMetrics
+	 * @type {HTMLCanvasElement}
+	 * @private
+	 */
+	TextMetrics._canvas = canvas;
+
+	/**
+	 * Cache for context to use.
+	 * @memberof PIXI.TextMetrics
+	 * @type {CanvasRenderingContext2D}
+	 * @private
+	 */
+	TextMetrics._context = canvas.getContext('2d');
+
+	/**
+	 * Cache of {@see PIXI.TextMetrics.FontMetrics} objects.
+	 * @memberof PIXI.TextMetrics
+	 * @type {Object}
+	 * @private
+	 */
+	TextMetrics._fonts = {};
+
+	/**
+	 * String used for calculate font metrics.
+	 * @static
+	 * @memberof PIXI.TextMetrics
+	 * @name METRICS_STRING
+	 * @type {string}
+	 * @default |Éq
+	 */
+	TextMetrics.METRICS_STRING = '|Éq';
+
+	/**
+	 * Baseline symbol for calculate font metrics.
+	 * @static
+	 * @memberof PIXI.TextMetrics
+	 * @name BASELINE_SYMBOL
+	 * @type {string}
+	 * @default M
+	 */
+	TextMetrics.BASELINE_SYMBOL = 'M';
+
+	/**
+	 * Baseline multiplier for calculate font metrics.
+	 * @static
+	 * @memberof PIXI.TextMetrics
+	 * @name BASELINE_MULTIPLIER
+	 * @type {number}
+	 * @default 1.4
+	 */
+	TextMetrics.BASELINE_MULTIPLIER = 1.4;
+
+	/**
+	 * Cache of new line chars.
+	 * @memberof PIXI.TextMetrics
+	 * @type {number[]}
+	 * @private
+	 */
+	TextMetrics._newlines = [
+	    0x000A, // line feed
+	    0x000D ];
+
+	/**
+	 * Cache of breaking spaces.
+	 * @memberof PIXI.TextMetrics
+	 * @type {number[]}
+	 * @private
+	 */
+	TextMetrics._breakingSpaces = [
+	    0x0009, // character tabulation
+	    0x0020, // space
+	    0x2000, // en quad
+	    0x2001, // em quad
+	    0x2002, // en space
+	    0x2003, // em space
+	    0x2004, // three-per-em space
+	    0x2005, // four-per-em space
+	    0x2006, // six-per-em space
+	    0x2008, // punctuation space
+	    0x2009, // thin space
+	    0x200A, // hair space
+	    0x205F, // medium mathematical space
+	    0x3000 ];
+
+	/**
+	 * A number, or a string containing a number.
+	 * @memberof PIXI
+	 * @typedef IFontMetrics
+	 * @property {number} ascent - Font ascent
+	 * @property {number} descent - Font descent
+	 * @property {number} fontSize - Font size
+	 */
+
+	/* eslint max-depth: [2, 8] */
+
+	var defaultDestroyOptions = {
+	    texture: true,
+	    children: false,
+	    baseTexture: true,
+	};
+
+	/**
+	 * A Text Object will create a line or multiple lines of text.
+	 *
+	 * The text is created using the [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API).
+	 *
+	 * The primary advantage of this class over BitmapText is that you have great control over the style of the next,
+	 * which you can change at runtime.
+	 *
+	 * The primary disadvantages is that each piece of text has it's own texture, which can use more memory.
+	 * When text changes, this texture has to be re-generated and re-uploaded to the GPU, taking up time.
+	 *
+	 * To split a line you can use '\n' in your text string, or, on the `style` object,
+	 * change its `wordWrap` property to true and and give the `wordWrapWidth` property a value.
+	 *
+	 * A Text can be created directly from a string and a style object,
+	 * which can be generated [here](https://pixijs.io/pixi-text-style).
+	 *
+	 * ```js
+	 * let text = new PIXI.Text('This is a PixiJS text',{fontFamily : 'Arial', fontSize: 24, fill : 0xff1010, align : 'center'});
+	 * ```
+	 *
+	 * @class
+	 * @extends PIXI.Sprite
+	 * @memberof PIXI
+	 */
+	var Text = /*@__PURE__*/(function (Sprite$$1) {
+	    function Text(text, style, canvas)
+	    {
+	        canvas = canvas || document.createElement('canvas');
+
+	        canvas.width = 3;
+	        canvas.height = 3;
+
+	        var texture = Texture.from(canvas);
+
+	        texture.orig = new Rectangle();
+	        texture.trim = new Rectangle();
+
+	        Sprite$$1.call(this, texture);
 
 	        /**
-	         * No need to prevent default on natural pointer events, as there are no side effects
-	         * Normalized events, however, may have the double mousedown/touchstart issue on the native android browser,
-	         * so still need to be prevented.
+	         * The canvas element that everything is drawn to
+	         *
+	         * @member {HTMLCanvasElement}
 	         */
+	        this.canvas = canvas;
 
-	        // Guaranteed that there will be at least one event in events, and all events must have the same pointer type
+	        /**
+	         * The canvas 2d context that everything is drawn with
+	         * @member {CanvasRenderingContext2D}
+	         */
+	        this.context = this.canvas.getContext('2d');
 
-	        if (this.autoPreventDefault && events[0].isNormalized)
+	        /**
+	         * The resolution / device pixel ratio of the canvas.
+	         * This is set to automatically match the renderer resolution by default, but can be overridden by setting manually.
+	         * @member {number}
+	         * @default 1
+	         */
+	        this._resolution = settings.RESOLUTION;
+	        this._autoResolution = true;
+
+	        /**
+	         * Private tracker for the current text.
+	         *
+	         * @member {string}
+	         * @private
+	         */
+	        this._text = null;
+
+	        /**
+	         * Private tracker for the current style.
+	         *
+	         * @member {object}
+	         * @private
+	         */
+	        this._style = null;
+	        /**
+	         * Private listener to track style changes.
+	         *
+	         * @member {Function}
+	         * @private
+	         */
+	        this._styleListener = null;
+
+	        /**
+	         * Private tracker for the current font.
+	         *
+	         * @member {string}
+	         * @private
+	         */
+	        this._font = '';
+
+	        this.text = text;
+	        this.style = style;
+
+	        this.localStyleID = -1;
+	    }
+
+	    if ( Sprite$$1 ) { Text.__proto__ = Sprite$$1; }
+	    Text.prototype = Object.create( Sprite$$1 && Sprite$$1.prototype );
+	    Text.prototype.constructor = Text;
+
+	    var prototypeAccessors = { width: { configurable: true },height: { configurable: true },style: { configurable: true },text: { configurable: true },resolution: { configurable: true } };
+
+	    /**
+	     * Renders text and updates it when needed.
+	     *
+	     * @private
+	     * @param {boolean} respectDirty - Whether to abort updating the text if the Text isn't dirty and the function is called.
+	     */
+	    Text.prototype.updateText = function updateText (respectDirty)
+	    {
+	        var style = this._style;
+
+	        // check if style has changed..
+	        if (this.localStyleID !== style.styleID)
 	        {
-	            originalEvent.preventDefault();
+	            this.dirty = true;
+	            this.localStyleID = style.styleID;
 	        }
 
-	        var eventLen = events.length;
-
-	        for (var i = 0; i < eventLen; i++)
+	        if (!this.dirty && respectDirty)
 	        {
-	            var event = events[i];
+	            return;
+	        }
 
-	            var interactionData = this.getInteractionDataForPointerId(event);
+	        this._font = this._style.toFontString();
 
-	            var interactionEvent = this.configureInteractionEventForDOMEvent(this.eventData, event, interactionData);
+	        var context = this.context;
+	        var measured = TextMetrics.measureText(this._text || ' ', this._style, this._style.wordWrap, this.canvas);
+	        var width = measured.width;
+	        var height = measured.height;
+	        var lines = measured.lines;
+	        var lineHeight = measured.lineHeight;
+	        var lineWidths = measured.lineWidths;
+	        var maxLineWidth = measured.maxLineWidth;
+	        var fontProperties = measured.fontProperties;
 
-	            interactionEvent.data.originalEvent = originalEvent;
+	        this.canvas.width = Math.ceil((Math.max(1, width) + (style.padding * 2)) * this._resolution);
+	        this.canvas.height = Math.ceil((Math.max(1, height) + (style.padding * 2)) * this._resolution);
 
-	            this.processInteractive(interactionEvent, this.renderer._lastObjectRendered, this.processPointerDown, true);
+	        context.scale(this._resolution, this._resolution);
 
-	            this.emit('pointerdown', interactionEvent);
-	            if (event.pointerType === 'touch')
+	        context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+	        context.font = this._font;
+	        context.strokeStyle = style.stroke;
+	        context.lineWidth = style.strokeThickness;
+	        context.textBaseline = style.textBaseline;
+	        context.lineJoin = style.lineJoin;
+	        context.miterLimit = style.miterLimit;
+
+	        var linePositionX;
+	        var linePositionY;
+
+	        if (style.dropShadow)
+	        {
+	            var dropShadowColor = style.dropShadowColor;
+	            var rgb = hex2rgb(typeof dropShadowColor === 'number' ? dropShadowColor : string2hex(dropShadowColor));
+
+	            context.shadowColor = "rgba(" + (rgb[0] * 255) + "," + (rgb[1] * 255) + "," + (rgb[2] * 255) + "," + (style.dropShadowAlpha) + ")";
+	            context.shadowBlur = style.dropShadowBlur;
+	            context.shadowOffsetX = Math.cos(style.dropShadowAngle) * style.dropShadowDistance;
+	            context.shadowOffsetY = Math.sin(style.dropShadowAngle) * style.dropShadowDistance;
+	        }
+	        else
+	        {
+	            context.shadowColor = 0;
+	            context.shadowBlur = 0;
+	            context.shadowOffsetX = 0;
+	            context.shadowOffsetY = 0;
+	        }
+
+	        // set canvas text styles
+	        context.fillStyle = this._generateFillStyle(style, lines);
+
+	        // draw lines line by line
+	        for (var i = 0; i < lines.length; i++)
+	        {
+	            linePositionX = style.strokeThickness / 2;
+	            linePositionY = ((style.strokeThickness / 2) + (i * lineHeight)) + fontProperties.ascent;
+
+	            if (style.align === 'right')
 	            {
-	                this.emit('touchstart', interactionEvent);
+	                linePositionX += maxLineWidth - lineWidths[i];
 	            }
-	            // emit a mouse event for "pen" pointers, the way a browser would emit a fallback event
-	            else if (event.pointerType === 'mouse' || event.pointerType === 'pen')
+	            else if (style.align === 'center')
 	            {
-	                var isRightButton = event.button === 2;
-
-	                this.emit(isRightButton ? 'rightdown' : 'mousedown', this.eventData);
+	                linePositionX += (maxLineWidth - lineWidths[i]) / 2;
 	            }
+
+	            if (style.stroke && style.strokeThickness)
+	            {
+	                this.drawLetterSpacing(
+	                    lines[i],
+	                    linePositionX + style.padding,
+	                    linePositionY + style.padding,
+	                    true
+	                );
+	            }
+
+	            if (style.fill)
+	            {
+	                this.drawLetterSpacing(
+	                    lines[i],
+	                    linePositionX + style.padding,
+	                    linePositionY + style.padding
+	                );
+	            }
+	        }
+
+	        this.updateTexture();
+	    };
+
+	    /**
+	     * Render the text with letter-spacing.
+	     * @param {string} text - The text to draw
+	     * @param {number} x - Horizontal position to draw the text
+	     * @param {number} y - Vertical position to draw the text
+	     * @param {boolean} [isStroke=false] - Is this drawing for the outside stroke of the
+	     *  text? If not, it's for the inside fill
+	     * @private
+	     */
+	    Text.prototype.drawLetterSpacing = function drawLetterSpacing (text, x, y, isStroke)
+	    {
+	        if ( isStroke === void 0 ) { isStroke = false; }
+
+	        var style = this._style;
+
+	        // letterSpacing of 0 means normal
+	        var letterSpacing = style.letterSpacing;
+
+	        if (letterSpacing === 0)
+	        {
+	            if (isStroke)
+	            {
+	                this.context.strokeText(text, x, y);
+	            }
+	            else
+	            {
+	                this.context.fillText(text, x, y);
+	            }
+
+	            return;
+	        }
+
+	        var characters = String.prototype.split.call(text, '');
+	        var currentPosition = x;
+	        var index$$1 = 0;
+	        var current = '';
+
+	        while (index$$1 < text.length)
+	        {
+	            current = characters[index$$1++];
+	            if (isStroke)
+	            {
+	                this.context.strokeText(current, currentPosition, y);
+	            }
+	            else
+	            {
+	                this.context.fillText(current, currentPosition, y);
+	            }
+	            currentPosition += this.context.measureText(current).width + letterSpacing;
 	        }
 	    };
 
 	    /**
-	     * Processes the result of the pointer down check and dispatches the event if need be
+	     * Updates texture size based on canvas size
 	     *
 	     * @private
-	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - The interaction event wrapping the DOM event
-	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - The display object that was tested
-	     * @param {boolean} hit - the result of the hit test on the display object
 	     */
-	    InteractionManager.prototype.processPointerDown = function processPointerDown (interactionEvent, displayObject, hit)
+	    Text.prototype.updateTexture = function updateTexture ()
 	    {
-	        var data = interactionEvent.data;
-	        var id = interactionEvent.data.identifier;
+	        var canvas = this.canvas;
 
-	        if (hit)
+	        if (this._style.trim)
 	        {
-	            if (!displayObject.trackedPointers[id])
-	            {
-	                displayObject.trackedPointers[id] = new InteractionTrackingData(id);
-	            }
-	            this.dispatchEvent(displayObject, 'pointerdown', interactionEvent);
+	            var trimmed = trimCanvas(canvas);
 
-	            if (data.pointerType === 'touch')
+	            if (trimmed.data)
 	            {
-	                this.dispatchEvent(displayObject, 'touchstart', interactionEvent);
+	                canvas.width = trimmed.width;
+	                canvas.height = trimmed.height;
+	                this.context.putImageData(trimmed.data, 0, 0);
 	            }
-	            else if (data.pointerType === 'mouse' || data.pointerType === 'pen')
-	            {
-	                var isRightButton = data.button === 2;
+	        }
 
-	                if (isRightButton)
+	        var texture = this._texture;
+	        var style = this._style;
+	        var padding = style.trim ? 0 : style.padding;
+	        var baseTexture = texture.baseTexture;
+
+	        texture.trim.width = texture._frame.width = canvas.width / this._resolution;
+	        texture.trim.height = texture._frame.height = canvas.height / this._resolution;
+	        texture.trim.x = -padding;
+	        texture.trim.y = -padding;
+
+	        texture.orig.width = texture._frame.width - (padding * 2);
+	        texture.orig.height = texture._frame.height - (padding * 2);
+
+	        // call sprite onTextureUpdate to update scale if _width or _height were set
+	        this._onTextureUpdate();
+
+	        baseTexture.setRealSize(canvas.width, canvas.height, this._resolution);
+
+	        this.dirty = false;
+	    };
+
+	    /**
+	     * Renders the object using the WebGL renderer
+	     *
+	     * @param {PIXI.Renderer} renderer - The renderer
+	     */
+	    Text.prototype.render = function render (renderer)
+	    {
+	        if (this._autoResolution && this._resolution !== renderer.resolution)
+	        {
+	            this._resolution = renderer.resolution;
+	            this.dirty = true;
+	        }
+
+	        this.updateText(true);
+
+	        Sprite$$1.prototype.render.call(this, renderer);
+	    };
+
+	    /**
+	     * Renders the object using the Canvas renderer
+	     *
+	     * @private
+	     * @param {PIXI.CanvasRenderer} renderer - The renderer
+	     */
+	    Text.prototype._renderCanvas = function _renderCanvas (renderer)
+	    {
+	        if (this._autoResolution && this._resolution !== renderer.resolution)
+	        {
+	            this._resolution = renderer.resolution;
+	            this.dirty = true;
+	        }
+
+	        this.updateText(true);
+
+	        Sprite$$1.prototype._renderCanvas.call(this, renderer);
+	    };
+
+	    /**
+	     * Gets the local bounds of the text object.
+	     *
+	     * @param {Rectangle} rect - The output rectangle.
+	     * @return {Rectangle} The bounds.
+	     */
+	    Text.prototype.getLocalBounds = function getLocalBounds (rect)
+	    {
+	        this.updateText(true);
+
+	        return Sprite$$1.prototype.getLocalBounds.call(this, rect);
+	    };
+
+	    /**
+	     * calculates the bounds of the Text as a rectangle. The bounds calculation takes the worldTransform into account.
+	     * @protected
+	     */
+	    Text.prototype._calculateBounds = function _calculateBounds ()
+	    {
+	        this.updateText(true);
+	        this.calculateVertices();
+	        // if we have already done this on THIS frame.
+	        this._bounds.addQuad(this.vertexData);
+	    };
+
+	    /**
+	     * Method to be called upon a TextStyle change.
+	     * @private
+	     */
+	    Text.prototype._onStyleChange = function _onStyleChange ()
+	    {
+	        this.dirty = true;
+	    };
+
+	    /**
+	     * Generates the fill style. Can automatically generate a gradient based on the fill style being an array
+	     *
+	     * @private
+	     * @param {object} style - The style.
+	     * @param {string[]} lines - The lines of text.
+	     * @return {string|number|CanvasGradient} The fill style
+	     */
+	    Text.prototype._generateFillStyle = function _generateFillStyle (style, lines)
+	    {
+	        if (!Array.isArray(style.fill))
+	        {
+	            return style.fill;
+	        }
+
+	        // the gradient will be evenly spaced out according to how large the array is.
+	        // ['#FF0000', '#00FF00', '#0000FF'] would created stops at 0.25, 0.5 and 0.75
+	        var gradient;
+	        var totalIterations;
+	        var currentIteration;
+	        var stop;
+
+	        var width = this.canvas.width / this._resolution;
+	        var height = this.canvas.height / this._resolution;
+
+	        // make a copy of the style settings, so we can manipulate them later
+	        var fill = style.fill.slice();
+	        var fillGradientStops = style.fillGradientStops.slice();
+
+	        // wanting to evenly distribute the fills. So an array of 4 colours should give fills of 0.25, 0.5 and 0.75
+	        if (!fillGradientStops.length)
+	        {
+	            var lengthPlus1 = fill.length + 1;
+
+	            for (var i = 1; i < lengthPlus1; ++i)
+	            {
+	                fillGradientStops.push(i / lengthPlus1);
+	            }
+	        }
+
+	        // stop the bleeding of the last gradient on the line above to the top gradient of the this line
+	        // by hard defining the first gradient colour at point 0, and last gradient colour at point 1
+	        fill.unshift(style.fill[0]);
+	        fillGradientStops.unshift(0);
+
+	        fill.push(style.fill[style.fill.length - 1]);
+	        fillGradientStops.push(1);
+
+	        if (style.fillGradientType === TEXT_GRADIENT.LINEAR_VERTICAL)
+	        {
+	            // start the gradient at the top center of the canvas, and end at the bottom middle of the canvas
+	            gradient = this.context.createLinearGradient(width / 2, 0, width / 2, height);
+
+	            // we need to repeat the gradient so that each individual line of text has the same vertical gradient effect
+	            // ['#FF0000', '#00FF00', '#0000FF'] over 2 lines would create stops at 0.125, 0.25, 0.375, 0.625, 0.75, 0.875
+	            totalIterations = (fill.length + 1) * lines.length;
+	            currentIteration = 0;
+	            for (var i$1 = 0; i$1 < lines.length; i$1++)
+	            {
+	                currentIteration += 1;
+	                for (var j = 0; j < fill.length; j++)
 	                {
-	                    displayObject.trackedPointers[id].rightDown = true;
+	                    if (typeof fillGradientStops[j] === 'number')
+	                    {
+	                        stop = (fillGradientStops[j] / lines.length) + (i$1 / lines.length);
+	                    }
+	                    else
+	                    {
+	                        stop = currentIteration / totalIterations;
+	                    }
+	                    gradient.addColorStop(stop, fill[j]);
+	                    currentIteration++;
+	                }
+	            }
+	        }
+	        else
+	        {
+	            // start the gradient at the center left of the canvas, and end at the center right of the canvas
+	            gradient = this.context.createLinearGradient(0, height / 2, width, height / 2);
+
+	            // can just evenly space out the gradients in this case, as multiple lines makes no difference
+	            // to an even left to right gradient
+	            totalIterations = fill.length + 1;
+	            currentIteration = 1;
+
+	            for (var i$2 = 0; i$2 < fill.length; i$2++)
+	            {
+	                if (typeof fillGradientStops[i$2] === 'number')
+	                {
+	                    stop = fillGradientStops[i$2];
 	                }
 	                else
 	                {
-	                    displayObject.trackedPointers[id].leftDown = true;
+	                    stop = currentIteration / totalIterations;
 	                }
-
-	                this.dispatchEvent(displayObject, isRightButton ? 'rightdown' : 'mousedown', interactionEvent);
-	            }
-	        }
-	    };
-
-	    /**
-	     * Is called when the pointer button is released on the renderer element
-	     *
-	     * @private
-	     * @param {PointerEvent} originalEvent - The DOM event of a pointer button being released
-	     * @param {boolean} cancelled - true if the pointer is cancelled
-	     * @param {Function} func - Function passed to {@link processInteractive}
-	     */
-	    InteractionManager.prototype.onPointerComplete = function onPointerComplete (originalEvent, cancelled, func)
-	    {
-	        var events = this.normalizeToPointerData(originalEvent);
-
-	        var eventLen = events.length;
-
-	        // if the event wasn't targeting our canvas, then consider it to be pointerupoutside
-	        // in all cases (unless it was a pointercancel)
-	        var eventAppend = originalEvent.target !== this.interactionDOMElement ? 'outside' : '';
-
-	        for (var i = 0; i < eventLen; i++)
-	        {
-	            var event = events[i];
-
-	            var interactionData = this.getInteractionDataForPointerId(event);
-
-	            var interactionEvent = this.configureInteractionEventForDOMEvent(this.eventData, event, interactionData);
-
-	            interactionEvent.data.originalEvent = originalEvent;
-
-	            // perform hit testing for events targeting our canvas or cancel events
-	            this.processInteractive(interactionEvent, this.renderer._lastObjectRendered, func, cancelled || !eventAppend);
-
-	            this.emit(cancelled ? 'pointercancel' : ("pointerup" + eventAppend), interactionEvent);
-
-	            if (event.pointerType === 'mouse' || event.pointerType === 'pen')
-	            {
-	                var isRightButton = event.button === 2;
-
-	                this.emit(isRightButton ? ("rightup" + eventAppend) : ("mouseup" + eventAppend), interactionEvent);
-	            }
-	            else if (event.pointerType === 'touch')
-	            {
-	                this.emit(cancelled ? 'touchcancel' : ("touchend" + eventAppend), interactionEvent);
-	                this.releaseInteractionDataForPointerId(event.pointerId, interactionData);
-	            }
-	        }
-	    };
-
-	    /**
-	     * Is called when the pointer button is cancelled
-	     *
-	     * @private
-	     * @param {PointerEvent} event - The DOM event of a pointer button being released
-	     */
-	    InteractionManager.prototype.onPointerCancel = function onPointerCancel (event)
-	    {
-	        // if we support touch events, then only use those for touch events, not pointer events
-	        if (this.supportsTouchEvents && event.pointerType === 'touch') { return; }
-
-	        this.onPointerComplete(event, true, this.processPointerCancel);
-	    };
-
-	    /**
-	     * Processes the result of the pointer cancel check and dispatches the event if need be
-	     *
-	     * @private
-	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - The interaction event wrapping the DOM event
-	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - The display object that was tested
-	     */
-	    InteractionManager.prototype.processPointerCancel = function processPointerCancel (interactionEvent, displayObject)
-	    {
-	        var data = interactionEvent.data;
-
-	        var id = interactionEvent.data.identifier;
-
-	        if (displayObject.trackedPointers[id] !== undefined)
-	        {
-	            delete displayObject.trackedPointers[id];
-	            this.dispatchEvent(displayObject, 'pointercancel', interactionEvent);
-
-	            if (data.pointerType === 'touch')
-	            {
-	                this.dispatchEvent(displayObject, 'touchcancel', interactionEvent);
-	            }
-	        }
-	    };
-
-	    /**
-	     * Is called when the pointer button is released on the renderer element
-	     *
-	     * @private
-	     * @param {PointerEvent} event - The DOM event of a pointer button being released
-	     */
-	    InteractionManager.prototype.onPointerUp = function onPointerUp (event)
-	    {
-	        // if we support touch events, then only use those for touch events, not pointer events
-	        if (this.supportsTouchEvents && event.pointerType === 'touch') { return; }
-
-	        this.onPointerComplete(event, false, this.processPointerUp);
-	    };
-
-	    /**
-	     * Processes the result of the pointer up check and dispatches the event if need be
-	     *
-	     * @private
-	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - The interaction event wrapping the DOM event
-	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - The display object that was tested
-	     * @param {boolean} hit - the result of the hit test on the display object
-	     */
-	    InteractionManager.prototype.processPointerUp = function processPointerUp (interactionEvent, displayObject, hit)
-	    {
-	        var data = interactionEvent.data;
-
-	        var id = interactionEvent.data.identifier;
-
-	        var trackingData = displayObject.trackedPointers[id];
-
-	        var isTouch = data.pointerType === 'touch';
-
-	        var isMouse = (data.pointerType === 'mouse' || data.pointerType === 'pen');
-	        // need to track mouse down status in the mouse block so that we can emit
-	        // event in a later block
-	        var isMouseTap = false;
-
-	        // Mouse only
-	        if (isMouse)
-	        {
-	            var isRightButton = data.button === 2;
-
-	            var flags = InteractionTrackingData.FLAGS;
-
-	            var test = isRightButton ? flags.RIGHT_DOWN : flags.LEFT_DOWN;
-
-	            var isDown = trackingData !== undefined && (trackingData.flags & test);
-
-	            if (hit)
-	            {
-	                this.dispatchEvent(displayObject, isRightButton ? 'rightup' : 'mouseup', interactionEvent);
-
-	                if (isDown)
-	                {
-	                    this.dispatchEvent(displayObject, isRightButton ? 'rightclick' : 'click', interactionEvent);
-	                    // because we can confirm that the mousedown happened on this object, flag for later emit of pointertap
-	                    isMouseTap = true;
-	                }
-	            }
-	            else if (isDown)
-	            {
-	                this.dispatchEvent(displayObject, isRightButton ? 'rightupoutside' : 'mouseupoutside', interactionEvent);
-	            }
-	            // update the down state of the tracking data
-	            if (trackingData)
-	            {
-	                if (isRightButton)
-	                {
-	                    trackingData.rightDown = false;
-	                }
-	                else
-	                {
-	                    trackingData.leftDown = false;
-	                }
+	                gradient.addColorStop(stop, fill[i$2]);
+	                currentIteration++;
 	            }
 	        }
 
-	        // Pointers and Touches, and Mouse
-	        if (hit)
-	        {
-	            this.dispatchEvent(displayObject, 'pointerup', interactionEvent);
-	            if (isTouch) { this.dispatchEvent(displayObject, 'touchend', interactionEvent); }
-
-	            if (trackingData)
-	            {
-	                // emit pointertap if not a mouse, or if the mouse block decided it was a tap
-	                if (!isMouse || isMouseTap)
-	                {
-	                    this.dispatchEvent(displayObject, 'pointertap', interactionEvent);
-	                }
-	                if (isTouch)
-	                {
-	                    this.dispatchEvent(displayObject, 'tap', interactionEvent);
-	                    // touches are no longer over (if they ever were) when we get the touchend
-	                    // so we should ensure that we don't keep pretending that they are
-	                    trackingData.over = false;
-	                }
-	            }
-	        }
-	        else if (trackingData)
-	        {
-	            this.dispatchEvent(displayObject, 'pointerupoutside', interactionEvent);
-	            if (isTouch) { this.dispatchEvent(displayObject, 'touchendoutside', interactionEvent); }
-	        }
-	        // Only remove the tracking data if there is no over/down state still associated with it
-	        if (trackingData && trackingData.none)
-	        {
-	            delete displayObject.trackedPointers[id];
-	        }
+	        return gradient;
 	    };
 
 	    /**
-	     * Is called when the pointer moves across the renderer element
+	     * Destroys this text object.
+	     * Note* Unlike a Sprite, a Text object will automatically destroy its baseTexture and texture as
+	     * the majority of the time the texture will not be shared with any other Sprites.
 	     *
-	     * @private
-	     * @param {PointerEvent} originalEvent - The DOM event of a pointer moving
+	     * @param {object|boolean} [options] - Options parameter. A boolean will act as if all options
+	     *  have been set to that value
+	     * @param {boolean} [options.children=false] - if set to true, all the children will have their
+	     *  destroy method called as well. 'options' will be passed on to those calls.
+	     * @param {boolean} [options.texture=true] - Should it destroy the current texture of the sprite as well
+	     * @param {boolean} [options.baseTexture=true] - Should it destroy the base texture of the sprite as well
 	     */
-	    InteractionManager.prototype.onPointerMove = function onPointerMove (originalEvent)
+	    Text.prototype.destroy = function destroy (options)
 	    {
-	        // if we support touch events, then only use those for touch events, not pointer events
-	        if (this.supportsTouchEvents && originalEvent.pointerType === 'touch') { return; }
-
-	        var events = this.normalizeToPointerData(originalEvent);
-
-	        if (events[0].pointerType === 'mouse' || events[0].pointerType === 'pen')
+	        if (typeof options === 'boolean')
 	        {
-	            this.didMove = true;
-
-	            this.cursor = null;
+	            options = { children: options };
 	        }
 
-	        var eventLen = events.length;
+	        options = Object.assign({}, defaultDestroyOptions, options);
 
-	        for (var i = 0; i < eventLen; i++)
-	        {
-	            var event = events[i];
+	        Sprite$$1.prototype.destroy.call(this, options);
 
-	            var interactionData = this.getInteractionDataForPointerId(event);
+	        // make sure to reset the the context and canvas.. dont want this hanging around in memory!
+	        this.context = null;
+	        this.canvas = null;
 
-	            var interactionEvent = this.configureInteractionEventForDOMEvent(this.eventData, event, interactionData);
-
-	            interactionEvent.data.originalEvent = originalEvent;
-
-	            var interactive = event.pointerType === 'touch' ? this.moveWhenInside : true;
-
-	            this.processInteractive(
-	                interactionEvent,
-	                this.renderer._lastObjectRendered,
-	                this.processPointerMove,
-	                interactive
-	            );
-	            this.emit('pointermove', interactionEvent);
-	            if (event.pointerType === 'touch') { this.emit('touchmove', interactionEvent); }
-	            if (event.pointerType === 'mouse' || event.pointerType === 'pen') { this.emit('mousemove', interactionEvent); }
-	        }
-
-	        if (events[0].pointerType === 'mouse')
-	        {
-	            this.setCursorMode(this.cursor);
-
-	            // TODO BUG for parents interactive object (border order issue)
-	        }
+	        this._style = null;
 	    };
 
 	    /**
-	     * Processes the result of the pointer move check and dispatches the event if need be
+	     * The width of the Text, setting this will actually modify the scale to achieve the value set
 	     *
-	     * @private
-	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - The interaction event wrapping the DOM event
-	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - The display object that was tested
-	     * @param {boolean} hit - the result of the hit test on the display object
+	     * @member {number}
 	     */
-	    InteractionManager.prototype.processPointerMove = function processPointerMove (interactionEvent, displayObject, hit)
+	    prototypeAccessors.width.get = function ()
 	    {
-	        var data = interactionEvent.data;
+	        this.updateText(true);
 
-	        var isTouch = data.pointerType === 'touch';
+	        return Math.abs(this.scale.x) * this._texture.orig.width;
+	    };
 
-	        var isMouse = (data.pointerType === 'mouse' || data.pointerType === 'pen');
+	    prototypeAccessors.width.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        this.updateText(true);
 
-	        if (isMouse)
-	        {
-	            this.processPointerOverOut(interactionEvent, displayObject, hit);
-	        }
+	        var s = sign(this.scale.x) || 1;
 
-	        if (!this.moveWhenInside || hit)
-	        {
-	            this.dispatchEvent(displayObject, 'pointermove', interactionEvent);
-	            if (isTouch) { this.dispatchEvent(displayObject, 'touchmove', interactionEvent); }
-	            if (isMouse) { this.dispatchEvent(displayObject, 'mousemove', interactionEvent); }
-	        }
+	        this.scale.x = s * value / this._texture.orig.width;
+	        this._width = value;
 	    };
 
 	    /**
-	     * Is called when the pointer is moved out of the renderer element
+	     * The height of the Text, setting this will actually modify the scale to achieve the value set
 	     *
-	     * @private
-	     * @param {PointerEvent} originalEvent - The DOM event of a pointer being moved out
+	     * @member {number}
 	     */
-	    InteractionManager.prototype.onPointerOut = function onPointerOut (originalEvent)
+	    prototypeAccessors.height.get = function ()
 	    {
-	        // if we support touch events, then only use those for touch events, not pointer events
-	        if (this.supportsTouchEvents && originalEvent.pointerType === 'touch') { return; }
+	        this.updateText(true);
 
-	        var events = this.normalizeToPointerData(originalEvent);
+	        return Math.abs(this.scale.y) * this._texture.orig.height;
+	    };
 
-	        // Only mouse and pointer can call onPointerOut, so events will always be length 1
-	        var event = events[0];
+	    prototypeAccessors.height.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        this.updateText(true);
 
-	        if (event.pointerType === 'mouse')
+	        var s = sign(this.scale.y) || 1;
+
+	        this.scale.y = s * value / this._texture.orig.height;
+	        this._height = value;
+	    };
+
+	    /**
+	     * Set the style of the text. Set up an event listener to listen for changes on the style
+	     * object and mark the text as dirty.
+	     *
+	     * @member {object|PIXI.TextStyle}
+	     */
+	    prototypeAccessors.style.get = function ()
+	    {
+	        return this._style;
+	    };
+
+	    prototypeAccessors.style.set = function (style) // eslint-disable-line require-jsdoc
+	    {
+	        style = style || {};
+
+	        if (style instanceof TextStyle)
 	        {
-	            this.mouseOverRenderer = false;
-	            this.setCursorMode(null);
-	        }
-
-	        var interactionData = this.getInteractionDataForPointerId(event);
-
-	        var interactionEvent = this.configureInteractionEventForDOMEvent(this.eventData, event, interactionData);
-
-	        interactionEvent.data.originalEvent = event;
-
-	        this.processInteractive(interactionEvent, this.renderer._lastObjectRendered, this.processPointerOverOut, false);
-
-	        this.emit('pointerout', interactionEvent);
-	        if (event.pointerType === 'mouse' || event.pointerType === 'pen')
-	        {
-	            this.emit('mouseout', interactionEvent);
+	            this._style = style;
 	        }
 	        else
 	        {
-	            // we can get touchleave events after touchend, so we want to make sure we don't
-	            // introduce memory leaks
-	            this.releaseInteractionDataForPointerId(interactionData.identifier);
+	            this._style = new TextStyle(style);
 	        }
+
+	        this.localStyleID = -1;
+	        this.dirty = true;
 	    };
 
 	    /**
-	     * Processes the result of the pointer over/out check and dispatches the event if need be
+	     * Set the copy for the text object. To split a line you can use '\n'.
 	     *
-	     * @private
-	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - The interaction event wrapping the DOM event
-	     * @param {PIXI.Container|PIXI.Sprite|PIXI.TilingSprite} displayObject - The display object that was tested
-	     * @param {boolean} hit - the result of the hit test on the display object
+	     * @member {string}
 	     */
-	    InteractionManager.prototype.processPointerOverOut = function processPointerOverOut (interactionEvent, displayObject, hit)
+	    prototypeAccessors.text.get = function ()
 	    {
-	        var data = interactionEvent.data;
+	        return this._text;
+	    };
 
-	        var id = interactionEvent.data.identifier;
+	    prototypeAccessors.text.set = function (text) // eslint-disable-line require-jsdoc
+	    {
+	        text = String(text === null || text === undefined ? '' : text);
 
-	        var isMouse = (data.pointerType === 'mouse' || data.pointerType === 'pen');
-
-	        var trackingData = displayObject.trackedPointers[id];
-
-	        // if we just moused over the display object, then we need to track that state
-	        if (hit && !trackingData)
+	        if (this._text === text)
 	        {
-	            trackingData = displayObject.trackedPointers[id] = new InteractionTrackingData(id);
+	            return;
+	        }
+	        this._text = text;
+	        this.dirty = true;
+	    };
+
+	    /**
+	     * The resolution / device pixel ratio of the canvas.
+	     * This is set to automatically match the renderer resolution by default, but can be overridden by setting manually.
+	     * @member {number}
+	     * @default 1
+	     */
+	    prototypeAccessors.resolution.get = function ()
+	    {
+	        return this._resolution;
+	    };
+
+	    prototypeAccessors.resolution.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        this._autoResolution = false;
+
+	        if (this._resolution === value)
+	        {
+	            return;
 	        }
 
-	        if (trackingData === undefined) { return; }
+	        this._resolution = value;
+	        this.dirty = true;
+	    };
 
-	        if (hit && this.mouseOverRenderer)
+	    Object.defineProperties( Text.prototype, prototypeAccessors );
+
+	    return Text;
+	}(Sprite));
+
+	/*!
+	 * @pixi/prepare - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
+	 *
+	 * @pixi/prepare is licensed under the MIT License.
+	 * http://www.opensource.org/licenses/mit-license
+	 */
+
+	/**
+	 * Default number of uploads per frame using prepare plugin.
+	 *
+	 * @static
+	 * @memberof PIXI.settings
+	 * @name UPLOADS_PER_FRAME
+	 * @type {number}
+	 * @default 4
+	 */
+	settings.UPLOADS_PER_FRAME = 4;
+
+	/**
+	 * CountLimiter limits the number of items handled by a {@link PIXI.prepare.BasePrepare} to a specified
+	 * number of items per frame.
+	 *
+	 * @class
+	 * @memberof PIXI.prepare
+	 */
+	var CountLimiter = function CountLimiter(maxItemsPerFrame)
+	{
+	    /**
+	     * The maximum number of items that can be prepared each frame.
+	     * @type {number}
+	     * @private
+	     */
+	    this.maxItemsPerFrame = maxItemsPerFrame;
+	    /**
+	     * The number of items that can be prepared in the current frame.
+	     * @type {number}
+	     * @private
+	     */
+	    this.itemsLeft = 0;
+	};
+
+	/**
+	 * Resets any counting properties to start fresh on a new frame.
+	 */
+	CountLimiter.prototype.beginFrame = function beginFrame ()
+	{
+	    this.itemsLeft = this.maxItemsPerFrame;
+	};
+
+	/**
+	 * Checks to see if another item can be uploaded. This should only be called once per item.
+	 * @return {boolean} If the item is allowed to be uploaded.
+	 */
+	CountLimiter.prototype.allowedToUpload = function allowedToUpload ()
+	{
+	    return this.itemsLeft-- > 0;
+	};
+
+	/**
+	 * The prepare manager provides functionality to upload content to the GPU.
+	 *
+	 * BasePrepare handles basic queuing functionality and is extended by
+	 * {@link PIXI.prepare.WebGLPrepare} and {@link PIXI.prepare.CanvasPrepare}
+	 * to provide preparation capabilities specific to their respective renderers.
+	 *
+	 * @example
+	 * // Create a sprite
+	 * const sprite = new PIXI.Sprite.from('something.png');
+	 *
+	 * // Load object into GPU
+	 * app.renderer.plugins.prepare.upload(sprite, () => {
+	 *
+	 *     //Texture(s) has been uploaded to GPU
+	 *     app.stage.addChild(sprite);
+	 *
+	 * })
+	 *
+	 * @abstract
+	 * @class
+	 * @memberof PIXI.prepare
+	 */
+	var BasePrepare = function BasePrepare(renderer)
+	{
+	    var this$1 = this;
+
+	    /**
+	     * The limiter to be used to control how quickly items are prepared.
+	     * @type {PIXI.prepare.CountLimiter|PIXI.prepare.TimeLimiter}
+	     */
+	    this.limiter = new CountLimiter(settings.UPLOADS_PER_FRAME);
+
+	    /**
+	     * Reference to the renderer.
+	     * @type {PIXI.AbstractRenderer}
+	     * @protected
+	     */
+	    this.renderer = renderer;
+
+	    /**
+	     * The only real difference between CanvasPrepare and WebGLPrepare is what they pass
+	     * to upload hooks. That different parameter is stored here.
+	     * @type {PIXI.prepare.CanvasPrepare|PIXI.Renderer}
+	     * @protected
+	     */
+	    this.uploadHookHelper = null;
+
+	    /**
+	     * Collection of items to uploads at once.
+	     * @type {Array<*>}
+	     * @private
+	     */
+	    this.queue = [];
+
+	    /**
+	     * Collection of additional hooks for finding assets.
+	     * @type {Array<Function>}
+	     * @private
+	     */
+	    this.addHooks = [];
+
+	    /**
+	     * Collection of additional hooks for processing assets.
+	     * @type {Array<Function>}
+	     * @private
+	     */
+	    this.uploadHooks = [];
+
+	    /**
+	     * Callback to call after completed.
+	     * @type {Array<Function>}
+	     * @private
+	     */
+	    this.completes = [];
+
+	    /**
+	     * If prepare is ticking (running).
+	     * @type {boolean}
+	     * @private
+	     */
+	    this.ticking = false;
+
+	    /**
+	     * 'bound' call for prepareItems().
+	     * @type {Function}
+	     * @private
+	     */
+	    this.delayedTick = function () {
+	        // unlikely, but in case we were destroyed between tick() and delayedTick()
+	        if (!this$1.queue)
 	        {
-	            if (!trackingData.over)
+	            return;
+	        }
+	        this$1.prepareItems();
+	    };
+
+	    // hooks to find the correct texture
+	    this.registerFindHook(findText);
+	    this.registerFindHook(findTextStyle);
+	    this.registerFindHook(findMultipleBaseTextures);
+	    this.registerFindHook(findBaseTexture);
+	    this.registerFindHook(findTexture);
+
+	    // upload hooks
+	    this.registerUploadHook(drawText);
+	    this.registerUploadHook(calculateTextStyle);
+	};
+
+	/**
+	 * Upload all the textures and graphics to the GPU.
+	 *
+	 * @param {Function|PIXI.DisplayObject|PIXI.Container|PIXI.BaseTexture|PIXI.Texture|PIXI.Graphics|PIXI.Text} item -
+	 *    Either the container or display object to search for items to upload, the items to upload themselves,
+	 *    or the callback function, if items have been added using `prepare.add`.
+	 * @param {Function} [done] - Optional callback when all queued uploads have completed
+	 */
+	BasePrepare.prototype.upload = function upload (item, done)
+	{
+	    if (typeof item === 'function')
+	    {
+	        done = item;
+	        item = null;
+	    }
+
+	    // If a display object, search for items
+	    // that we could upload
+	    if (item)
+	    {
+	        this.add(item);
+	    }
+
+	    // Get the items for upload from the display
+	    if (this.queue.length)
+	    {
+	        if (done)
+	        {
+	            this.completes.push(done);
+	        }
+
+	        if (!this.ticking)
+	        {
+	            this.ticking = true;
+	            Ticker.system.addOnce(this.tick, this, UPDATE_PRIORITY.UTILITY);
+	        }
+	    }
+	    else if (done)
+	    {
+	        done();
+	    }
+	};
+
+	/**
+	 * Handle tick update
+	 *
+	 * @private
+	 */
+	BasePrepare.prototype.tick = function tick ()
+	{
+	    setTimeout(this.delayedTick, 0);
+	};
+
+	/**
+	 * Actually prepare items. This is handled outside of the tick because it will take a while
+	 * and we do NOT want to block the current animation frame from rendering.
+	 *
+	 * @private
+	 */
+	BasePrepare.prototype.prepareItems = function prepareItems ()
+	{
+	    this.limiter.beginFrame();
+	    // Upload the graphics
+	    while (this.queue.length && this.limiter.allowedToUpload())
+	    {
+	        var item = this.queue[0];
+	        var uploaded = false;
+
+	        if (item && !item._destroyed)
+	        {
+	            for (var i = 0, len = this.uploadHooks.length; i < len; i++)
 	            {
-	                trackingData.over = true;
-	                this.dispatchEvent(displayObject, 'pointerover', interactionEvent);
-	                if (isMouse)
+	                if (this.uploadHooks[i](this.uploadHookHelper, item))
 	                {
-	                    this.dispatchEvent(displayObject, 'mouseover', interactionEvent);
+	                    this.queue.shift();
+	                    uploaded = true;
+	                    break;
 	                }
 	            }
+	        }
 
-	            // only change the cursor if it has not already been changed (by something deeper in the
-	            // display tree)
-	            if (isMouse && this.cursor === null)
+	        if (!uploaded)
+	        {
+	            this.queue.shift();
+	        }
+	    }
+
+	    // We're finished
+	    if (!this.queue.length)
+	    {
+	        this.ticking = false;
+
+	        var completes = this.completes.slice(0);
+
+	        this.completes.length = 0;
+
+	        for (var i$1 = 0, len$1 = completes.length; i$1 < len$1; i$1++)
+	        {
+	            completes[i$1]();
+	        }
+	    }
+	    else
+	    {
+	        // if we are not finished, on the next rAF do this again
+	        Ticker.system.addOnce(this.tick, this, UPDATE_PRIORITY.UTILITY);
+	    }
+	};
+
+	/**
+	 * Adds hooks for finding items.
+	 *
+	 * @param {Function} addHook - Function call that takes two parameters: `item:*, queue:Array`
+	 *      function must return `true` if it was able to add item to the queue.
+	 * @return {PIXI.prepare.BasePrepare} Instance of plugin for chaining.
+	 */
+	BasePrepare.prototype.registerFindHook = function registerFindHook (addHook)
+	{
+	    if (addHook)
+	    {
+	        this.addHooks.push(addHook);
+	    }
+
+	    return this;
+	};
+
+	/**
+	 * Adds hooks for uploading items.
+	 *
+	 * @param {Function} uploadHook - Function call that takes two parameters: `prepare:CanvasPrepare, item:*` and
+	 *      function must return `true` if it was able to handle upload of item.
+	 * @return {PIXI.prepare.BasePrepare} Instance of plugin for chaining.
+	 */
+	BasePrepare.prototype.registerUploadHook = function registerUploadHook (uploadHook)
+	{
+	    if (uploadHook)
+	    {
+	        this.uploadHooks.push(uploadHook);
+	    }
+
+	    return this;
+	};
+
+	/**
+	 * Manually add an item to the uploading queue.
+	 *
+	 * @param {PIXI.DisplayObject|PIXI.Container|PIXI.BaseTexture|PIXI.Texture|PIXI.Graphics|PIXI.Text|*} item - Object to
+	 *    add to the queue
+	 * @return {PIXI.prepare.BasePrepare} Instance of plugin for chaining.
+	 */
+	BasePrepare.prototype.add = function add (item)
+	{
+	    // Add additional hooks for finding elements on special
+	    // types of objects that
+	    for (var i = 0, len = this.addHooks.length; i < len; i++)
+	    {
+	        if (this.addHooks[i](item, this.queue))
+	        {
+	            break;
+	        }
+	    }
+
+	    // Get children recursively
+	    if (item instanceof Container)
+	    {
+	        for (var i$1 = item.children.length - 1; i$1 >= 0; i$1--)
+	        {
+	            this.add(item.children[i$1]);
+	        }
+	    }
+
+	    return this;
+	};
+
+	/**
+	 * Destroys the plugin, don't use after this.
+	 *
+	 */
+	BasePrepare.prototype.destroy = function destroy ()
+	{
+	    if (this.ticking)
+	    {
+	        Ticker.system.remove(this.tick, this);
+	    }
+	    this.ticking = false;
+	    this.addHooks = null;
+	    this.uploadHooks = null;
+	    this.renderer = null;
+	    this.completes = null;
+	    this.queue = null;
+	    this.limiter = null;
+	    this.uploadHookHelper = null;
+	};
+
+	/**
+	 * Built-in hook to find multiple textures from objects like AnimatedSprites.
+	 *
+	 * @private
+	 * @param {PIXI.DisplayObject} item - Display object to check
+	 * @param {Array<*>} queue - Collection of items to upload
+	 * @return {boolean} if a PIXI.Texture object was found.
+	 */
+	function findMultipleBaseTextures(item, queue)
+	{
+	    var result = false;
+
+	    // Objects with multiple textures
+	    if (item && item._textures && item._textures.length)
+	    {
+	        for (var i = 0; i < item._textures.length; i++)
+	        {
+	            if (item._textures[i] instanceof Texture)
 	            {
-	                this.cursor = displayObject.cursor;
-	            }
-	        }
-	        else if (trackingData.over)
-	        {
-	            trackingData.over = false;
-	            this.dispatchEvent(displayObject, 'pointerout', this.eventData);
-	            if (isMouse)
-	            {
-	                this.dispatchEvent(displayObject, 'mouseout', interactionEvent);
-	            }
-	            // if there is no mouse down information for the pointer, then it is safe to delete
-	            if (trackingData.none)
-	            {
-	                delete displayObject.trackedPointers[id];
-	            }
-	        }
-	    };
+	                var baseTexture = item._textures[i].baseTexture;
 
-	    /**
-	     * Is called when the pointer is moved into the renderer element
-	     *
-	     * @private
-	     * @param {PointerEvent} originalEvent - The DOM event of a pointer button being moved into the renderer view
-	     */
-	    InteractionManager.prototype.onPointerOver = function onPointerOver (originalEvent)
-	    {
-	        var events = this.normalizeToPointerData(originalEvent);
-
-	        // Only mouse and pointer can call onPointerOver, so events will always be length 1
-	        var event = events[0];
-
-	        var interactionData = this.getInteractionDataForPointerId(event);
-
-	        var interactionEvent = this.configureInteractionEventForDOMEvent(this.eventData, event, interactionData);
-
-	        interactionEvent.data.originalEvent = event;
-
-	        if (event.pointerType === 'mouse')
-	        {
-	            this.mouseOverRenderer = true;
-	        }
-
-	        this.emit('pointerover', interactionEvent);
-	        if (event.pointerType === 'mouse' || event.pointerType === 'pen')
-	        {
-	            this.emit('mouseover', interactionEvent);
-	        }
-	    };
-
-	    /**
-	     * Get InteractionData for a given pointerId. Store that data as well
-	     *
-	     * @private
-	     * @param {PointerEvent} event - Normalized pointer event, output from normalizeToPointerData
-	     * @return {PIXI.interaction.InteractionData} - Interaction data for the given pointer identifier
-	     */
-	    InteractionManager.prototype.getInteractionDataForPointerId = function getInteractionDataForPointerId (event)
-	    {
-	        var pointerId = event.pointerId;
-
-	        var interactionData;
-
-	        if (pointerId === MOUSE_POINTER_ID || event.pointerType === 'mouse')
-	        {
-	            interactionData = this.mouse;
-	        }
-	        else if (this.activeInteractionData[pointerId])
-	        {
-	            interactionData = this.activeInteractionData[pointerId];
-	        }
-	        else
-	        {
-	            interactionData = this.interactionDataPool.pop() || new InteractionData();
-	            interactionData.identifier = pointerId;
-	            this.activeInteractionData[pointerId] = interactionData;
-	        }
-	        // copy properties from the event, so that we can make sure that touch/pointer specific
-	        // data is available
-	        interactionData.copyEvent(event);
-
-	        return interactionData;
-	    };
-
-	    /**
-	     * Return unused InteractionData to the pool, for a given pointerId
-	     *
-	     * @private
-	     * @param {number} pointerId - Identifier from a pointer event
-	     */
-	    InteractionManager.prototype.releaseInteractionDataForPointerId = function releaseInteractionDataForPointerId (pointerId)
-	    {
-	        var interactionData = this.activeInteractionData[pointerId];
-
-	        if (interactionData)
-	        {
-	            delete this.activeInteractionData[pointerId];
-	            interactionData.reset();
-	            this.interactionDataPool.push(interactionData);
-	        }
-	    };
-
-	    /**
-	     * Configure an InteractionEvent to wrap a DOM PointerEvent and InteractionData
-	     *
-	     * @private
-	     * @param {PIXI.interaction.InteractionEvent} interactionEvent - The event to be configured
-	     * @param {PointerEvent} pointerEvent - The DOM event that will be paired with the InteractionEvent
-	     * @param {PIXI.interaction.InteractionData} interactionData - The InteractionData that will be paired
-	     *        with the InteractionEvent
-	     * @return {PIXI.interaction.InteractionEvent} the interaction event that was passed in
-	     */
-	    InteractionManager.prototype.configureInteractionEventForDOMEvent = function configureInteractionEventForDOMEvent (interactionEvent, pointerEvent, interactionData)
-	    {
-	        interactionEvent.data = interactionData;
-
-	        this.mapPositionToPoint(interactionData.global, pointerEvent.clientX, pointerEvent.clientY);
-
-	        // This is the way InteractionManager processed touch events before the refactoring, so I've kept
-	        // it here. But it doesn't make that much sense to me, since mapPositionToPoint already factors
-	        // in this.resolution, so this just divides by this.resolution twice for touch events...
-	        if (navigator.isCocoonJS && pointerEvent.pointerType === 'touch')
-	        {
-	            interactionData.global.x = interactionData.global.x / this.resolution;
-	            interactionData.global.y = interactionData.global.y / this.resolution;
-	        }
-
-	        // Not really sure why this is happening, but it's how a previous version handled things
-	        if (pointerEvent.pointerType === 'touch')
-	        {
-	            pointerEvent.globalX = interactionData.global.x;
-	            pointerEvent.globalY = interactionData.global.y;
-	        }
-
-	        interactionData.originalEvent = pointerEvent;
-	        interactionEvent.reset();
-
-	        return interactionEvent;
-	    };
-
-	    /**
-	     * Ensures that the original event object contains all data that a regular pointer event would have
-	     *
-	     * @private
-	     * @param {TouchEvent|MouseEvent|PointerEvent} event - The original event data from a touch or mouse event
-	     * @return {PointerEvent[]} An array containing a single normalized pointer event, in the case of a pointer
-	     *  or mouse event, or a multiple normalized pointer events if there are multiple changed touches
-	     */
-	    InteractionManager.prototype.normalizeToPointerData = function normalizeToPointerData (event)
-	    {
-	        var normalizedEvents = [];
-
-	        if (this.supportsTouchEvents && event instanceof TouchEvent)
-	        {
-	            for (var i = 0, li = event.changedTouches.length; i < li; i++)
-	            {
-	                var touch = event.changedTouches[i];
-
-	                if (typeof touch.button === 'undefined') { touch.button = event.touches.length ? 1 : 0; }
-	                if (typeof touch.buttons === 'undefined') { touch.buttons = event.touches.length ? 1 : 0; }
-	                if (typeof touch.isPrimary === 'undefined')
+	                if (queue.indexOf(baseTexture) === -1)
 	                {
-	                    touch.isPrimary = event.touches.length === 1 && event.type === 'touchstart';
+	                    queue.push(baseTexture);
+	                    result = true;
 	                }
-	                if (typeof touch.width === 'undefined') { touch.width = touch.radiusX || 1; }
-	                if (typeof touch.height === 'undefined') { touch.height = touch.radiusY || 1; }
-	                if (typeof touch.tiltX === 'undefined') { touch.tiltX = 0; }
-	                if (typeof touch.tiltY === 'undefined') { touch.tiltY = 0; }
-	                if (typeof touch.pointerType === 'undefined') { touch.pointerType = 'touch'; }
-	                if (typeof touch.pointerId === 'undefined') { touch.pointerId = touch.identifier || 0; }
-	                if (typeof touch.pressure === 'undefined') { touch.pressure = touch.force || 0.5; }
-	                if (typeof touch.twist === 'undefined') { touch.twist = 0; }
-	                if (typeof touch.tangentialPressure === 'undefined') { touch.tangentialPressure = 0; }
-	                // TODO: Remove these, as layerX/Y is not a standard, is deprecated, has uneven
-	                // support, and the fill ins are not quite the same
-	                // offsetX/Y might be okay, but is not the same as clientX/Y when the canvas's top
-	                // left is not 0,0 on the page
-	                if (typeof touch.layerX === 'undefined') { touch.layerX = touch.offsetX = touch.clientX; }
-	                if (typeof touch.layerY === 'undefined') { touch.layerY = touch.offsetY = touch.clientY; }
-
-	                // mark the touch as normalized, just so that we know we did it
-	                touch.isNormalized = true;
-
-	                normalizedEvents.push(touch);
 	            }
 	        }
-	        // apparently PointerEvent subclasses MouseEvent, so yay
-	        else if (event instanceof MouseEvent && (!this.supportsPointerEvents || !(event instanceof window.PointerEvent)))
-	        {
-	            if (typeof event.isPrimary === 'undefined') { event.isPrimary = true; }
-	            if (typeof event.width === 'undefined') { event.width = 1; }
-	            if (typeof event.height === 'undefined') { event.height = 1; }
-	            if (typeof event.tiltX === 'undefined') { event.tiltX = 0; }
-	            if (typeof event.tiltY === 'undefined') { event.tiltY = 0; }
-	            if (typeof event.pointerType === 'undefined') { event.pointerType = 'mouse'; }
-	            if (typeof event.pointerId === 'undefined') { event.pointerId = MOUSE_POINTER_ID; }
-	            if (typeof event.pressure === 'undefined') { event.pressure = 0.5; }
-	            if (typeof event.twist === 'undefined') { event.twist = 0; }
-	            if (typeof event.tangentialPressure === 'undefined') { event.tangentialPressure = 0; }
+	    }
 
-	            // mark the mouse event as normalized, just so that we know we did it
-	            event.isNormalized = true;
+	    return result;
+	}
 
-	            normalizedEvents.push(event);
-	        }
-	        else
-	        {
-	            normalizedEvents.push(event);
-	        }
-
-	        return normalizedEvents;
-	    };
-
-	    /**
-	     * Destroys the interaction manager
-	     *
-	     */
-	    InteractionManager.prototype.destroy = function destroy ()
+	/**
+	 * Built-in hook to find BaseTextures from Sprites.
+	 *
+	 * @private
+	 * @param {PIXI.DisplayObject} item - Display object to check
+	 * @param {Array<*>} queue - Collection of items to upload
+	 * @return {boolean} if a PIXI.Texture object was found.
+	 */
+	function findBaseTexture(item, queue)
+	{
+	    // Objects with textures, like Sprites/Text
+	    if (item instanceof BaseTexture)
 	    {
-	        this.removeEvents();
+	        if (queue.indexOf(item) === -1)
+	        {
+	            queue.push(item);
+	        }
 
-	        this.removeAllListeners();
+	        return true;
+	    }
 
-	        this.renderer = null;
+	    return false;
+	}
 
-	        this.mouse = null;
+	/**
+	 * Built-in hook to find textures from objects.
+	 *
+	 * @private
+	 * @param {PIXI.DisplayObject} item - Display object to check
+	 * @param {Array<*>} queue - Collection of items to upload
+	 * @return {boolean} if a PIXI.Texture object was found.
+	 */
+	function findTexture(item, queue)
+	{
+	    if (item._texture && item._texture instanceof Texture)
+	    {
+	        var texture = item._texture.baseTexture;
 
-	        this.eventData = null;
+	        if (queue.indexOf(texture) === -1)
+	        {
+	            queue.push(texture);
+	        }
 
-	        this.interactionDOMElement = null;
+	        return true;
+	    }
 
-	        this.onPointerDown = null;
-	        this.processPointerDown = null;
+	    return false;
+	}
 
-	        this.onPointerUp = null;
-	        this.processPointerUp = null;
+	/**
+	 * Built-in hook to draw PIXI.Text to its texture.
+	 *
+	 * @private
+	 * @param {PIXI.Renderer|PIXI.CanvasPrepare} helper - Not used by this upload handler
+	 * @param {PIXI.DisplayObject} item - Item to check
+	 * @return {boolean} If item was uploaded.
+	 */
+	function drawText(helper, item)
+	{
+	    if (item instanceof Text)
+	    {
+	        // updating text will return early if it is not dirty
+	        item.updateText(true);
 
-	        this.onPointerCancel = null;
-	        this.processPointerCancel = null;
+	        return true;
+	    }
 
-	        this.onPointerMove = null;
-	        this.processPointerMove = null;
+	    return false;
+	}
 
-	        this.onPointerOut = null;
-	        this.processPointerOverOut = null;
+	/**
+	 * Built-in hook to calculate a text style for a PIXI.Text object.
+	 *
+	 * @private
+	 * @param {PIXI.Renderer|PIXI.CanvasPrepare} helper - Not used by this upload handler
+	 * @param {PIXI.DisplayObject} item - Item to check
+	 * @return {boolean} If item was uploaded.
+	 */
+	function calculateTextStyle(helper, item)
+	{
+	    if (item instanceof TextStyle)
+	    {
+	        var font = item.toFontString();
 
-	        this.onPointerOver = null;
+	        TextMetrics.measureFont(font);
 
-	        this._tempPoint = null;
-	    };
+	        return true;
+	    }
 
-	    return InteractionManager;
-	}(eventemitter3));
+	    return false;
+	}
 
-	var interaction = ({
-		InteractionData: InteractionData,
-		InteractionManager: InteractionManager,
-		interactiveTarget: interactiveTarget,
-		InteractionTrackingData: InteractionTrackingData,
-		InteractionEvent: InteractionEvent
+	/**
+	 * Built-in hook to find Text objects.
+	 *
+	 * @private
+	 * @param {PIXI.DisplayObject} item - Display object to check
+	 * @param {Array<*>} queue - Collection of items to upload
+	 * @return {boolean} if a PIXI.Text object was found.
+	 */
+	function findText(item, queue)
+	{
+	    if (item instanceof Text)
+	    {
+	        // push the text style to prepare it - this can be really expensive
+	        if (queue.indexOf(item.style) === -1)
+	        {
+	            queue.push(item.style);
+	        }
+	        // also push the text object so that we can render it (to canvas/texture) if needed
+	        if (queue.indexOf(item) === -1)
+	        {
+	            queue.push(item);
+	        }
+	        // also push the Text's texture for upload to GPU
+	        var texture = item._texture.baseTexture;
+
+	        if (queue.indexOf(texture) === -1)
+	        {
+	            queue.push(texture);
+	        }
+
+	        return true;
+	    }
+
+	    return false;
+	}
+
+	/**
+	 * Built-in hook to find TextStyle objects.
+	 *
+	 * @private
+	 * @param {PIXI.TextStyle} item - Display object to check
+	 * @param {Array<*>} queue - Collection of items to upload
+	 * @return {boolean} if a PIXI.TextStyle object was found.
+	 */
+	function findTextStyle(item, queue)
+	{
+	    if (item instanceof TextStyle)
+	    {
+	        if (queue.indexOf(item) === -1)
+	        {
+	            queue.push(item);
+	        }
+
+	        return true;
+	    }
+
+	    return false;
+	}
+
+	/**
+	 * The prepare manager provides functionality to upload content to the GPU.
+	 *
+	 * An instance of this class is automatically created by default, and can be found at `renderer.plugins.prepare`
+	 *
+	 * @class
+	 * @extends PIXI.prepare.BasePrepare
+	 * @memberof PIXI.prepare
+	 */
+	var Prepare = /*@__PURE__*/(function (BasePrepare$$1) {
+	    function Prepare(renderer)
+	    {
+	        BasePrepare$$1.call(this, renderer);
+
+	        this.uploadHookHelper = this.renderer;
+
+	        // Add textures and graphics to upload
+	        this.registerFindHook(findGraphics);
+	        this.registerUploadHook(uploadBaseTextures);
+	        this.registerUploadHook(uploadGraphics);
+	    }
+
+	    if ( BasePrepare$$1 ) { Prepare.__proto__ = BasePrepare$$1; }
+	    Prepare.prototype = Object.create( BasePrepare$$1 && BasePrepare$$1.prototype );
+	    Prepare.prototype.constructor = Prepare;
+
+	    return Prepare;
+	}(BasePrepare));
+	/**
+	 * Built-in hook to upload PIXI.Texture objects to the GPU.
+	 *
+	 * @private
+	 * @param {PIXI.Renderer} renderer - instance of the webgl renderer
+	 * @param {PIXI.DisplayObject} item - Item to check
+	 * @return {boolean} If item was uploaded.
+	 */
+	function uploadBaseTextures(renderer, item)
+	{
+	    if (item instanceof BaseTexture)
+	    {
+	        // if the texture already has a GL texture, then the texture has been prepared or rendered
+	        // before now. If the texture changed, then the changer should be calling texture.update() which
+	        // reuploads the texture without need for preparing it again
+	        if (!item._glTextures[renderer.CONTEXT_UID])
+	        {
+	            renderer.textureManager.updateTexture(item);
+	        }
+
+	        return true;
+	    }
+
+	    return false;
+	}
+
+	/**
+	 * Built-in hook to upload PIXI.Graphics to the GPU.
+	 *
+	 * @private
+	 * @param {PIXI.Renderer} renderer - instance of the webgl renderer
+	 * @param {PIXI.DisplayObject} item - Item to check
+	 * @return {boolean} If item was uploaded.
+	 */
+	function uploadGraphics(renderer, item)
+	{
+	    if (item instanceof Graphics)
+	    {
+	        // if the item is not dirty and already has webgl data, then it got prepared or rendered
+	        // before now and we shouldn't waste time updating it again
+	        if (item.dirty || item.clearDirty || !item._webGL[renderer.plugins.graphics.CONTEXT_UID])
+	        {
+	            renderer.plugins.graphics.updateGraphics(item);
+	        }
+
+	        return true;
+	    }
+
+	    return false;
+	}
+
+	/**
+	 * Built-in hook to find graphics.
+	 *
+	 * @private
+	 * @param {PIXI.DisplayObject} item - Display object to check
+	 * @param {Array<*>} queue - Collection of items to upload
+	 * @return {boolean} if a PIXI.Graphics object was found.
+	 */
+	function findGraphics(item, queue)
+	{
+	    if (item instanceof Graphics)
+	    {
+	        queue.push(item);
+
+	        return true;
+	    }
+
+	    return false;
+	}
+
+	/**
+	 * TimeLimiter limits the number of items handled by a {@link PIXI.BasePrepare} to a specified
+	 * number of milliseconds per frame.
+	 *
+	 * @class
+	 * @memberof PIXI.prepare
+	 */
+	var TimeLimiter = function TimeLimiter(maxMilliseconds)
+	{
+	    /**
+	     * The maximum milliseconds that can be spent preparing items each frame.
+	     * @type {number}
+	     * @private
+	     */
+	    this.maxMilliseconds = maxMilliseconds;
+	    /**
+	     * The start time of the current frame.
+	     * @type {number}
+	     * @private
+	     */
+	    this.frameStart = 0;
+	};
+
+	/**
+	 * Resets any counting properties to start fresh on a new frame.
+	 */
+	TimeLimiter.prototype.beginFrame = function beginFrame ()
+	{
+	    this.frameStart = Date.now();
+	};
+
+	/**
+	 * Checks to see if another item can be uploaded. This should only be called once per item.
+	 * @return {boolean} If the item is allowed to be uploaded.
+	 */
+	TimeLimiter.prototype.allowedToUpload = function allowedToUpload ()
+	{
+	    return Date.now() - this.frameStart < this.maxMilliseconds;
+	};
+
+	var prepare_es = ({
+		Prepare: Prepare,
+		BasePrepare: BasePrepare,
+		CountLimiter: CountLimiter,
+		TimeLimiter: TimeLimiter
 	});
+
+	/*!
+	 * @pixi/app - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
+	 *
+	 * @pixi/app is licensed under the MIT License.
+	 * http://www.opensource.org/licenses/mit-license
+	 */
+
+	/**
+	 * Convenience class to create a new PIXI application.
+	 *
+	 * This class automatically creates the renderer, ticker and root container.
+	 *
+	 * @example
+	 * // Create the application
+	 * const app = new PIXI.Application();
+	 *
+	 * // Add the view to the DOM
+	 * document.body.appendChild(app.view);
+	 *
+	 * // ex, add display objects
+	 * app.stage.addChild(PIXI.Sprite.from('something.png'));
+	 *
+	 * @class
+	 * @memberof PIXI
+	 */
+	var Application = function Application(options, arg2, arg3, arg4, arg5)
+	{
+	    var this$1 = this;
+
+	    // Support for constructor(width, height, options, noWebGL, useSharedTicker)
+	    if (typeof options === 'number')
+	    {
+	        options = Object.assign({
+	            width: options,
+	            height: arg2 || settings.RENDER_OPTIONS.height,
+	            forceCanvas: !!arg4,
+	            sharedTicker: !!arg5,
+	        }, arg3);
+	    }
+
+	    // The default options
+	    options = Object.assign({
+	        forceCanvas: false,
+	    }, options);
+
+	    /**
+	     * WebGL renderer if available, otherwise CanvasRenderer.
+	     * @member {PIXI.Renderer|PIXI.CanvasRenderer}
+	     */
+	    this.renderer = this.createRenderer(options);
+
+	    /**
+	     * The root display container that's rendered.
+	     * @member {PIXI.Container}
+	     */
+	    this.stage = new Container();
+
+	    // install plugins here
+	    Application._plugins.forEach(function (plugin) {
+	        plugin.init.call(this$1, options);
+	    });
+	};
+
+	var prototypeAccessors$7 = { view: { configurable: true },screen: { configurable: true } };
+
+	/**
+	 * Register a middleware plugin for the application
+	 * @static
+	 * @param {PIXI.Application.Plugin} plugin - Plugin being installed
+	 */
+	Application.registerPlugin = function registerPlugin (plugin)
+	{
+	    Application._plugins.push(plugin);
+	};
+
+	/**
+	 * Create the new renderer, this is here to overridden to support Canvas.
+	 *
+	 * @protected
+	 * @param {Object} [options] See constructor for complete arguments
+	 */
+	Application.prototype.createRenderer = function createRenderer (options)
+	{
+	    return new Renderer(options);
+	};
+
+	/**
+	 * Render the current stage.
+	 */
+	Application.prototype.render = function render ()
+	{
+	    this.renderer.render(this.stage);
+	};
+
+	/**
+	 * Reference to the renderer's canvas element.
+	 * @member {HTMLCanvasElement}
+	 * @readonly
+	 */
+	prototypeAccessors$7.view.get = function ()
+	{
+	    return this.renderer.view;
+	};
+
+	/**
+	 * Reference to the renderer's screen rectangle. Its safe to use as `filterArea` or `hitArea` for the whole screen.
+	 * @member {PIXI.Rectangle}
+	 * @readonly
+	 */
+	prototypeAccessors$7.screen.get = function ()
+	{
+	    return this.renderer.screen;
+	};
+
+	/**
+	 * Destroy and don't use after this.
+	 * @param {Boolean} [removeView=false] Automatically remove canvas from DOM.
+	 * @param {object|boolean} [stageOptions] - Options parameter. A boolean will act as if all options
+	 *  have been set to that value
+	 * @param {boolean} [stageOptions.children=false] - if set to true, all the children will have their destroy
+	 *  method called as well. 'stageOptions' will be passed on to those calls.
+	 * @param {boolean} [stageOptions.texture=false] - Only used for child Sprites if stageOptions.children is set
+	 *  to true. Should it destroy the texture of the child sprite
+	 * @param {boolean} [stageOptions.baseTexture=false] - Only used for child Sprites if stageOptions.children is set
+	 *  to true. Should it destroy the base texture of the child sprite
+	 */
+	Application.prototype.destroy = function destroy (removeView)
+	{
+	        var this$1 = this;
+
+	    // Destroy plugins in the opposite order
+	    // which they were constructed
+	    var plugins = Application._plugins.slice(0);
+
+	    plugins.reverse();
+	    plugins.forEach(function (plugin) {
+	        plugin.destroy.call(this$1);
+	    });
+
+	    this.stage.destroy();
+	    this.stage = null;
+
+	    this.renderer.destroy(removeView);
+	    this.renderer = null;
+
+	    this._options = null;
+	};
+
+	Object.defineProperties( Application.prototype, prototypeAccessors$7 );
+
+	/**
+	 * @memberof PIXI.Application
+	 * @typedef {object} Plugin
+	 * @property {function} init - Called when Application is constructed, scoped to Application instance.
+	 *  Passes in `options` as the only argument, which are Application constructor options.
+	 * @property {function} destroy - Called when destroying Application, scoped to Application instance
+	 */
+
+	/**
+	 * Collection of installed plugins.
+	 * @static
+	 * @private
+	 * @type {PIXI.Application.Plugin[]}
+	 */
+	Application._plugins = [];
+
+	/**
+	 * Middleware for for Application's resize functionality
+	 * @private
+	 * @class
+	 */
+	var ResizePlugin = function ResizePlugin () {};
+
+	ResizePlugin.init = function init (options)
+	{
+	        var this$1 = this;
+
+	    /**
+	     * The element or window to resize the application to.
+	     * @type {Window|HTMLElement}
+	     * @name resizeTo
+	     * @memberof PIXI.Application#
+	     */
+	    Object.defineProperty(this, 'resizeTo',
+	        {
+	            set: function set(dom)
+	            {
+	                window.removeEventListener('resize', this.resize);
+	                this._resizeTo = dom;
+	                if (dom)
+	                {
+	                    window.addEventListener('resize', this.resize);
+	                    this.resize();
+	                }
+	            },
+	            get: function get()
+	            {
+	                return this._resizeTo;
+	            },
+	        });
+
+	    /**
+	     * If `resizeTo` is set, calling this function
+	     * will resize to the width and height of that element.
+	     * @method PIXI.Application#resize
+	     */
+	    this.resize = function () {
+	        if (this$1._resizeTo)
+	        {
+	            // Resize to the window
+	            if (this$1._resizeTo === window)
+	            {
+	                this$1.renderer.resize(
+	                    window.innerWidth,
+	                    window.innerHeight
+	                );
+	            }
+	            // Resize to other HTML entities
+	            else
+	            {
+	                this$1.renderer.resize(
+	                    this$1._resizeTo.clientWidth,
+	                    this$1._resizeTo.clientHeight
+	                );
+	            }
+	        }
+	    };
+
+	    // On resize
+	    this._resizeTo = null;
+	    this.resizeTo = options.resizeTo || null;
+	};
+
+	/**
+	 * Clean up the ticker, scoped to application
+	 * @static
+	 * @private
+	 */
+	ResizePlugin.destroy = function destroy ()
+	{
+	    this.resizeTo = null;
+	    this.resize = null;
+	};
+
+	Application.registerPlugin(ResizePlugin);
 
 	var miniSignals = createCommonjsModule(function (module, exports) {
 	'use strict';
@@ -29335,8 +32900,8 @@
 	lib.default = default_1$1;
 
 	/*!
-	 * @pixi/loaders - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/loaders - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/loaders is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -31231,1559 +34796,9 @@
 	 */
 	var LoaderResource = lib_1;
 
-	var loaders = ({
-		LoaderResource: LoaderResource,
-		Loader: Loader$2,
-		TextureLoader: TextureLoader,
-		AppLoaderPlugin: AppLoaderPlugin
-	});
-
 	/*!
-	 * @pixi/mesh - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
-	 *
-	 * @pixi/mesh is licensed under the MIT License.
-	 * http://www.opensource.org/licenses/mit-license
-	 */
-
-	/**
-	 * Class controls cache for UV mapping from Texture normal space to BaseTexture normal space.
-	 *
-	 * @class
-	 * @memberof PIXI
-	 */
-	var MeshBatchUvs = function MeshBatchUvs(uvBuffer, uvMatrix)
-	{
-	    /**
-	     * Buffer with normalized UV's
-	     * @member {PIXI.Buffer}
-	     */
-	    this.uvBuffer = uvBuffer;
-
-	    /**
-	     * Material UV matrix
-	     * @member {PIXI.TextureMatrix}
-	     */
-	    this.uvMatrix = uvMatrix;
-
-	    /**
-	     * UV Buffer data
-	     * @member {Float32Array}
-	     * @readonly
-	     */
-	    this.data = null;
-
-	    this._bufferUpdateId = -1;
-
-	    this._textureUpdateId = -1;
-
-	    this._updateID = 0;
-	};
-
-	/**
-	 * updates
-	 *
-	 * @param {boolean} forceUpdate - force the update
-	 */
-	MeshBatchUvs.prototype.update = function update (forceUpdate)
-	{
-	    if (!forceUpdate
-	        && this._bufferUpdateId === this.uvBuffer._updateID
-	        && this._textureUpdateId === this.uvMatrix._updateID)
-	    {
-	        return;
-	    }
-
-	    this._bufferUpdateId = this.uvBuffer._updateID;
-	    this._textureUpdateId = this.uvMatrix._updateID;
-
-	    var data = this.uvBuffer.data;
-
-	    if (!this.data || this.data.length !== data.length)
-	    {
-	        this.data = new Float32Array(data.length);
-	    }
-
-	    this.uvMatrix.multiplyUvs(data, this.data);
-
-	    this._updateID++;
-	};
-
-	var tempPoint = new Point();
-	var tempPolygon = new Polygon();
-
-	/**
-	 * Base mesh class.
-	 *
-	 * This class empowers you to have maximum flexibility to render any kind of WebGL visuals you can think of.
-	 * This class assumes a certain level of WebGL knowledge.
-	 * If you know a bit this should abstract enough away to make you life easier!
-	 *
-	 * Pretty much ALL WebGL can be broken down into the following:
-	 * - Geometry - The structure and data for the mesh. This can include anything from positions, uvs, normals, colors etc..
-	 * - Shader - This is the shader that PixiJS will render the geometry with (attributes in the shader must match the geometry)
-	 * - State - This is the state of WebGL required to render the mesh.
-	 *
-	 * Through a combination of the above elements you can render anything you want, 2D or 3D!
-	 *
-	 * @class
-	 * @extends PIXI.Container
-	 * @memberof PIXI
-	 */
-	var Mesh = /*@__PURE__*/(function (Container$$1) {
-	    function Mesh(geometry, shader, state, drawMode)// vertices, uvs, indices, drawMode)
-	    {
-	        if ( drawMode === void 0 ) { drawMode = DRAW_MODES.TRIANGLES; }
-
-	        Container$$1.call(this);
-
-	        /**
-	         * Includes vertex positions, face indices, normals, colors, UVs, and
-	         * custom attributes within buffers, reducing the cost of passing all
-	         * this data to the GPU. Can be shared between multiple Mesh objects.
-	         * @member {PIXI.Geometry}
-	         * @readonly
-	         */
-	        this.geometry = geometry;
-
-	        geometry.refCount++;
-
-	        /**
-	         * Represents the vertex and fragment shaders that processes the geometry and runs on the GPU.
-	         * Can be shared between multiple Mesh objects.
-	         * @member {PIXI.Shader|PIXI.MeshMaterial}
-	         */
-	        this.shader = shader;
-
-	        /**
-	         * Represents the WebGL state the Mesh required to render, excludes shader and geometry. E.g.,
-	         * blend mode, culling, depth testing, direction of rendering triangles, backface, etc.
-	         * @member {PIXI.State}
-	         */
-	        this.state = state || State.for2d();
-
-	        /**
-	         * The way the Mesh should be drawn, can be any of the {@link PIXI.DRAW_MODES} constants.
-	         *
-	         * @member {number}
-	         * @see PIXI.DRAW_MODES
-	         */
-	        this.drawMode = drawMode;
-
-	        /**
-	         * Typically the index of the IndexBuffer where to start drawing.
-	         * @member {number}
-	         * @default 0
-	         */
-	        this.start = 0;
-
-	        /**
-	         * How much of the geometry to draw, by default `0` renders everything.
-	         * @member {number}
-	         * @default 0
-	         */
-	        this.size = 0;
-
-	        /**
-	         * thease are used as easy access for batching
-	         * @member {Float32Array}
-	         * @private
-	         */
-	        this.uvs = null;
-
-	        /**
-	         * thease are used as easy access for batching
-	         * @member {Uint16Array}
-	         * @private
-	         */
-	        this.indices = null;
-
-	        /**
-	         * this is the caching layer used by the batcher
-	         * @member {Float32Array}
-	         * @private
-	         */
-	        this.vertexData = new Float32Array(1);
-
-	        /**
-	         * If geometry is changed used to decide to re-transform
-	         * the vertexData.
-	         * @member {number}
-	         * @private
-	         */
-	        this.vertexDirty = 0;
-
-	        this._transformID = -1;
-
-	        // Inherited from DisplayMode, set defaults
-	        this.tint = 0xFFFFFF;
-	        this.blendMode = BLEND_MODES.NORMAL;
-
-	        /**
-	         * Internal roundPixels field
-	         *
-	         * @member {boolean}
-	         * @private
-	         */
-	        this._roundPixels = settings.ROUND_PIXELS;
-
-	        /**
-	         * Batched UV's are cached for atlas textures
-	         * @member {PIXI.MeshBatchUvs}
-	         * @private
-	         */
-	        this.batchUvs = null;
-	    }
-
-	    if ( Container$$1 ) { Mesh.__proto__ = Container$$1; }
-	    Mesh.prototype = Object.create( Container$$1 && Container$$1.prototype );
-	    Mesh.prototype.constructor = Mesh;
-
-	    var prototypeAccessors = { uvBuffer: { configurable: true },verticesBuffer: { configurable: true },material: { configurable: true },blendMode: { configurable: true },roundPixels: { configurable: true },tint: { configurable: true },texture: { configurable: true } };
-
-	    /**
-	     * To change mesh uv's, change its uvBuffer data and increment its _updateID.
-	     * @member {PIXI.Buffer}
-	     * @readonly
-	     */
-	    prototypeAccessors.uvBuffer.get = function ()
-	    {
-	        return this.geometry.buffers[1].data;
-	    };
-
-	    /**
-	     * To change mesh vertices, change its uvBuffer data and increment its _updateID.
-	     * Incrementing _updateID is optional because most of Mesh objects do it anyway.
-	     * @member {PIXI.Buffer}
-	     * @readonly
-	     */
-	    prototypeAccessors.verticesBuffer.get = function ()
-	    {
-	        return this.geometry.buffers[0].data;
-	    };
-
-	    /**
-	     * Alias for {@link PIXI.Mesh#shader}.
-	     * @member {PIXI.Shader|PIXI.MeshMaterial}
-	     */
-	    prototypeAccessors.material.set = function (value)
-	    {
-	        this.shader = value;
-	    };
-
-	    prototypeAccessors.material.get = function ()
-	    {
-	        return this.shader;
-	    };
-
-	    /**
-	     * The blend mode to be applied to the Mesh. Apply a value of
-	     * `PIXI.BLEND_MODES.NORMAL` to reset the blend mode.
-	     *
-	     * @member {number}
-	     * @default PIXI.BLEND_MODES.NORMAL;
-	     * @see PIXI.BLEND_MODES
-	     */
-	    prototypeAccessors.blendMode.set = function (value)
-	    {
-	        this.state.blendMode = value;
-	    };
-
-	    prototypeAccessors.blendMode.get = function ()
-	    {
-	        return this.state.blendMode;
-	    };
-
-	    /**
-	     * If true PixiJS will Math.floor() x/y values when rendering, stopping pixel interpolation.
-	     * Advantages can include sharper image quality (like text) and faster rendering on canvas.
-	     * The main disadvantage is movement of objects may appear less smooth.
-	     * To set the global default, change {@link PIXI.settings.ROUND_PIXELS}
-	     *
-	     * @member {boolean}
-	     * @default false
-	     */
-	    prototypeAccessors.roundPixels.set = function (value)
-	    {
-	        if (this._roundPixels !== value)
-	        {
-	            this._transformID = -1;
-	        }
-	        this._roundPixels = value;
-	    };
-
-	    prototypeAccessors.roundPixels.get = function ()
-	    {
-	        return this._roundPixels;
-	    };
-
-	    /**
-	     * The multiply tint applied to the Mesh. This is a hex value. A value of
-	     * `0xFFFFFF` will remove any tint effect.
-	     *
-	     * @member {number}
-	     * @default 0xFFFFFF
-	     */
-	    prototypeAccessors.tint.get = function ()
-	    {
-	        return this.shader.tint;
-	    };
-
-	    prototypeAccessors.tint.set = function (value)
-	    {
-	        this.shader.tint = value;
-	    };
-
-	    /**
-	     * The texture that the Mesh uses.
-	     *
-	     * @member {PIXI.Texture}
-	     */
-	    prototypeAccessors.texture.get = function ()
-	    {
-	        return this.shader.texture;
-	    };
-
-	    prototypeAccessors.texture.set = function (value)
-	    {
-	        this.shader.texture = value;
-	    };
-
-	    /**
-	     * Standard renderer draw.
-	     * @protected
-	     */
-	    Mesh.prototype._render = function _render (renderer)
-	    {
-	        // set properties for batching..
-	        // TODO could use a different way to grab verts?
-	        var vertices = this.geometry.buffers[0].data;
-
-	        // TODO benchmark check for attribute size..
-	        if (this.shader.batchable && this.drawMode === DRAW_MODES.TRIANGLES && vertices.length < Mesh.BATCHABLE_SIZE * 2)
-	        {
-	            this._renderToBatch(renderer);
-	        }
-	        else
-	        {
-	            this._renderDefault(renderer);
-	        }
-	    };
-
-	    /**
-	     * Standard non-batching way of rendering.
-	     * @protected
-	     * @param {PIXI.Renderer} renderer - Instance to renderer.
-	     */
-	    Mesh.prototype._renderDefault = function _renderDefault (renderer)
-	    {
-	        var shader = this.shader;
-
-	        shader.alpha = this.worldAlpha;
-	        if (shader.update)
-	        {
-	            shader.update();
-	        }
-
-	        renderer.batch.flush();
-
-	        if (shader.program.uniformData.translationMatrix)
-	        {
-	            shader.uniforms.translationMatrix = this.transform.worldTransform.toArray(true);
-	        }
-
-	        // bind and sync uniforms..
-	        renderer.shader.bind(shader);
-
-	        // set state..
-	        renderer.state.setState(this.state);
-
-	        // bind the geometry...
-	        renderer.geometry.bind(this.geometry, shader);
-
-	        // then render it
-	        renderer.geometry.draw(this.drawMode, this.size, this.start, this.geometry.instanceCount);
-	    };
-
-	    /**
-	     * Rendering by using the Batch system.
-	     * @protected
-	     * @param {PIXI.Renderer} renderer - Instance to renderer.
-	     */
-	    Mesh.prototype._renderToBatch = function _renderToBatch (renderer)
-	    {
-	        var geometry = this.geometry;
-
-	        if (this.shader.uvMatrix)
-	        {
-	            this.shader.uvMatrix.update();
-	            this.calculateUvs();
-	        }
-
-	        // set properties for batching..
-	        this.calculateVertices();
-	        this.indices = geometry.indexBuffer.data;
-	        this._tintRGB = this.shader._tintRGB;
-	        this._texture = this.shader.texture;
-
-	        var pluginName = this.material.pluginName;
-
-	        renderer.batch.setObjectRenderer(renderer.plugins[pluginName]);
-	        renderer.plugins[pluginName].render(this);
-	    };
-
-	    /**
-	     * Updates vertexData field based on transform and vertices
-	     */
-	    Mesh.prototype.calculateVertices = function calculateVertices ()
-	    {
-	        var geometry = this.geometry;
-	        var vertices = geometry.buffers[0].data;
-
-	        if (geometry.vertexDirtyId === this.vertexDirty && this._transformID === this.transform._worldID)
-	        {
-	            return;
-	        }
-
-	        this._transformID = this.transform._worldID;
-
-	        if (this.vertexData.length !== vertices.length)
-	        {
-	            this.vertexData = new Float32Array(vertices.length);
-	        }
-
-	        var wt = this.transform.worldTransform;
-	        var a = wt.a;
-	        var b = wt.b;
-	        var c = wt.c;
-	        var d = wt.d;
-	        var tx = wt.tx;
-	        var ty = wt.ty;
-
-	        var vertexData = this.vertexData;
-
-	        for (var i = 0; i < vertexData.length / 2; i++)
-	        {
-	            var x = vertices[(i * 2)];
-	            var y = vertices[(i * 2) + 1];
-
-	            vertexData[(i * 2)] = (a * x) + (c * y) + tx;
-	            vertexData[(i * 2) + 1] = (b * x) + (d * y) + ty;
-	        }
-
-	        if (this._roundPixels)
-	        {
-	            for (var i$1 = 0; i$1 < vertexData.length; i$1++)
-	            {
-	                vertexData[i$1] = Math.round(vertexData[i$1]);
-	            }
-	        }
-
-	        this.vertexDirty = geometry.vertexDirtyId;
-	    };
-
-	    /**
-	     * Updates uv field based on from geometry uv's or batchUvs
-	     */
-	    Mesh.prototype.calculateUvs = function calculateUvs ()
-	    {
-	        var geomUvs = this.geometry.buffers[1];
-
-	        if (!this.shader.uvMatrix.isSimple)
-	        {
-	            if (!this.batchUvs)
-	            {
-	                this.batchUvs = new MeshBatchUvs(geomUvs, this.shader.uvMatrix);
-	            }
-	            this.batchUvs.update();
-	            this.uvs = this.batchUvs.data;
-	        }
-	        else
-	        {
-	            this.uvs = geomUvs.data;
-	        }
-	    };
-
-	    /**
-	     * Updates the bounds of the mesh as a rectangle. The bounds calculation takes the worldTransform into account.
-	     * there must be a aVertexPosition attribute present in the geometry for bounds to be calculated correctly.
-	     *
-	     * @protected
-	     */
-	    Mesh.prototype._calculateBounds = function _calculateBounds ()
-	    {
-	        this.calculateVertices();
-
-	        this._bounds.addVertexData(this.vertexData, 0, this.vertexData.length);
-	    };
-
-	    /**
-	     * Tests if a point is inside this mesh. Works only for PIXI.DRAW_MODES.TRIANGLES.
-	     *
-	     * @param {PIXI.Point} point the point to test
-	     * @return {boolean} the result of the test
-	     */
-	    Mesh.prototype.containsPoint = function containsPoint (point)
-	    {
-	        if (!this.getBounds().contains(point.x, point.y))
-	        {
-	            return false;
-	        }
-
-	        this.worldTransform.applyInverse(point, tempPoint);
-
-	        var vertices = this.geometry.getAttribute('aVertexPosition').data;
-
-	        var points = tempPolygon.points;
-	        var indices =  this.geometry.getIndex().data;
-	        var len = indices.length;
-	        var step = this.drawMode === 4 ? 3 : 1;
-
-	        for (var i = 0; i + 2 < len; i += step)
-	        {
-	            var ind0 = indices[i] * 2;
-	            var ind1 = indices[i + 1] * 2;
-	            var ind2 = indices[i + 2] * 2;
-
-	            points[0] = vertices[ind0];
-	            points[1] = vertices[ind0 + 1];
-	            points[2] = vertices[ind1];
-	            points[3] = vertices[ind1 + 1];
-	            points[4] = vertices[ind2];
-	            points[5] = vertices[ind2 + 1];
-
-	            if (tempPolygon.contains(tempPoint.x, tempPoint.y))
-	            {
-	                return true;
-	            }
-	        }
-
-	        return false;
-	    };
-	    /**
-	     * Destroys the Mesh object.
-	     *
-	     * @param {object|boolean} [options] - Options parameter. A boolean will act as if all
-	     *  options have been set to that value
-	     * @param {boolean} [options.children=false] - if set to true, all the children will have
-	     *  their destroy method called as well. 'options' will be passed on to those calls.
-	     */
-	    Mesh.prototype.destroy = function destroy (options)
-	    {
-	        Container$$1.prototype.destroy.call(this, options);
-
-	        this.geometry.refCount--;
-	        if (this.geometry.refCount === 0)
-	        {
-	            this.geometry.dispose();
-	        }
-
-	        this.geometry = null;
-	        this.shader = null;
-	        this.state = null;
-	        this.uvs = null;
-	        this.indices = null;
-	        this.vertexData = null;
-	    };
-
-	    Object.defineProperties( Mesh.prototype, prototypeAccessors );
-
-	    return Mesh;
-	}(Container));
-
-	/**
-	 * The maximum number of vertices to consider batchable. Generally, the complexity
-	 * of the geometry.
-	 * @memberof PIXI.Mesh
-	 * @static
-	 * @member {number} BATCHABLE_SIZE
-	 */
-	Mesh.BATCHABLE_SIZE = 100;
-
-	var vertex$2 = "attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\n\nuniform mat3 projectionMatrix;\nuniform mat3 translationMatrix;\nuniform mat3 uTextureMatrix;\n\nvarying vec2 vTextureCoord;\n\nvoid main(void)\n{\n    gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);\n\n    vTextureCoord = (uTextureMatrix * vec3(aTextureCoord, 1.0)).xy;\n}\n";
-
-	var fragment$1 = "varying vec2 vTextureCoord;\nuniform vec4 uColor;\n\nuniform sampler2D uSampler;\n\nvoid main(void)\n{\n    gl_FragColor = texture2D(uSampler, vTextureCoord) * uColor;\n}\n";
-
-	/**
-	 * Slightly opinionated default shader for PixiJS 2D objects.
-	 * @class
-	 * @memberof PIXI
-	 * @extends PIXI.Shader
-	 */
-	var MeshMaterial = /*@__PURE__*/(function (Shader$$1) {
-	    function MeshMaterial(uSampler, options)
-	    {
-	        var uniforms = {
-	            uSampler: uSampler,
-	            alpha: 1,
-	            uTextureMatrix: Matrix.IDENTITY,
-	            uColor: new Float32Array([1, 1, 1, 1]),
-	        };
-
-	        // Set defaults
-	        options = Object.assign({
-	            tint: 0xFFFFFF,
-	            alpha: 1,
-	            pluginName: 'batch',
-	        }, options);
-
-	        if (options.uniforms)
-	        {
-	            Object.assign(uniforms, options.uniforms);
-	        }
-
-	        Shader$$1.call(this, options.program || Program.from(vertex$2, fragment$1), uniforms);
-
-	        /**
-	         * Only do update if tint or alpha changes.
-	         * @member {boolean}
-	         * @private
-	         * @default false
-	         */
-	        this._colorDirty = false;
-
-	        /**
-	         * TextureMatrix instance for this Mesh, used to track Texture changes
-	         *
-	         * @member {PIXI.TextureMatrix}
-	         * @readonly
-	         */
-	        this.uvMatrix = new TextureMatrix(uSampler);
-
-	        /**
-	         * `true` if shader can be batch with the renderer's batch system.
-	         * @member {boolean}
-	         * @default true
-	         */
-	        this.batchable = options.program === undefined;
-
-	        /**
-	         * Renderer plugin for batching
-	         *
-	         * @member {string}
-	         * @default 'batch'
-	         */
-	        this.pluginName = options.pluginName;
-
-	        this.tint = options.tint;
-	        this.alpha = options.alpha;
-	    }
-
-	    if ( Shader$$1 ) { MeshMaterial.__proto__ = Shader$$1; }
-	    MeshMaterial.prototype = Object.create( Shader$$1 && Shader$$1.prototype );
-	    MeshMaterial.prototype.constructor = MeshMaterial;
-
-	    var prototypeAccessors = { texture: { configurable: true },alpha: { configurable: true },tint: { configurable: true } };
-
-	    /**
-	     * Reference to the texture being rendered.
-	     * @member {PIXI.Texture}
-	     */
-	    prototypeAccessors.texture.get = function ()
-	    {
-	        return this.uniforms.uSampler;
-	    };
-	    prototypeAccessors.texture.set = function (value)
-	    {
-	        if (this.uniforms.uSampler !== value)
-	        {
-	            this.uniforms.uSampler = value;
-	            this.uvMatrix.texture = value;
-	        }
-	    };
-
-	    /**
-	     * This gets automatically set by the object using this.
-	     *
-	     * @default 1
-	     * @member {number}
-	     */
-	    prototypeAccessors.alpha.set = function (value)
-	    {
-	        if (value === this._alpha) { return; }
-
-	        this._alpha = value;
-	        this._colorDirty = true;
-	    };
-	    prototypeAccessors.alpha.get = function ()
-	    {
-	        return this._alpha;
-	    };
-
-	    /**
-	     * Multiply tint for the material.
-	     * @member {number}
-	     * @default 0xFFFFFF
-	     */
-	    prototypeAccessors.tint.set = function (value)
-	    {
-	        if (value === this._tint) { return; }
-
-	        this._tint = value;
-	        this._tintRGB = (value >> 16) + (value & 0xff00) + ((value & 0xff) << 16);
-	        this._colorDirty = true;
-	    };
-	    prototypeAccessors.tint.get = function ()
-	    {
-	        return this._tint;
-	    };
-
-	    /**
-	     * Gets called automatically by the Mesh. Intended to be overridden for custom
-	     * MeshMaterial objects.
-	     */
-	    MeshMaterial.prototype.update = function update ()
-	    {
-	        if (this._colorDirty)
-	        {
-	            this._colorDirty = false;
-	            var baseTexture = this.texture.baseTexture;
-
-	            premultiplyTintToRgba(this._tintRGB, this._alpha, this.uniforms.uColor, baseTexture.premultiplyAlpha);
-	        }
-	        if (this.uvMatrix.update())
-	        {
-	            this.uniforms.uTextureMatrix = this.uvMatrix.mapCoord;
-	        }
-	    };
-
-	    Object.defineProperties( MeshMaterial.prototype, prototypeAccessors );
-
-	    return MeshMaterial;
-	}(Shader));
-
-	/**
-	 * Standard 2D geometry used in PixiJS.
-	 *
-	 * Geometry can be defined without passing in a style or data if required.
-	 *
-	 * ```js
-	 * const geometry = new PIXI.Geometry();
-	 *
-	 * geometry.addAttribute('positions', [0, 0, 100, 0, 100, 100, 0, 100], 2);
-	 * geometry.addAttribute('uvs', [0,0,1,0,1,1,0,1], 2);
-	 * geometry.addIndex([0,1,2,1,3,2]);
-	 *
-	 * ```
-	 * @class
-	 * @memberof PIXI
-	 * @extends PIXI.Geometry
-	 */
-	var MeshGeometry = /*@__PURE__*/(function (Geometry$$1) {
-	    function MeshGeometry(vertices, uvs, index$$1)
-	    {
-	        Geometry$$1.call(this);
-
-	        var verticesBuffer = new Buffer(vertices);
-	        var uvsBuffer = new Buffer(uvs, true);
-	        var indexBuffer = new Buffer(index$$1, true, true);
-
-	        this.addAttribute('aVertexPosition', verticesBuffer, 2, false, TYPES.FLOAT)
-	            .addAttribute('aTextureCoord', uvsBuffer, 2, false, TYPES.FLOAT)
-	            .addIndex(indexBuffer);
-
-	        /**
-	         * Dirty flag to limit update calls on Mesh. For example,
-	         * limiting updates on a single Mesh instance with a shared Geometry
-	         * within the render loop.
-	         * @private
-	         * @member {number}
-	         * @default -1
-	         */
-	        this._updateId = -1;
-	    }
-
-	    if ( Geometry$$1 ) { MeshGeometry.__proto__ = Geometry$$1; }
-	    MeshGeometry.prototype = Object.create( Geometry$$1 && Geometry$$1.prototype );
-	    MeshGeometry.prototype.constructor = MeshGeometry;
-
-	    var prototypeAccessors = { vertexDirtyId: { configurable: true } };
-
-	    /**
-	     * If the vertex position is updated.
-	     * @member {number}
-	     * @readonly
-	     * @private
-	     */
-	    prototypeAccessors.vertexDirtyId.get = function ()
-	    {
-	        return this.buffers[0]._updateID;
-	    };
-
-	    Object.defineProperties( MeshGeometry.prototype, prototypeAccessors );
-
-	    return MeshGeometry;
-	}(Geometry));
-
-	var mesh = ({
-		Mesh: Mesh,
-		MeshBatchUvs: MeshBatchUvs,
-		MeshMaterial: MeshMaterial,
-		MeshGeometry: MeshGeometry
-	});
-
-	/*!
-	 * @pixi/mesh-extras - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
-	 *
-	 * @pixi/mesh-extras is licensed under the MIT License.
-	 * http://www.opensource.org/licenses/mit-license
-	 */
-
-	var PlaneGeometry = /*@__PURE__*/(function (MeshGeometry$$1) {
-	    function PlaneGeometry(width, height, segWidth, segHeight)
-	    {
-	        if ( width === void 0 ) { width = 100; }
-	        if ( height === void 0 ) { height = 100; }
-	        if ( segWidth === void 0 ) { segWidth = 10; }
-	        if ( segHeight === void 0 ) { segHeight = 10; }
-
-	        MeshGeometry$$1.call(this);
-
-	        this.segWidth = segWidth;
-	        this.segHeight = segHeight;
-
-	        this.width = width;
-	        this.height = height;
-
-	        this.build();
-	    }
-
-	    if ( MeshGeometry$$1 ) { PlaneGeometry.__proto__ = MeshGeometry$$1; }
-	    PlaneGeometry.prototype = Object.create( MeshGeometry$$1 && MeshGeometry$$1.prototype );
-	    PlaneGeometry.prototype.constructor = PlaneGeometry;
-
-	    /**
-	     * Refreshes plane coordinates
-	     * @private
-	     */
-	    PlaneGeometry.prototype.build = function build ()
-	    {
-	        var total = this.segWidth * this.segHeight;
-	        var verts = [];
-	        var uvs = [];
-	        var indices = [];
-
-	        var segmentsX = this.segWidth - 1;
-	        var segmentsY = this.segHeight - 1;
-
-	        var sizeX = (this.width) / segmentsX;
-	        var sizeY = (this.height) / segmentsY;
-
-	        for (var i = 0; i < total; i++)
-	        {
-	            var x = (i % this.segWidth);
-	            var y = ((i / this.segWidth) | 0);
-
-	            verts.push(x * sizeX, y * sizeY);
-	            uvs.push(x / segmentsX, y / segmentsY);
-	        }
-
-	        var totalSub = segmentsX * segmentsY;
-
-	        for (var i$1 = 0; i$1 < totalSub; i$1++)
-	        {
-	            var xpos = i$1 % segmentsX;
-	            var ypos = (i$1 / segmentsX) | 0;
-
-	            var value = (ypos * this.segWidth) + xpos;
-	            var value2 = (ypos * this.segWidth) + xpos + 1;
-	            var value3 = ((ypos + 1) * this.segWidth) + xpos;
-	            var value4 = ((ypos + 1) * this.segWidth) + xpos + 1;
-
-	            indices.push(value, value2, value3,
-	                value2, value4, value3);
-	        }
-
-	        this.buffers[0].data = new Float32Array(verts);
-	        this.buffers[1].data = new Float32Array(uvs);
-	        this.indexBuffer.data = new Uint16Array(indices);
-
-	        // ensure that the changes are uploaded
-	        this.buffers[0].update();
-	        this.buffers[1].update();
-	        this.indexBuffer.update();
-	    };
-
-	    return PlaneGeometry;
-	}(MeshGeometry));
-
-	/**
-	 * The rope allows you to draw a texture across several points and then manipulate these points
-	 *
-	 *```js
-	 * for (let i = 0; i < 20; i++) {
-	 *     points.push(new PIXI.Point(i * 50, 0));
-	 * };
-	 * let rope = new PIXI.Rope(PIXI.Texture.from("snake.png"), points);
-	 *  ```
-	 *
-	 * @class
-	 * @extends PIXI.MeshGeometry
-	 * @memberof PIXI
-	 *
-	 */
-	var RopeGeometry = /*@__PURE__*/(function (MeshGeometry$$1) {
-	    function RopeGeometry(width, points)
-	    {
-	        if ( width === void 0 ) { width = 200; }
-
-	        MeshGeometry$$1.call(this, new Float32Array(points.length * 4),
-	            new Float32Array(points.length * 4),
-	            new Uint16Array((points.length - 1) * 6));
-
-	        /**
-	         * An array of points that determine the rope
-	         * @member {PIXI.Point[]}
-	         */
-	        this.points = points;
-
-	        this.width = width;
-
-	        this.build();
-	    }
-
-	    if ( MeshGeometry$$1 ) { RopeGeometry.__proto__ = MeshGeometry$$1; }
-	    RopeGeometry.prototype = Object.create( MeshGeometry$$1 && MeshGeometry$$1.prototype );
-	    RopeGeometry.prototype.constructor = RopeGeometry;
-	    /**
-	     * Refreshes Rope indices and uvs
-	     * @private
-	     */
-	    RopeGeometry.prototype.build = function build ()
-	    {
-	        var points = this.points;
-
-	        if (!points) { return; }
-
-	        var vertexBuffer = this.getAttribute('aVertexPosition');
-	        var uvBuffer = this.getAttribute('aTextureCoord');
-	        var indexBuffer = this.getIndex();
-
-	        // if too little points, or texture hasn't got UVs set yet just move on.
-	        if (points.length < 1)
-	        {
-	            return;
-	        }
-
-	        // if the number of points has changed we will need to recreate the arraybuffers
-	        if (vertexBuffer.data.length / 4 !== points.length)
-	        {
-	            vertexBuffer.data = new Float32Array(points.length * 4);
-	            uvBuffer.data = new Float32Array(points.length * 4);
-	            indexBuffer.data = new Uint16Array((points.length - 1) * 6);
-	        }
-
-	        var uvs = uvBuffer.data;
-	        var indices = indexBuffer.data;
-
-	        uvs[0] = 0;
-	        uvs[1] = 0;
-	        uvs[2] = 0;
-	        uvs[3] = 1;
-
-	        // indices[0] = 0;
-	        // indices[1] = 1;
-
-	        var total = points.length; // - 1;
-
-	        for (var i = 0; i < total; i++)
-	        {
-	            // time to do some smart drawing!
-	            var index$$1 = i * 4;
-	            var amount = i / (total - 1);
-
-	            uvs[index$$1] = amount;
-	            uvs[index$$1 + 1] = 0;
-
-	            uvs[index$$1 + 2] = amount;
-	            uvs[index$$1 + 3] = 1;
-	        }
-
-	        var indexCount = 0;
-
-	        for (var i$1 = 0; i$1 < total - 1; i$1++)
-	        {
-	            var index$1 = i$1 * 2;
-
-	            indices[indexCount++] = index$1;
-	            indices[indexCount++] = index$1 + 1;
-	            indices[indexCount++] = index$1 + 2;
-
-	            indices[indexCount++] = index$1 + 2;
-	            indices[indexCount++] = index$1 + 1;
-	            indices[indexCount++] = index$1 + 3;
-	        }
-
-	        // ensure that the changes are uploaded
-	        uvBuffer.update();
-	        indexBuffer.update();
-
-	        this.updateVertices();
-	    };
-
-	    /**
-	     * refreshes vertices of Rope mesh
-	     */
-	    RopeGeometry.prototype.updateVertices = function updateVertices ()
-	    {
-	        var points = this.points;
-
-	        if (points.length < 1)
-	        {
-	            return;
-	        }
-
-	        var lastPoint = points[0];
-	        var nextPoint;
-	        var perpX = 0;
-	        var perpY = 0;
-
-	        // this.count -= 0.2;
-
-	        var vertices = this.buffers[0].data;
-	        var total = points.length;
-
-	        for (var i = 0; i < total; i++)
-	        {
-	            var point = points[i];
-	            var index$$1 = i * 4;
-
-	            if (i < points.length - 1)
-	            {
-	                nextPoint = points[i + 1];
-	            }
-	            else
-	            {
-	                nextPoint = point;
-	            }
-
-	            perpY = -(nextPoint.x - lastPoint.x);
-	            perpX = nextPoint.y - lastPoint.y;
-
-	            var perpLength = Math.sqrt((perpX * perpX) + (perpY * perpY));
-	            var num = this.width / 2; // (20 + Math.abs(Math.sin((i + this.count) * 0.3) * 50) )* ratio;
-
-	            perpX /= perpLength;
-	            perpY /= perpLength;
-
-	            perpX *= num;
-	            perpY *= num;
-
-	            vertices[index$$1] = point.x + perpX;
-	            vertices[index$$1 + 1] = point.y + perpY;
-	            vertices[index$$1 + 2] = point.x - perpX;
-	            vertices[index$$1 + 3] = point.y - perpY;
-
-	            lastPoint = point;
-	        }
-
-	        this.buffers[0].update();
-	    };
-
-	    RopeGeometry.prototype.update = function update ()
-	    {
-	        this.updateVertices();
-	    };
-
-	    return RopeGeometry;
-	}(MeshGeometry));
-
-	/**
-	 * The rope allows you to draw a texture across several points and then manipulate these points
-	 *
-	 *```js
-	 * for (let i = 0; i < 20; i++) {
-	 *     points.push(new PIXI.Point(i * 50, 0));
-	 * };
-	 * let rope = new PIXI.Rope(PIXI.Texture.from("snake.png"), points);
-	 *  ```
-	 *
-	 * @class
-	 * @extends PIXI.Mesh
-	 * @memberof PIXI
-	 *
-	 */
-	var SimpleRope = /*@__PURE__*/(function (Mesh$$1) {
-	    function SimpleRope(texture, points)
-	    {
-	        var ropeGeometry = new RopeGeometry(texture.height, points);
-	        var meshMaterial = new MeshMaterial(texture);
-
-	        Mesh$$1.call(this, ropeGeometry, meshMaterial);
-
-	        /**
-	         * re-calculate vertices by rope points each frame
-	         *
-	         * @member {boolean}
-	         */
-	        this.autoUpdate = true;
-	    }
-
-	    if ( Mesh$$1 ) { SimpleRope.__proto__ = Mesh$$1; }
-	    SimpleRope.prototype = Object.create( Mesh$$1 && Mesh$$1.prototype );
-	    SimpleRope.prototype.constructor = SimpleRope;
-
-	    SimpleRope.prototype._render = function _render (renderer)
-	    {
-	        if (this.autoUpdate
-	            || this.geometry.width !== this.shader.texture.height)
-	        {
-	            this.geometry.width = this.shader.texture.height;
-	            this.geometry.update();
-	        }
-
-	        Mesh$$1.prototype._render.call(this, renderer);
-	    };
-
-	    return SimpleRope;
-	}(Mesh));
-
-	/**
-	 * The Plane allows you to draw a texture across several points and then manipulate these points
-	 *
-	 *```js
-	 * for (let i = 0; i < 20; i++) {
-	 *     points.push(new PIXI.Point(i * 50, 0));
-	 * };
-	 * let Plane = new PIXI.Plane(PIXI.Texture.from("snake.png"), points);
-	 *  ```
-	 *
-	 * @class
-	 * @extends PIXI.Mesh
-	 * @memberof PIXI
-	 *
-	 */
-	var SimplePlane = /*@__PURE__*/(function (Mesh$$1) {
-	    function SimplePlane(texture, verticesX, verticesY)
-	    {
-	        var planeGeometry = new PlaneGeometry(texture.width, texture.height, verticesX, verticesY);
-	        var meshMaterial = new MeshMaterial(Texture.WHITE);
-
-	        Mesh$$1.call(this, planeGeometry, meshMaterial);
-
-	        // lets call the setter to ensure all necessary updates are performed
-	        this.texture = texture;
-	    }
-
-	    if ( Mesh$$1 ) { SimplePlane.__proto__ = Mesh$$1; }
-	    SimplePlane.prototype = Object.create( Mesh$$1 && Mesh$$1.prototype );
-	    SimplePlane.prototype.constructor = SimplePlane;
-
-	    var prototypeAccessors = { texture: { configurable: true } };
-
-	    /**
-	     * Method used for overrides, to do something in case texture frame was changed.
-	     * Meshes based on plane can override it and change more details based on texture.
-	     */
-	    SimplePlane.prototype.textureUpdated = function textureUpdated ()
-	    {
-	        this._textureID = this.shader.texture._updateID;
-
-	        this.geometry.width = this.shader.texture.width;
-	        this.geometry.height = this.shader.texture.height;
-
-	        this.geometry.build();
-	    };
-
-	    prototypeAccessors.texture.set = function (value)
-	    {
-	        // Track texture same way sprite does.
-	        // For generated meshes like NineSlicePlane it can change the geometry.
-	        // Unfortunately, this method might not work if you directly change texture in material.
-
-	        if (this.shader.texture === value)
-	        {
-	            return;
-	        }
-
-	        this.shader.texture = value;
-	        this._textureID = -1;
-
-	        if (value.baseTexture.valid)
-	        {
-	            this.textureUpdated();
-	        }
-	        else
-	        {
-	            value.once('update', this.textureUpdated, this);
-	        }
-	    };
-
-	    prototypeAccessors.texture.get = function ()
-	    {
-	        return this.shader.texture;
-	    };
-
-	    SimplePlane.prototype._render = function _render (renderer)
-	    {
-	        if (this._textureID !== this.shader.texture._updateID)
-	        {
-	            this.textureUpdated();
-	        }
-
-	        Mesh$$1.prototype._render.call(this, renderer);
-	    };
-
-	    Object.defineProperties( SimplePlane.prototype, prototypeAccessors );
-
-	    return SimplePlane;
-	}(Mesh));
-
-	/**
-	 * The Simple Mesh class mimics Mesh in PixiJS v4, providing easy-to-use constructor arguments.
-	 * For more robust customization, use {@link PIXI.Mesh}.
-	 *
-	 * @class
-	 * @extends PIXI.Mesh
-	 * @memberof PIXI
-	 */
-	var SimpleMesh = /*@__PURE__*/(function (Mesh$$1) {
-	    function SimpleMesh(texture, vertices, uvs, indices, drawMode)
-	    {
-	        if ( texture === void 0 ) { texture = Texture.EMPTY; }
-
-	        var geometry = new MeshGeometry(vertices, uvs, indices);
-
-	        geometry.getAttribute('aVertexPosition').static = false;
-
-	        var meshMaterial = new MeshMaterial(texture);
-
-	        Mesh$$1.call(this, geometry, meshMaterial, null, drawMode);
-
-	        /**
-	         * upload vertices buffer each frame
-	         * @member {boolean}
-	         */
-	        this.autoUpdate = true;
-	    }
-
-	    if ( Mesh$$1 ) { SimpleMesh.__proto__ = Mesh$$1; }
-	    SimpleMesh.prototype = Object.create( Mesh$$1 && Mesh$$1.prototype );
-	    SimpleMesh.prototype.constructor = SimpleMesh;
-
-	    var prototypeAccessors = { vertices: { configurable: true } };
-
-	    /**
-	     * Collection of vertices data.
-	     * @member {Float32Array}
-	     */
-	    prototypeAccessors.vertices.get = function ()
-	    {
-	        return this.geometry.getAttribute('aVertexPosition').data;
-	    };
-	    prototypeAccessors.vertices.set = function (value)
-	    {
-	        this.geometry.getAttribute('aVertexPosition').data = value;
-	    };
-
-	    SimpleMesh.prototype._render = function _render (renderer)
-	    {
-	        if (this.autoUpdate)
-	        {
-	            this.geometry.getAttribute('aVertexPosition').update();
-	        }
-
-	        Mesh$$1.prototype._render.call(this, renderer);
-	    };
-
-	    Object.defineProperties( SimpleMesh.prototype, prototypeAccessors );
-
-	    return SimpleMesh;
-	}(Mesh));
-
-	var DEFAULT_BORDER_SIZE = 10;
-
-	/**
-	 * The NineSlicePlane allows you to stretch a texture using 9-slice scaling. The corners will remain unscaled (useful
-	 * for buttons with rounded corners for example) and the other areas will be scaled horizontally and or vertically
-	 *
-	 *```js
-	 * let Plane9 = new PIXI.NineSlicePlane(PIXI.Texture.from('BoxWithRoundedCorners.png'), 15, 15, 15, 15);
-	 *  ```
-	 * <pre>
-	 *      A                          B
-	 *    +---+----------------------+---+
-	 *  C | 1 |          2           | 3 |
-	 *    +---+----------------------+---+
-	 *    |   |                      |   |
-	 *    | 4 |          5           | 6 |
-	 *    |   |                      |   |
-	 *    +---+----------------------+---+
-	 *  D | 7 |          8           | 9 |
-	 *    +---+----------------------+---+
-
-	 *  When changing this objects width and/or height:
-	 *     areas 1 3 7 and 9 will remain unscaled.
-	 *     areas 2 and 8 will be stretched horizontally
-	 *     areas 4 and 6 will be stretched vertically
-	 *     area 5 will be stretched both horizontally and vertically
-	 * </pre>
-	 *
-	 * @class
-	 * @extends PIXI.SimplePlane
-	 * @memberof PIXI
-	 *
-	 */
-	var NineSlicePlane = /*@__PURE__*/(function (SimplePlane$$1) {
-	    function NineSlicePlane(texture, leftWidth, topHeight, rightWidth, bottomHeight)
-	    {
-	        SimplePlane$$1.call(this, Texture.WHITE, 4, 4);
-
-	        this._origWidth = texture.orig.width;
-	        this._origHeight = texture.orig.height;
-
-	        /**
-	         * The width of the NineSlicePlane, setting this will actually modify the vertices and UV's of this plane
-	         *
-	         * @member {number}
-	         * @override
-	         */
-	        this._width = this._origWidth;
-
-	        /**
-	         * The height of the NineSlicePlane, setting this will actually modify the vertices and UV's of this plane
-	         *
-	         * @member {number}
-	         * @override
-	         */
-	        this._height = this._origHeight;
-
-	        /**
-	         * The width of the left column (a)
-	         *
-	         * @member {number}
-	         * @private
-	         */
-	        this._leftWidth = typeof leftWidth !== 'undefined' ? leftWidth : DEFAULT_BORDER_SIZE;
-
-	        /**
-	         * The width of the right column (b)
-	         *
-	         * @member {number}
-	         * @private
-	         */
-	        this._rightWidth = typeof rightWidth !== 'undefined' ? rightWidth : DEFAULT_BORDER_SIZE;
-
-	        /**
-	         * The height of the top row (c)
-	         *
-	         * @member {number}
-	         * @private
-	         */
-	        this._topHeight = typeof topHeight !== 'undefined' ? topHeight : DEFAULT_BORDER_SIZE;
-
-	        /**
-	         * The height of the bottom row (d)
-	         *
-	         * @member {number}
-	         * @private
-	         */
-	        this._bottomHeight = typeof bottomHeight !== 'undefined' ? bottomHeight : DEFAULT_BORDER_SIZE;
-
-	        // lets call the setter to ensure all necessary updates are performed
-	        this.texture = texture;
-	    }
-
-	    if ( SimplePlane$$1 ) { NineSlicePlane.__proto__ = SimplePlane$$1; }
-	    NineSlicePlane.prototype = Object.create( SimplePlane$$1 && SimplePlane$$1.prototype );
-	    NineSlicePlane.prototype.constructor = NineSlicePlane;
-
-	    var prototypeAccessors = { vertices: { configurable: true },width: { configurable: true },height: { configurable: true },leftWidth: { configurable: true },rightWidth: { configurable: true },topHeight: { configurable: true },bottomHeight: { configurable: true } };
-
-	    NineSlicePlane.prototype.textureUpdated = function textureUpdated ()
-	    {
-	        this._textureID = this.shader.texture._updateID;
-	        this._refresh();
-	    };
-
-	    prototypeAccessors.vertices.get = function ()
-	    {
-	        return this.geometry.getAttribute('aVertexPosition').data;
-	    };
-
-	    prototypeAccessors.vertices.set = function (value)
-	    {
-	        this.geometry.getAttribute('aVertexPosition').data = value;
-	    };
-
-	    /**
-	     * Updates the horizontal vertices.
-	     *
-	     */
-	    NineSlicePlane.prototype.updateHorizontalVertices = function updateHorizontalVertices ()
-	    {
-	        var vertices = this.vertices;
-
-	        var h = this._topHeight + this._bottomHeight;
-	        var scale = this._height > h ? 1.0 : this._height / h;
-
-	        vertices[9] = vertices[11] = vertices[13] = vertices[15] = this._topHeight * scale;
-	        vertices[17] = vertices[19] = vertices[21] = vertices[23] = this._height - (this._bottomHeight * scale);
-	        vertices[25] = vertices[27] = vertices[29] = vertices[31] = this._height;
-	    };
-
-	    /**
-	     * Updates the vertical vertices.
-	     *
-	     */
-	    NineSlicePlane.prototype.updateVerticalVertices = function updateVerticalVertices ()
-	    {
-	        var vertices = this.vertices;
-
-	        var w = this._leftWidth + this._rightWidth;
-	        var scale = this._width > w ? 1.0 : this._width / w;
-
-	        vertices[2] = vertices[10] = vertices[18] = vertices[26] = this._leftWidth * scale;
-	        vertices[4] = vertices[12] = vertices[20] = vertices[28] = this._width - (this._rightWidth * scale);
-	        vertices[6] = vertices[14] = vertices[22] = vertices[30] = this._width;
-	    };
-
-	    /**
-	     * The width of the NineSlicePlane, setting this will actually modify the vertices and UV's of this plane
-	     *
-	     * @member {number}
-	     */
-	    prototypeAccessors.width.get = function ()
-	    {
-	        return this._width;
-	    };
-
-	    prototypeAccessors.width.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        this._width = value;
-	        this._refresh();
-	    };
-
-	    /**
-	     * The height of the NineSlicePlane, setting this will actually modify the vertices and UV's of this plane
-	     *
-	     * @member {number}
-	     */
-	    prototypeAccessors.height.get = function ()
-	    {
-	        return this._height;
-	    };
-
-	    prototypeAccessors.height.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        this._height = value;
-	        this._refresh();
-	    };
-
-	    /**
-	     * The width of the left column
-	     *
-	     * @member {number}
-	     */
-	    prototypeAccessors.leftWidth.get = function ()
-	    {
-	        return this._leftWidth;
-	    };
-
-	    prototypeAccessors.leftWidth.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        this._leftWidth = value;
-	        this._refresh();
-	    };
-
-	    /**
-	     * The width of the right column
-	     *
-	     * @member {number}
-	     */
-	    prototypeAccessors.rightWidth.get = function ()
-	    {
-	        return this._rightWidth;
-	    };
-
-	    prototypeAccessors.rightWidth.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        this._rightWidth = value;
-	        this._refresh();
-	    };
-
-	    /**
-	     * The height of the top row
-	     *
-	     * @member {number}
-	     */
-	    prototypeAccessors.topHeight.get = function ()
-	    {
-	        return this._topHeight;
-	    };
-
-	    prototypeAccessors.topHeight.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        this._topHeight = value;
-	        this._refresh();
-	    };
-
-	    /**
-	     * The height of the bottom row
-	     *
-	     * @member {number}
-	     */
-	    prototypeAccessors.bottomHeight.get = function ()
-	    {
-	        return this._bottomHeight;
-	    };
-
-	    prototypeAccessors.bottomHeight.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        this._bottomHeight = value;
-	        this._refresh();
-	    };
-
-	    /**
-	     * Refreshes NineSlicePlane coords. All of them.
-	     */
-	    NineSlicePlane.prototype._refresh = function _refresh ()
-	    {
-	        var texture = this.texture;
-
-	        var uvs = this.geometry.buffers[1].data;
-
-	        this._origWidth = texture.orig.width;
-	        this._origHeight = texture.orig.height;
-
-	        var _uvw = 1.0 / this._origWidth;
-	        var _uvh = 1.0 / this._origHeight;
-
-	        uvs[0] = uvs[8] = uvs[16] = uvs[24] = 0;
-	        uvs[1] = uvs[3] = uvs[5] = uvs[7] = 0;
-	        uvs[6] = uvs[14] = uvs[22] = uvs[30] = 1;
-	        uvs[25] = uvs[27] = uvs[29] = uvs[31] = 1;
-
-	        uvs[2] = uvs[10] = uvs[18] = uvs[26] = _uvw * this._leftWidth;
-	        uvs[4] = uvs[12] = uvs[20] = uvs[28] = 1 - (_uvw * this._rightWidth);
-	        uvs[9] = uvs[11] = uvs[13] = uvs[15] = _uvh * this._topHeight;
-	        uvs[17] = uvs[19] = uvs[21] = uvs[23] = 1 - (_uvh * this._bottomHeight);
-
-	        this.updateHorizontalVertices();
-	        this.updateVerticalVertices();
-
-	        this.geometry.buffers[0].update();
-	        this.geometry.buffers[1].update();
-	    };
-
-	    Object.defineProperties( NineSlicePlane.prototype, prototypeAccessors );
-
-	    return NineSlicePlane;
-	}(SimplePlane));
-
-	var meshExtras = ({
-		PlaneGeometry: PlaneGeometry,
-		RopeGeometry: RopeGeometry,
-		SimpleRope: SimpleRope,
-		SimplePlane: SimplePlane,
-		SimpleMesh: SimpleMesh,
-		NineSlicePlane: NineSlicePlane
-	});
-
-	/*!
-	 * @pixi/particles - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/particles - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/particles is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -33322,9 +35337,9 @@
 	    this.geometry.destroy();
 	};
 
-	var vertex$3 = "attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\nattribute vec4 aColor;\n\nattribute vec2 aPositionCoord;\nattribute float aRotation;\n\nuniform mat3 translationMatrix;\nuniform vec4 uColor;\n\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nvoid main(void){\n    float x = (aVertexPosition.x) * cos(aRotation) - (aVertexPosition.y) * sin(aRotation);\n    float y = (aVertexPosition.x) * sin(aRotation) + (aVertexPosition.y) * cos(aRotation);\n\n    vec2 v = vec2(x, y);\n    v = v + aPositionCoord;\n\n    gl_Position = vec4((translationMatrix * vec3(v, 1.0)).xy, 0.0, 1.0);\n\n    vTextureCoord = aTextureCoord;\n    vColor = aColor * uColor;\n}\n";
+	var vertex$2 = "attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\nattribute vec4 aColor;\n\nattribute vec2 aPositionCoord;\nattribute float aRotation;\n\nuniform mat3 translationMatrix;\nuniform vec4 uColor;\n\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nvoid main(void){\n    float x = (aVertexPosition.x) * cos(aRotation) - (aVertexPosition.y) * sin(aRotation);\n    float y = (aVertexPosition.x) * sin(aRotation) + (aVertexPosition.y) * cos(aRotation);\n\n    vec2 v = vec2(x, y);\n    v = v + aPositionCoord;\n\n    gl_Position = vec4((translationMatrix * vec3(v, 1.0)).xy, 0.0, 1.0);\n\n    vTextureCoord = aTextureCoord;\n    vColor = aColor * uColor;\n}\n";
 
-	var fragment$2 = "varying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nuniform sampler2D uSampler;\n\nvoid main(void){\n    vec4 color = texture2D(uSampler, vTextureCoord) * vColor;\n    gl_FragColor = color;\n}";
+	var fragment$1 = "varying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nuniform sampler2D uSampler;\n\nvoid main(void){\n    vec4 color = texture2D(uSampler, vTextureCoord) * vColor;\n    gl_FragColor = color;\n}";
 
 	/**
 	 * @author Mat Groves
@@ -33404,7 +35419,7 @@
 	                offset: 0,
 	            } ];
 
-	        this.shader = Shader.from(vertex$3, fragment$2, {});
+	        this.shader = Shader.from(vertex$2, fragment$1, {});
 	    }
 
 	    if ( ObjectRenderer$$1 ) { ParticleRenderer.__proto__ = ObjectRenderer$$1; }
@@ -33758,3956 +35773,9 @@
 	    return ParticleRenderer;
 	}(ObjectRenderer));
 
-	var particles = ({
-		ParticleContainer: ParticleContainer,
-		ParticleRenderer: ParticleRenderer
-	});
-
 	/*!
-	 * @pixi/sprite - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
-	 *
-	 * @pixi/sprite is licensed under the MIT License.
-	 * http://www.opensource.org/licenses/mit-license
-	 */
-
-	var tempPoint$1 = new Point();
-	var indices = new Uint16Array([0, 1, 2, 0, 2, 3]);
-
-	/**
-	 * The Sprite object is the base for all textured objects that are rendered to the screen
-	*
-	 * A sprite can be created directly from an image like this:
-	 *
-	 * ```js
-	 * let sprite = new PIXI.Sprite.from('assets/image.png');
-	 * ```
-	 *
-	 * The more efficient way to create sprites is using a {@link PIXI.Spritesheet},
-	 * as swapping base textures when rendering to the screen is inefficient.
-	 *
-	 * ```js
-	 * PIXI.loader.add("assets/spritesheet.json").load(setup);
-	 *
-	 * function setup() {
-	 *   let sheet = PIXI.loader.resources["assets/spritesheet.json"].spritesheet;
-	 *   let sprite = new PIXI.Sprite(sheet.textures["image.png"]);
-	 *   ...
-	 * }
-	 * ```
-	 *
-	 * @class
-	 * @extends PIXI.Container
-	 * @memberof PIXI
-	 */
-	var Sprite = /*@__PURE__*/(function (Container$$1) {
-	    function Sprite(texture)
-	    {
-	        Container$$1.call(this);
-
-	        /**
-	         * The anchor sets the origin point of the texture.
-	         * The default is 0,0 or taken from the {@link PIXI.Texture#defaultAnchor|Texture}
-	         * passed to the constructor. A value of 0,0 means the texture's origin is the top left.
-	         * Setting the anchor to 0.5,0.5 means the texture's origin is centered.
-	         * Setting the anchor to 1,1 would mean the texture's origin point will be the bottom right corner.
-	         * Note: Updating the {@link PIXI.Texture#defaultAnchor} after a Texture is
-	         * created does _not_ update the Sprite's anchor values.
-	         *
-	         * @member {PIXI.ObservablePoint}
-	         * @private
-	         */
-	        this._anchor = new ObservablePoint(
-	            this._onAnchorUpdate,
-	            this,
-	            (texture ? texture.defaultAnchor.x : 0),
-	            (texture ? texture.defaultAnchor.y : 0)
-	        );
-
-	        /**
-	         * The texture that the sprite is using
-	         *
-	         * @private
-	         * @member {PIXI.Texture}
-	         */
-	        this._texture = null;
-
-	        /**
-	         * The width of the sprite (this is initially set by the texture)
-	         *
-	         * @private
-	         * @member {number}
-	         */
-	        this._width = 0;
-
-	        /**
-	         * The height of the sprite (this is initially set by the texture)
-	         *
-	         * @private
-	         * @member {number}
-	         */
-	        this._height = 0;
-
-	        /**
-	         * The tint applied to the sprite. This is a hex value. A value of 0xFFFFFF will remove any tint effect.
-	         *
-	         * @private
-	         * @member {number}
-	         * @default 0xFFFFFF
-	         */
-	        this._tint = null;
-	        this._tintRGB = null;
-	        this.tint = 0xFFFFFF;
-
-	        /**
-	         * The blend mode to be applied to the sprite. Apply a value of `PIXI.BLEND_MODES.NORMAL` to reset the blend mode.
-	         *
-	         * @member {number}
-	         * @default PIXI.BLEND_MODES.NORMAL
-	         * @see PIXI.BLEND_MODES
-	         */
-	        this.blendMode = BLEND_MODES.NORMAL;
-
-	        /**
-	         * The shader that will be used to render the sprite. Set to null to remove a current shader.
-	         *
-	         * @member {PIXI.Filter|PIXI.Shader}
-	         */
-	        this.shader = null;
-
-	        /**
-	         * An internal cached value of the tint.
-	         *
-	         * @private
-	         * @member {number}
-	         * @default 0xFFFFFF
-	         */
-	        this.cachedTint = 0xFFFFFF;
-
-	        this.uvs = null;
-
-	        // call texture setter
-	        this.texture = texture || Texture.EMPTY;
-
-	        /**
-	         * this is used to store the vertex data of the sprite (basically a quad)
-	         *
-	         * @private
-	         * @member {Float32Array}
-	         */
-	        this.vertexData = new Float32Array(8);
-
-	        /**
-	         * This is used to calculate the bounds of the object IF it is a trimmed sprite
-	         *
-	         * @private
-	         * @member {Float32Array}
-	         */
-	        this.vertexTrimmedData = null;
-
-	        this._transformID = -1;
-	        this._textureID = -1;
-
-	        this._transformTrimmedID = -1;
-	        this._textureTrimmedID = -1;
-
-	        // Batchable stuff..
-	        // TODO could make this a mixin?
-	        this.indices = indices;
-	        this.size = 4;
-	        this.start = 0;
-
-	        /**
-	         * Plugin that is responsible for rendering this element.
-	         * Allows to customize the rendering process without overriding '_render' & '_renderCanvas' methods.
-	         *
-	         * @member {string}
-	         * @default 'sprite'
-	         */
-	        this.pluginName = 'batch';
-
-	        /**
-	         * used to fast check if a sprite is.. a sprite!
-	         * @member {boolean}
-	         */
-	        this.isSprite = true;
-
-	        /**
-	         * Internal roundPixels field
-	         *
-	         * @member {boolean}
-	         * @private
-	         */
-	        this._roundPixels = settings.ROUND_PIXELS;
-	    }
-
-	    if ( Container$$1 ) { Sprite.__proto__ = Container$$1; }
-	    Sprite.prototype = Object.create( Container$$1 && Container$$1.prototype );
-	    Sprite.prototype.constructor = Sprite;
-
-	    var prototypeAccessors = { roundPixels: { configurable: true },width: { configurable: true },height: { configurable: true },anchor: { configurable: true },tint: { configurable: true },texture: { configurable: true } };
-
-	    /**
-	     * When the texture is updated, this event will fire to update the scale and frame
-	     *
-	     * @private
-	     */
-	    Sprite.prototype._onTextureUpdate = function _onTextureUpdate ()
-	    {
-	        this._textureID = -1;
-	        this._textureTrimmedID = -1;
-	        this.cachedTint = 0xFFFFFF;
-
-	        this.uvs = this._texture._uvs.uvsFloat32;
-	        // so if _width is 0 then width was not set..
-	        if (this._width)
-	        {
-	            this.scale.x = sign(this.scale.x) * this._width / this._texture.orig.width;
-	        }
-
-	        if (this._height)
-	        {
-	            this.scale.y = sign(this.scale.y) * this._height / this._texture.orig.height;
-	        }
-	    };
-
-	    /**
-	     * Called when the anchor position updates.
-	     *
-	     * @private
-	     */
-	    Sprite.prototype._onAnchorUpdate = function _onAnchorUpdate ()
-	    {
-	        this._transformID = -1;
-	        this._transformTrimmedID = -1;
-	    };
-
-	    /**
-	     * calculates worldTransform * vertices, store it in vertexData
-	     */
-	    Sprite.prototype.calculateVertices = function calculateVertices ()
-	    {
-	        var texture = this._texture;
-
-	        if (this._transformID === this.transform._worldID && this._textureID === texture._updateID)
-	        {
-	            return;
-	        }
-
-	        this._transformID = this.transform._worldID;
-	        this._textureID = texture._updateID;
-
-	        // set the vertex data
-
-	        var wt = this.transform.worldTransform;
-	        var a = wt.a;
-	        var b = wt.b;
-	        var c = wt.c;
-	        var d = wt.d;
-	        var tx = wt.tx;
-	        var ty = wt.ty;
-	        var vertexData = this.vertexData;
-	        var trim = texture.trim;
-	        var orig = texture.orig;
-	        var anchor = this._anchor;
-
-	        var w0 = 0;
-	        var w1 = 0;
-	        var h0 = 0;
-	        var h1 = 0;
-
-	        if (trim)
-	        {
-	            // if the sprite is trimmed and is not a tilingsprite then we need to add the extra
-	            // space before transforming the sprite coords.
-	            w1 = trim.x - (anchor._x * orig.width);
-	            w0 = w1 + trim.width;
-
-	            h1 = trim.y - (anchor._y * orig.height);
-	            h0 = h1 + trim.height;
-	        }
-	        else
-	        {
-	            w1 = -anchor._x * orig.width;
-	            w0 = w1 + orig.width;
-
-	            h1 = -anchor._y * orig.height;
-	            h0 = h1 + orig.height;
-	        }
-
-	        // xy
-	        vertexData[0] = (a * w1) + (c * h1) + tx;
-	        vertexData[1] = (d * h1) + (b * w1) + ty;
-
-	        // xy
-	        vertexData[2] = (a * w0) + (c * h1) + tx;
-	        vertexData[3] = (d * h1) + (b * w0) + ty;
-
-	        // xy
-	        vertexData[4] = (a * w0) + (c * h0) + tx;
-	        vertexData[5] = (d * h0) + (b * w0) + ty;
-
-	        // xy
-	        vertexData[6] = (a * w1) + (c * h0) + tx;
-	        vertexData[7] = (d * h0) + (b * w1) + ty;
-
-	        if (this._roundPixels)
-	        {
-	            for (var i = 0; i < 8; i++)
-	            {
-	                vertexData[i] = Math.round(vertexData[i]);
-	            }
-	        }
-	    };
-
-	    /**
-	     * calculates worldTransform * vertices for a non texture with a trim. store it in vertexTrimmedData
-	     * This is used to ensure that the true width and height of a trimmed texture is respected
-	     */
-	    Sprite.prototype.calculateTrimmedVertices = function calculateTrimmedVertices ()
-	    {
-	        if (!this.vertexTrimmedData)
-	        {
-	            this.vertexTrimmedData = new Float32Array(8);
-	        }
-	        else if (this._transformTrimmedID === this.transform._worldID && this._textureTrimmedID === this._texture._updateID)
-	        {
-	            return;
-	        }
-
-	        this._transformTrimmedID = this.transform._worldID;
-	        this._textureTrimmedID = this._texture._updateID;
-
-	        // lets do some special trim code!
-	        var texture = this._texture;
-	        var vertexData = this.vertexTrimmedData;
-	        var orig = texture.orig;
-	        var anchor = this._anchor;
-
-	        // lets calculate the new untrimmed bounds..
-	        var wt = this.transform.worldTransform;
-	        var a = wt.a;
-	        var b = wt.b;
-	        var c = wt.c;
-	        var d = wt.d;
-	        var tx = wt.tx;
-	        var ty = wt.ty;
-
-	        var w1 = -anchor._x * orig.width;
-	        var w0 = w1 + orig.width;
-
-	        var h1 = -anchor._y * orig.height;
-	        var h0 = h1 + orig.height;
-
-	        // xy
-	        vertexData[0] = (a * w1) + (c * h1) + tx;
-	        vertexData[1] = (d * h1) + (b * w1) + ty;
-
-	        // xy
-	        vertexData[2] = (a * w0) + (c * h1) + tx;
-	        vertexData[3] = (d * h1) + (b * w0) + ty;
-
-	        // xy
-	        vertexData[4] = (a * w0) + (c * h0) + tx;
-	        vertexData[5] = (d * h0) + (b * w0) + ty;
-
-	        // xy
-	        vertexData[6] = (a * w1) + (c * h0) + tx;
-	        vertexData[7] = (d * h0) + (b * w1) + ty;
-	    };
-
-	    /**
-	    *
-	    * Renders the object using the WebGL renderer
-	    *
-	    * @protected
-	    * @param {PIXI.Renderer} renderer - The webgl renderer to use.
-	    */
-	    Sprite.prototype._render = function _render (renderer)
-	    {
-	        this.calculateVertices();
-
-	        renderer.batch.setObjectRenderer(renderer.plugins[this.pluginName]);
-	        renderer.plugins[this.pluginName].render(this);
-	    };
-
-	    /**
-	     * Updates the bounds of the sprite.
-	     *
-	     * @protected
-	     */
-	    Sprite.prototype._calculateBounds = function _calculateBounds ()
-	    {
-	        var trim = this._texture.trim;
-	        var orig = this._texture.orig;
-
-	        // First lets check to see if the current texture has a trim..
-	        if (!trim || (trim.width === orig.width && trim.height === orig.height))
-	        {
-	            // no trim! lets use the usual calculations..
-	            this.calculateVertices();
-	            this._bounds.addQuad(this.vertexData);
-	        }
-	        else
-	        {
-	            // lets calculate a special trimmed bounds...
-	            this.calculateTrimmedVertices();
-	            this._bounds.addQuad(this.vertexTrimmedData);
-	        }
-	    };
-
-	    /**
-	     * Gets the local bounds of the sprite object.
-	     *
-	     * @param {PIXI.Rectangle} rect - The output rectangle.
-	     * @return {PIXI.Rectangle} The bounds.
-	     */
-	    Sprite.prototype.getLocalBounds = function getLocalBounds (rect)
-	    {
-	        // we can do a fast local bounds if the sprite has no children!
-	        if (this.children.length === 0)
-	        {
-	            this._bounds.minX = this._texture.orig.width * -this._anchor._x;
-	            this._bounds.minY = this._texture.orig.height * -this._anchor._y;
-	            this._bounds.maxX = this._texture.orig.width * (1 - this._anchor._x);
-	            this._bounds.maxY = this._texture.orig.height * (1 - this._anchor._y);
-
-	            if (!rect)
-	            {
-	                if (!this._localBoundsRect)
-	                {
-	                    this._localBoundsRect = new Rectangle();
-	                }
-
-	                rect = this._localBoundsRect;
-	            }
-
-	            return this._bounds.getRectangle(rect);
-	        }
-
-	        return Container$$1.prototype.getLocalBounds.call(this, rect);
-	    };
-
-	    /**
-	     * Tests if a point is inside this sprite
-	     *
-	     * @param {PIXI.Point} point - the point to test
-	     * @return {boolean} the result of the test
-	     */
-	    Sprite.prototype.containsPoint = function containsPoint (point)
-	    {
-	        this.worldTransform.applyInverse(point, tempPoint$1);
-
-	        var width = this._texture.orig.width;
-	        var height = this._texture.orig.height;
-	        var x1 = -width * this.anchor.x;
-	        var y1 = 0;
-
-	        if (tempPoint$1.x >= x1 && tempPoint$1.x < x1 + width)
-	        {
-	            y1 = -height * this.anchor.y;
-
-	            if (tempPoint$1.y >= y1 && tempPoint$1.y < y1 + height)
-	            {
-	                return true;
-	            }
-	        }
-
-	        return false;
-	    };
-
-	    /**
-	     * Destroys this sprite and optionally its texture and children
-	     *
-	     * @param {object|boolean} [options] - Options parameter. A boolean will act as if all options
-	     *  have been set to that value
-	     * @param {boolean} [options.children=false] - if set to true, all the children will have their destroy
-	     *      method called as well. 'options' will be passed on to those calls.
-	     * @param {boolean} [options.texture=false] - Should it destroy the current texture of the sprite as well
-	     * @param {boolean} [options.baseTexture=false] - Should it destroy the base texture of the sprite as well
-	     */
-	    Sprite.prototype.destroy = function destroy (options)
-	    {
-	        Container$$1.prototype.destroy.call(this, options);
-
-	        this._texture.off('update', this._onTextureUpdate, this);
-
-	        this._anchor = null;
-
-	        var destroyTexture = typeof options === 'boolean' ? options : options && options.texture;
-
-	        if (destroyTexture)
-	        {
-	            var destroyBaseTexture = typeof options === 'boolean' ? options : options && options.baseTexture;
-
-	            this._texture.destroy(!!destroyBaseTexture);
-	        }
-
-	        this._texture = null;
-	        this.shader = null;
-	    };
-
-	    // some helper functions..
-
-	    /**
-	     * Helper function that creates a new sprite based on the source you provide.
-	     * The source can be - frame id, image url, video url, canvas element, video element, base texture
-	     *
-	     * @static
-	     * @param {number|string|PIXI.Texture|HTMLCanvasElement|HTMLVideoElement} source Source to create texture from
-	     * @param {object} [options] See {@link PIXI.BaseTexture}'s constructor for options.
-	     * @return {PIXI.Sprite} The newly created sprite
-	     */
-	    Sprite.from = function from (source, options)
-	    {
-	        var texture = (source instanceof Texture)
-	            ? source
-	            : new Texture.from(source, options);
-
-	        return new Sprite(texture);
-	    };
-
-	    /**
-	     * If true PixiJS will Math.floor() x/y values when rendering, stopping pixel interpolation.
-	     * Advantages can include sharper image quality (like text) and faster rendering on canvas.
-	     * The main disadvantage is movement of objects may appear less smooth.
-	     * To set the global default, change {@link PIXI.settings.ROUND_PIXELS}
-	     *
-	     * @member {boolean}
-	     * @default false
-	     */
-	    prototypeAccessors.roundPixels.set = function (value)
-	    {
-	        if (this._roundPixels !== value)
-	        {
-	            this._transformID = -1;
-	        }
-	        this._roundPixels = value;
-	    };
-
-	    prototypeAccessors.roundPixels.get = function ()
-	    {
-	        return this._roundPixels;
-	    };
-
-	    /**
-	     * The width of the sprite, setting this will actually modify the scale to achieve the value set
-	     *
-	     * @member {number}
-	     */
-	    prototypeAccessors.width.get = function ()
-	    {
-	        return Math.abs(this.scale.x) * this._texture.orig.width;
-	    };
-
-	    prototypeAccessors.width.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        var s = sign(this.scale.x) || 1;
-
-	        this.scale.x = s * value / this._texture.orig.width;
-	        this._width = value;
-	    };
-
-	    /**
-	     * The height of the sprite, setting this will actually modify the scale to achieve the value set
-	     *
-	     * @member {number}
-	     */
-	    prototypeAccessors.height.get = function ()
-	    {
-	        return Math.abs(this.scale.y) * this._texture.orig.height;
-	    };
-
-	    prototypeAccessors.height.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        var s = sign(this.scale.y) || 1;
-
-	        this.scale.y = s * value / this._texture.orig.height;
-	        this._height = value;
-	    };
-
-	    /**
-	     * The anchor sets the origin point of the text. The default value is taken from the {@link PIXI.Texture|Texture}
-	     * and passed to the constructor.
-	     *
-	     * The default is `(0,0)`, this means the text's origin is the top left.
-	     *
-	     * Setting the anchor to `(0.5,0.5)` means the text's origin is centered.
-	     *
-	     * Setting the anchor to `(1,1)` would mean the text's origin point will be the bottom right corner.
-	     *
-	     * If you pass only single parameter, it will set both x and y to the same value as shown in the example below.
-	     *
-	     * @example
-	     * const sprite = new PIXI.Sprite(texture);
-	     * sprite.anchor.set(0.5); // This will set the origin to center. (0.5) is same as (0.5, 0.5).
-	     *
-	     * @member {PIXI.ObservablePoint}
-	     */
-	    prototypeAccessors.anchor.get = function ()
-	    {
-	        return this._anchor;
-	    };
-
-	    prototypeAccessors.anchor.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        this._anchor.copyFrom(value);
-	    };
-
-	    /**
-	     * The tint applied to the sprite. This is a hex value.
-	     * A value of 0xFFFFFF will remove any tint effect.
-	     *
-	     * @member {number}
-	     * @default 0xFFFFFF
-	     */
-	    prototypeAccessors.tint.get = function ()
-	    {
-	        return this._tint;
-	    };
-
-	    prototypeAccessors.tint.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        this._tint = value;
-	        this._tintRGB = (value >> 16) + (value & 0xff00) + ((value & 0xff) << 16);
-	    };
-
-	    /**
-	     * The texture that the sprite is using
-	     *
-	     * @member {PIXI.Texture}
-	     */
-	    prototypeAccessors.texture.get = function ()
-	    {
-	        return this._texture;
-	    };
-
-	    prototypeAccessors.texture.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        if (this._texture === value)
-	        {
-	            return;
-	        }
-
-	        this._texture = value || Texture.EMPTY;
-	        this.cachedTint = 0xFFFFFF;
-
-	        this._textureID = -1;
-	        this._textureTrimmedID = -1;
-
-	        if (value)
-	        {
-	            // wait for the texture to load
-	            if (value.baseTexture.valid)
-	            {
-	                this._onTextureUpdate();
-	            }
-	            else
-	            {
-	                value.once('update', this._onTextureUpdate, this);
-	            }
-	        }
-	    };
-
-	    Object.defineProperties( Sprite.prototype, prototypeAccessors );
-
-	    return Sprite;
-	}(Container));
-
-	var sprite = ({
-		Sprite: Sprite
-	});
-
-	/*!
-	 * @pixi/text - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
-	 *
-	 * @pixi/text is licensed under the MIT License.
-	 * http://www.opensource.org/licenses/mit-license
-	 */
-
-	/**
-	 * Constants that define the type of gradient on text.
-	 *
-	 * @static
-	 * @constant
-	 * @name TEXT_GRADIENT
-	 * @memberof PIXI
-	 * @type {object}
-	 * @property {number} LINEAR_VERTICAL Vertical gradient
-	 * @property {number} LINEAR_HORIZONTAL Linear gradient
-	 */
-	var TEXT_GRADIENT = {
-	    LINEAR_VERTICAL: 0,
-	    LINEAR_HORIZONTAL: 1,
-	};
-
-	// disabling eslint for now, going to rewrite this in v5
-
-	var defaultStyle = {
-	    align: 'left',
-	    breakWords: false,
-	    dropShadow: false,
-	    dropShadowAlpha: 1,
-	    dropShadowAngle: Math.PI / 6,
-	    dropShadowBlur: 0,
-	    dropShadowColor: 'black',
-	    dropShadowDistance: 5,
-	    fill: 'black',
-	    fillGradientType: TEXT_GRADIENT.LINEAR_VERTICAL,
-	    fillGradientStops: [],
-	    fontFamily: 'Arial',
-	    fontSize: 26,
-	    fontStyle: 'normal',
-	    fontVariant: 'normal',
-	    fontWeight: 'normal',
-	    letterSpacing: 0,
-	    lineHeight: 0,
-	    lineJoin: 'miter',
-	    miterLimit: 10,
-	    padding: 0,
-	    stroke: 'black',
-	    strokeThickness: 0,
-	    textBaseline: 'alphabetic',
-	    trim: false,
-	    whiteSpace: 'pre',
-	    wordWrap: false,
-	    wordWrapWidth: 100,
-	    leading: 0,
-	};
-
-	/**
-	 * A TextStyle Object contains information to decorate a Text objects.
-	 *
-	 * An instance can be shared between multiple Text objects; then changing the style will update all text objects using it.
-	 *
-	 * A tool can be used to generate a text style [here](https://pixijs.io/pixi-text-style).
-	 *
-	 * @class
-	 * @memberof PIXI
-	 */
-	var TextStyle = function TextStyle(style)
-	{
-	    this.styleID = 0;
-
-	    this.reset();
-
-	    deepCopyProperties(this, style, style);
-	};
-
-	var prototypeAccessors$7 = { align: { configurable: true },breakWords: { configurable: true },dropShadow: { configurable: true },dropShadowAlpha: { configurable: true },dropShadowAngle: { configurable: true },dropShadowBlur: { configurable: true },dropShadowColor: { configurable: true },dropShadowDistance: { configurable: true },fill: { configurable: true },fillGradientType: { configurable: true },fillGradientStops: { configurable: true },fontFamily: { configurable: true },fontSize: { configurable: true },fontStyle: { configurable: true },fontVariant: { configurable: true },fontWeight: { configurable: true },letterSpacing: { configurable: true },lineHeight: { configurable: true },leading: { configurable: true },lineJoin: { configurable: true },miterLimit: { configurable: true },padding: { configurable: true },stroke: { configurable: true },strokeThickness: { configurable: true },textBaseline: { configurable: true },trim: { configurable: true },whiteSpace: { configurable: true },wordWrap: { configurable: true },wordWrapWidth: { configurable: true } };
-
-	/**
-	 * Creates a new TextStyle object with the same values as this one.
-	 * Note that the only the properties of the object are cloned.
-	 *
-	 * @return {PIXI.TextStyle} New cloned TextStyle object
-	 */
-	TextStyle.prototype.clone = function clone ()
-	{
-	    var clonedProperties = {};
-
-	    deepCopyProperties(clonedProperties, this, defaultStyle);
-
-	    return new TextStyle(clonedProperties);
-	};
-
-	/**
-	 * Resets all properties to the defaults specified in TextStyle.prototype._default
-	 */
-	TextStyle.prototype.reset = function reset ()
-	{
-	    deepCopyProperties(this, defaultStyle, defaultStyle);
-	};
-
-	/**
-	 * Alignment for multiline text ('left', 'center' or 'right'), does not affect single line text
-	 *
-	 * @member {string}
-	 */
-	prototypeAccessors$7.align.get = function ()
-	{
-	    return this._align;
-	};
-	prototypeAccessors$7.align.set = function (align) // eslint-disable-line require-jsdoc
-	{
-	    if (this._align !== align)
-	    {
-	        this._align = align;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * Indicates if lines can be wrapped within words, it needs wordWrap to be set to true
-	 *
-	 * @member {boolean}
-	 */
-	prototypeAccessors$7.breakWords.get = function ()
-	{
-	    return this._breakWords;
-	};
-	prototypeAccessors$7.breakWords.set = function (breakWords) // eslint-disable-line require-jsdoc
-	{
-	    if (this._breakWords !== breakWords)
-	    {
-	        this._breakWords = breakWords;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * Set a drop shadow for the text
-	 *
-	 * @member {boolean}
-	 */
-	prototypeAccessors$7.dropShadow.get = function ()
-	{
-	    return this._dropShadow;
-	};
-	prototypeAccessors$7.dropShadow.set = function (dropShadow) // eslint-disable-line require-jsdoc
-	{
-	    if (this._dropShadow !== dropShadow)
-	    {
-	        this._dropShadow = dropShadow;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * Set alpha for the drop shadow
-	 *
-	 * @member {number}
-	 */
-	prototypeAccessors$7.dropShadowAlpha.get = function ()
-	{
-	    return this._dropShadowAlpha;
-	};
-	prototypeAccessors$7.dropShadowAlpha.set = function (dropShadowAlpha) // eslint-disable-line require-jsdoc
-	{
-	    if (this._dropShadowAlpha !== dropShadowAlpha)
-	    {
-	        this._dropShadowAlpha = dropShadowAlpha;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * Set a angle of the drop shadow
-	 *
-	 * @member {number}
-	 */
-	prototypeAccessors$7.dropShadowAngle.get = function ()
-	{
-	    return this._dropShadowAngle;
-	};
-	prototypeAccessors$7.dropShadowAngle.set = function (dropShadowAngle) // eslint-disable-line require-jsdoc
-	{
-	    if (this._dropShadowAngle !== dropShadowAngle)
-	    {
-	        this._dropShadowAngle = dropShadowAngle;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * Set a shadow blur radius
-	 *
-	 * @member {number}
-	 */
-	prototypeAccessors$7.dropShadowBlur.get = function ()
-	{
-	    return this._dropShadowBlur;
-	};
-	prototypeAccessors$7.dropShadowBlur.set = function (dropShadowBlur) // eslint-disable-line require-jsdoc
-	{
-	    if (this._dropShadowBlur !== dropShadowBlur)
-	    {
-	        this._dropShadowBlur = dropShadowBlur;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * A fill style to be used on the dropshadow e.g 'red', '#00FF00'
-	 *
-	 * @member {string|number}
-	 */
-	prototypeAccessors$7.dropShadowColor.get = function ()
-	{
-	    return this._dropShadowColor;
-	};
-	prototypeAccessors$7.dropShadowColor.set = function (dropShadowColor) // eslint-disable-line require-jsdoc
-	{
-	    var outputColor = getColor(dropShadowColor);
-	    if (this._dropShadowColor !== outputColor)
-	    {
-	        this._dropShadowColor = outputColor;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * Set a distance of the drop shadow
-	 *
-	 * @member {number}
-	 */
-	prototypeAccessors$7.dropShadowDistance.get = function ()
-	{
-	    return this._dropShadowDistance;
-	};
-	prototypeAccessors$7.dropShadowDistance.set = function (dropShadowDistance) // eslint-disable-line require-jsdoc
-	{
-	    if (this._dropShadowDistance !== dropShadowDistance)
-	    {
-	        this._dropShadowDistance = dropShadowDistance;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * A canvas fillstyle that will be used on the text e.g 'red', '#00FF00'.
-	 * Can be an array to create a gradient eg ['#000000','#FFFFFF']
-	 * {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle|MDN}
-	 *
-	 * @member {string|string[]|number|number[]|CanvasGradient|CanvasPattern}
-	 */
-	prototypeAccessors$7.fill.get = function ()
-	{
-	    return this._fill;
-	};
-	prototypeAccessors$7.fill.set = function (fill) // eslint-disable-line require-jsdoc
-	{
-	    var outputColor = getColor(fill);
-	    if (this._fill !== outputColor)
-	    {
-	        this._fill = outputColor;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * If fill is an array of colours to create a gradient, this can change the type/direction of the gradient.
-	 * See {@link PIXI.TEXT_GRADIENT}
-	 *
-	 * @member {number}
-	 */
-	prototypeAccessors$7.fillGradientType.get = function ()
-	{
-	    return this._fillGradientType;
-	};
-	prototypeAccessors$7.fillGradientType.set = function (fillGradientType) // eslint-disable-line require-jsdoc
-	{
-	    if (this._fillGradientType !== fillGradientType)
-	    {
-	        this._fillGradientType = fillGradientType;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * If fill is an array of colours to create a gradient, this array can set the stop points
-	 * (numbers between 0 and 1) for the color, overriding the default behaviour of evenly spacing them.
-	 *
-	 * @member {number[]}
-	 */
-	prototypeAccessors$7.fillGradientStops.get = function ()
-	{
-	    return this._fillGradientStops;
-	};
-	prototypeAccessors$7.fillGradientStops.set = function (fillGradientStops) // eslint-disable-line require-jsdoc
-	{
-	    if (!areArraysEqual(this._fillGradientStops,fillGradientStops))
-	    {
-	        this._fillGradientStops = fillGradientStops;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * The font family
-	 *
-	 * @member {string|string[]}
-	 */
-	prototypeAccessors$7.fontFamily.get = function ()
-	{
-	    return this._fontFamily;
-	};
-	prototypeAccessors$7.fontFamily.set = function (fontFamily) // eslint-disable-line require-jsdoc
-	{
-	    if (this.fontFamily !== fontFamily)
-	    {
-	        this._fontFamily = fontFamily;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * The font size
-	 * (as a number it converts to px, but as a string, equivalents are '26px','20pt','160%' or '1.6em')
-	 *
-	 * @member {number|string}
-	 */
-	prototypeAccessors$7.fontSize.get = function ()
-	{
-	    return this._fontSize;
-	};
-	prototypeAccessors$7.fontSize.set = function (fontSize) // eslint-disable-line require-jsdoc
-	{
-	    if (this._fontSize !== fontSize)
-	    {
-	        this._fontSize = fontSize;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * The font style
-	 * ('normal', 'italic' or 'oblique')
-	 *
-	 * @member {string}
-	 */
-	prototypeAccessors$7.fontStyle.get = function ()
-	{
-	    return this._fontStyle;
-	};
-	prototypeAccessors$7.fontStyle.set = function (fontStyle) // eslint-disable-line require-jsdoc
-	{
-	    if (this._fontStyle !== fontStyle)
-	    {
-	        this._fontStyle = fontStyle;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * The font variant
-	 * ('normal' or 'small-caps')
-	 *
-	 * @member {string}
-	 */
-	prototypeAccessors$7.fontVariant.get = function ()
-	{
-	    return this._fontVariant;
-	};
-	prototypeAccessors$7.fontVariant.set = function (fontVariant) // eslint-disable-line require-jsdoc
-	{
-	    if (this._fontVariant !== fontVariant)
-	    {
-	        this._fontVariant = fontVariant;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * The font weight
-	 * ('normal', 'bold', 'bolder', 'lighter' and '100', '200', '300', '400', '500', '600', '700', 800' or '900')
-	 *
-	 * @member {string}
-	 */
-	prototypeAccessors$7.fontWeight.get = function ()
-	{
-	    return this._fontWeight;
-	};
-	prototypeAccessors$7.fontWeight.set = function (fontWeight) // eslint-disable-line require-jsdoc
-	{
-	    if (this._fontWeight !== fontWeight)
-	    {
-	        this._fontWeight = fontWeight;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * The amount of spacing between letters, default is 0
-	 *
-	 * @member {number}
-	 */
-	prototypeAccessors$7.letterSpacing.get = function ()
-	{
-	    return this._letterSpacing;
-	};
-	prototypeAccessors$7.letterSpacing.set = function (letterSpacing) // eslint-disable-line require-jsdoc
-	{
-	    if (this._letterSpacing !== letterSpacing)
-	    {
-	        this._letterSpacing = letterSpacing;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * The line height, a number that represents the vertical space that a letter uses
-	 *
-	 * @member {number}
-	 */
-	prototypeAccessors$7.lineHeight.get = function ()
-	{
-	    return this._lineHeight;
-	};
-	prototypeAccessors$7.lineHeight.set = function (lineHeight) // eslint-disable-line require-jsdoc
-	{
-	    if (this._lineHeight !== lineHeight)
-	    {
-	        this._lineHeight = lineHeight;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * The space between lines
-	 *
-	 * @member {number}
-	 */
-	prototypeAccessors$7.leading.get = function ()
-	{
-	    return this._leading;
-	};
-	prototypeAccessors$7.leading.set = function (leading) // eslint-disable-line require-jsdoc
-	{
-	    if (this._leading !== leading)
-	    {
-	        this._leading = leading;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * The lineJoin property sets the type of corner created, it can resolve spiked text issues.
-	 * Default is 'miter' (creates a sharp corner).
-	 *
-	 * @member {string}
-	 */
-	prototypeAccessors$7.lineJoin.get = function ()
-	{
-	    return this._lineJoin;
-	};
-	prototypeAccessors$7.lineJoin.set = function (lineJoin) // eslint-disable-line require-jsdoc
-	{
-	    if (this._lineJoin !== lineJoin)
-	    {
-	        this._lineJoin = lineJoin;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * The miter limit to use when using the 'miter' lineJoin mode
-	 * This can reduce or increase the spikiness of rendered text.
-	 *
-	 * @member {number}
-	 */
-	prototypeAccessors$7.miterLimit.get = function ()
-	{
-	    return this._miterLimit;
-	};
-	prototypeAccessors$7.miterLimit.set = function (miterLimit) // eslint-disable-line require-jsdoc
-	{
-	    if (this._miterLimit !== miterLimit)
-	    {
-	        this._miterLimit = miterLimit;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * Occasionally some fonts are cropped. Adding some padding will prevent this from happening
-	 * by adding padding to all sides of the text.
-	 *
-	 * @member {number}
-	 */
-	prototypeAccessors$7.padding.get = function ()
-	{
-	    return this._padding;
-	};
-	prototypeAccessors$7.padding.set = function (padding) // eslint-disable-line require-jsdoc
-	{
-	    if (this._padding !== padding)
-	    {
-	        this._padding = padding;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * A canvas fillstyle that will be used on the text stroke
-	 * e.g 'blue', '#FCFF00'
-	 *
-	 * @member {string|number}
-	 */
-	prototypeAccessors$7.stroke.get = function ()
-	{
-	    return this._stroke;
-	};
-	prototypeAccessors$7.stroke.set = function (stroke) // eslint-disable-line require-jsdoc
-	{
-	    var outputColor = getColor(stroke);
-	    if (this._stroke !== outputColor)
-	    {
-	        this._stroke = outputColor;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * A number that represents the thickness of the stroke.
-	 * Default is 0 (no stroke)
-	 *
-	 * @member {number}
-	 */
-	prototypeAccessors$7.strokeThickness.get = function ()
-	{
-	    return this._strokeThickness;
-	};
-	prototypeAccessors$7.strokeThickness.set = function (strokeThickness) // eslint-disable-line require-jsdoc
-	{
-	    if (this._strokeThickness !== strokeThickness)
-	    {
-	        this._strokeThickness = strokeThickness;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * The baseline of the text that is rendered.
-	 *
-	 * @member {string}
-	 */
-	prototypeAccessors$7.textBaseline.get = function ()
-	{
-	    return this._textBaseline;
-	};
-	prototypeAccessors$7.textBaseline.set = function (textBaseline) // eslint-disable-line require-jsdoc
-	{
-	    if (this._textBaseline !== textBaseline)
-	    {
-	        this._textBaseline = textBaseline;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * Trim transparent borders
-	 *
-	 * @member {boolean}
-	 */
-	prototypeAccessors$7.trim.get = function ()
-	{
-	    return this._trim;
-	};
-	prototypeAccessors$7.trim.set = function (trim) // eslint-disable-line require-jsdoc
-	{
-	    if (this._trim !== trim)
-	    {
-	        this._trim = trim;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * How newlines and spaces should be handled.
-	 * Default is 'pre' (preserve, preserve).
-	 *
-	 *  value   | New lines |   Spaces
-	 *  ---     | ---       |   ---
-	 * 'normal' | Collapse  |   Collapse
-	 * 'pre'    | Preserve  |   Preserve
-	 * 'pre-line'   | Preserve  |   Collapse
-	 *
-	 * @member {string}
-	 */
-	prototypeAccessors$7.whiteSpace.get = function ()
-	{
-	    return this._whiteSpace;
-	};
-	prototypeAccessors$7.whiteSpace.set = function (whiteSpace) // eslint-disable-line require-jsdoc
-	{
-	    if (this._whiteSpace !== whiteSpace)
-	    {
-	        this._whiteSpace = whiteSpace;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * Indicates if word wrap should be used
-	 *
-	 * @member {boolean}
-	 */
-	prototypeAccessors$7.wordWrap.get = function ()
-	{
-	    return this._wordWrap;
-	};
-	prototypeAccessors$7.wordWrap.set = function (wordWrap) // eslint-disable-line require-jsdoc
-	{
-	    if (this._wordWrap !== wordWrap)
-	    {
-	        this._wordWrap = wordWrap;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * The width at which text will wrap, it needs wordWrap to be set to true
-	 *
-	 * @member {number}
-	 */
-	prototypeAccessors$7.wordWrapWidth.get = function ()
-	{
-	    return this._wordWrapWidth;
-	};
-	prototypeAccessors$7.wordWrapWidth.set = function (wordWrapWidth) // eslint-disable-line require-jsdoc
-	{
-	    if (this._wordWrapWidth !== wordWrapWidth)
-	    {
-	        this._wordWrapWidth = wordWrapWidth;
-	        this.styleID++;
-	    }
-	};
-
-	/**
-	 * Generates a font style string to use for `TextMetrics.measureFont()`.
-	 *
-	 * @return {string} Font style string, for passing to `TextMetrics.measureFont()`
-	 */
-	TextStyle.prototype.toFontString = function toFontString ()
-	{
-	    // build canvas api font setting from individual components. Convert a numeric this.fontSize to px
-	    var fontSizeString = (typeof this.fontSize === 'number') ? ((this.fontSize) + "px") : this.fontSize;
-
-	    // Clean-up fontFamily property by quoting each font name
-	    // this will support font names with spaces
-	    var fontFamilies = this.fontFamily;
-
-	    if (!Array.isArray(this.fontFamily))
-	    {
-	        fontFamilies = this.fontFamily.split(',');
-	    }
-
-	    for (var i = fontFamilies.length - 1; i >= 0; i--)
-	    {
-	        // Trim any extra white-space
-	        var fontFamily = fontFamilies[i].trim();
-
-	        // Check if font already contains strings
-	        if (!(/([\"\'])[^\'\"]+\1/).test(fontFamily))
-	        {
-	            fontFamily = "\"" + fontFamily + "\"";
-	        }
-	        fontFamilies[i] = fontFamily;
-	    }
-
-	    return ((this.fontStyle) + " " + (this.fontVariant) + " " + (this.fontWeight) + " " + fontSizeString + " " + (fontFamilies.join(',')));
-	};
-
-	Object.defineProperties( TextStyle.prototype, prototypeAccessors$7 );
-
-	/**
-	 * Utility function to convert hexadecimal colors to strings, and simply return the color if it's a string.
-	 * @private
-	 * @param {number|number[]} color
-	 * @return {string} The color as a string.
-	 */
-	function getSingleColor(color)
-	{
-	    if (typeof color === 'number')
-	    {
-	        return hex2string(color);
-	    }
-	    else if ( typeof color === 'string' )
-	    {
-	        if ( color.indexOf('0x') === 0 )
-	        {
-	            color = color.replace('0x', '#');
-	        }
-	    }
-
-	    return color;
-	}
-
-	/**
-	 * Utility function to convert hexadecimal colors to strings, and simply return the color if it's a string.
-	 * This version can also convert array of colors
-	 * @private
-	 * @param {number|number[]} color
-	 * @return {string} The color as a string.
-	 */
-	function getColor(color)
-	{
-	    if (!Array.isArray(color))
-	    {
-	        return getSingleColor(color);
-	    }
-	    else
-	    {
-	        for (var i = 0; i < color.length; ++i)
-	        {
-	            color[i] = getSingleColor(color[i]);
-	        }
-
-	        return color;
-	    }
-	}
-
-	/**
-	 * Utility function to convert hexadecimal colors to strings, and simply return the color if it's a string.
-	 * This version can also convert array of colors
-	 * @private
-	 * @param {Array} array1 First array to compare
-	 * @param {Array} array2 Second array to compare
-	 * @return {boolean} Do the arrays contain the same values in the same order
-	 */
-	function areArraysEqual(array1, array2)
-	{
-	    if (!Array.isArray(array1) || !Array.isArray(array2))
-	    {
-	        return false;
-	    }
-
-	    if (array1.length !== array2.length)
-	    {
-	        return false;
-	    }
-
-	    for (var i = 0; i < array1.length; ++i)
-	    {
-	        if (array1[i] !== array2[i])
-	        {
-	            return false;
-	        }
-	    }
-
-	    return true;
-	}
-
-	/**
-	 * Utility function to ensure that object properties are copied by value, and not by reference
-	 * @private
-	 * @param {Object} target Target object to copy properties into
-	 * @param {Object} source Source object for the properties to copy
-	 * @param {string} propertyObj Object containing properties names we want to loop over
-	 */
-	function deepCopyProperties(target, source, propertyObj) {
-	    for (var prop in propertyObj) {
-	        if (Array.isArray(source[prop])) {
-	            target[prop] = source[prop].slice();
-	        } else {
-	            target[prop] = source[prop];
-	        }
-	    }
-	}
-
-	/**
-	 * The TextMetrics object represents the measurement of a block of text with a specified style.
-	 *
-	 * ```js
-	 * let style = new PIXI.TextStyle({fontFamily : 'Arial', fontSize: 24, fill : 0xff1010, align : 'center'})
-	 * let textMetrics = PIXI.TextMetrics.measureText('Your text', style)
-	 * ```
-	 *
-	 * @class
-	 * @memberof PIXI
-	 */
-	var TextMetrics = function TextMetrics(text, style, width, height, lines, lineWidths, lineHeight, maxLineWidth, fontProperties)
-	{
-	    this.text = text;
-	    this.style = style;
-	    this.width = width;
-	    this.height = height;
-	    this.lines = lines;
-	    this.lineWidths = lineWidths;
-	    this.lineHeight = lineHeight;
-	    this.maxLineWidth = maxLineWidth;
-	    this.fontProperties = fontProperties;
-	};
-
-	/**
-	 * Measures the supplied string of text and returns a Rectangle.
-	 *
-	 * @param {string} text - the text to measure.
-	 * @param {PIXI.TextStyle} style - the text style to use for measuring
-	 * @param {boolean} [wordWrap] - optional override for if word-wrap should be applied to the text.
-	 * @param {HTMLCanvasElement} [canvas] - optional specification of the canvas to use for measuring.
-	 * @return {PIXI.TextMetrics} measured width and height of the text.
-	 */
-	TextMetrics.measureText = function measureText (text, style, wordWrap, canvas)
-	{
-	        if ( canvas === void 0 ) { canvas = TextMetrics._canvas; }
-
-	    wordWrap = (wordWrap === undefined || wordWrap === null) ? style.wordWrap : wordWrap;
-	    var font = style.toFontString();
-	    var fontProperties = TextMetrics.measureFont(font);
-
-	    // fallback in case UA disallow canvas data extraction
-	    // (toDataURI, getImageData functions)
-	    if (fontProperties.fontSize === 0)
-	    {
-	        fontProperties.fontSize = style.fontSize;
-	        fontProperties.ascent = style.fontSize;
-	    }
-
-	    var context = canvas.getContext('2d');
-
-	    context.font = font;
-
-	    var outputText = wordWrap ? TextMetrics.wordWrap(text, style, canvas) : text;
-	    var lines = outputText.split(/(?:\r\n|\r|\n)/);
-	    var lineWidths = new Array(lines.length);
-	    var maxLineWidth = 0;
-
-	    for (var i = 0; i < lines.length; i++)
-	    {
-	        var lineWidth = context.measureText(lines[i]).width + ((lines[i].length - 1) * style.letterSpacing);
-
-	        lineWidths[i] = lineWidth;
-	        maxLineWidth = Math.max(maxLineWidth, lineWidth);
-	    }
-	    var width = maxLineWidth + style.strokeThickness;
-
-	    if (style.dropShadow)
-	    {
-	        width += style.dropShadowDistance;
-	    }
-
-	    var lineHeight = style.lineHeight || fontProperties.fontSize + style.strokeThickness;
-	    var height = Math.max(lineHeight, fontProperties.fontSize + style.strokeThickness)
-	        + ((lines.length - 1) * (lineHeight + style.leading));
-
-	    if (style.dropShadow)
-	    {
-	        height += style.dropShadowDistance;
-	    }
-
-	    return new TextMetrics(
-	        text,
-	        style,
-	        width,
-	        height,
-	        lines,
-	        lineWidths,
-	        lineHeight + style.leading,
-	        maxLineWidth,
-	        fontProperties
-	    );
-	};
-
-	/**
-	 * Applies newlines to a string to have it optimally fit into the horizontal
-	 * bounds set by the Text object's wordWrapWidth property.
-	 *
-	 * @private
-	 * @param {string} text - String to apply word wrapping to
-	 * @param {PIXI.TextStyle} style - the style to use when wrapping
-	 * @param {HTMLCanvasElement} [canvas] - optional specification of the canvas to use for measuring.
-	 * @return {string} New string with new lines applied where required
-	 */
-	TextMetrics.wordWrap = function wordWrap (text, style, canvas)
-	{
-	        if ( canvas === void 0 ) { canvas = TextMetrics._canvas; }
-
-	    var context = canvas.getContext('2d');
-
-	    var width = 0;
-	    var line = '';
-	    var lines = '';
-
-	    var cache = {};
-	    var letterSpacing = style.letterSpacing;
-	        var whiteSpace = style.whiteSpace;
-
-	    // How to handle whitespaces
-	    var collapseSpaces = TextMetrics.collapseSpaces(whiteSpace);
-	    var collapseNewlines = TextMetrics.collapseNewlines(whiteSpace);
-
-	    // whether or not spaces may be added to the beginning of lines
-	    var canPrependSpaces = !collapseSpaces;
-
-	    // There is letterSpacing after every char except the last one
-	    // t_h_i_s_' '_i_s_' '_a_n_' '_e_x_a_m_p_l_e_' '_!
-	    // so for convenience the above needs to be compared to width + 1 extra letterSpace
-	    // t_h_i_s_' '_i_s_' '_a_n_' '_e_x_a_m_p_l_e_' '_!_
-	    // ________________________________________________
-	    // And then the final space is simply no appended to each line
-	    var wordWrapWidth = style.wordWrapWidth + letterSpacing;
-
-	    // break text into words, spaces and newline chars
-	    var tokens = TextMetrics.tokenize(text);
-
-	    for (var i = 0; i < tokens.length; i++)
-	    {
-	        // get the word, space or newlineChar
-	        var token = tokens[i];
-
-	        // if word is a new line
-	        if (TextMetrics.isNewline(token))
-	        {
-	            // keep the new line
-	            if (!collapseNewlines)
-	            {
-	                lines += TextMetrics.addLine(line);
-	                canPrependSpaces = !collapseSpaces;
-	                line = '';
-	                width = 0;
-	                continue;
-	            }
-
-	            // if we should collapse new lines
-	            // we simply convert it into a space
-	            token = ' ';
-	        }
-
-	        // if we should collapse repeated whitespaces
-	        if (collapseSpaces)
-	        {
-	            // check both this and the last tokens for spaces
-	            var currIsBreakingSpace = TextMetrics.isBreakingSpace(token);
-	            var lastIsBreakingSpace = TextMetrics.isBreakingSpace(line[line.length - 1]);
-
-	            if (currIsBreakingSpace && lastIsBreakingSpace)
-	            {
-	                continue;
-	            }
-	        }
-
-	        // get word width from cache if possible
-	        var tokenWidth = TextMetrics.getFromCache(token, letterSpacing, cache, context);
-
-	        // word is longer than desired bounds
-	        if (tokenWidth > wordWrapWidth)
-	        {
-	            // if we are not already at the beginning of a line
-	            if (line !== '')
-	            {
-	                // start newlines for overflow words
-	                lines += TextMetrics.addLine(line);
-	                line = '';
-	                width = 0;
-	            }
-
-	            // break large word over multiple lines
-	            if (TextMetrics.canBreakWords(token, style.breakWords))
-	            {
-	                // break word into characters
-	                var characters = token.split('');
-
-	                // loop the characters
-	                for (var j = 0; j < characters.length; j++)
-	                {
-	                    var char = characters[j];
-
-	                    var k = 1;
-	                    // we are not at the end of the token
-
-	                    while (characters[j + k])
-	                    {
-	                        var nextChar = characters[j + k];
-	                        var lastChar = char[char.length - 1];
-
-	                        // should not split chars
-	                        if (!TextMetrics.canBreakChars(lastChar, nextChar, token, j, style.breakWords))
-	                        {
-	                            // combine chars & move forward one
-	                            char += nextChar;
-	                        }
-	                        else
-	                        {
-	                            break;
-	                        }
-
-	                        k++;
-	                    }
-
-	                    j += char.length - 1;
-
-	                    var characterWidth = TextMetrics.getFromCache(char, letterSpacing, cache, context);
-
-	                    if (characterWidth + width > wordWrapWidth)
-	                    {
-	                        lines += TextMetrics.addLine(line);
-	                        canPrependSpaces = false;
-	                        line = '';
-	                        width = 0;
-	                    }
-
-	                    line += char;
-	                    width += characterWidth;
-	                }
-	            }
-
-	            // run word out of the bounds
-	            else
-	            {
-	                // if there are words in this line already
-	                // finish that line and start a new one
-	                if (line.length > 0)
-	                {
-	                    lines += TextMetrics.addLine(line);
-	                    line = '';
-	                    width = 0;
-	                }
-
-	                var isLastToken = i === tokens.length - 1;
-
-	                // give it its own line if it's not the end
-	                lines += TextMetrics.addLine(token, !isLastToken);
-	                canPrependSpaces = false;
-	                line = '';
-	                width = 0;
-	            }
-	        }
-
-	        // word could fit
-	        else
-	        {
-	            // word won't fit because of existing words
-	            // start a new line
-	            if (tokenWidth + width > wordWrapWidth)
-	            {
-	                // if its a space we don't want it
-	                canPrependSpaces = false;
-
-	                // add a new line
-	                lines += TextMetrics.addLine(line);
-
-	                // start a new line
-	                line = '';
-	                width = 0;
-	            }
-
-	            // don't add spaces to the beginning of lines
-	            if (line.length > 0 || !TextMetrics.isBreakingSpace(token) || canPrependSpaces)
-	            {
-	                // add the word to the current line
-	                line += token;
-
-	                // update width counter
-	                width += tokenWidth;
-	            }
-	        }
-	    }
-
-	    lines += TextMetrics.addLine(line, false);
-
-	    return lines;
-	};
-
-	/**
-	 * Convienience function for logging each line added during the wordWrap
-	 * method
-	 *
-	 * @private
-	 * @param  {string}   line    - The line of text to add
-	 * @param  {boolean}  newLine - Add new line character to end
-	 * @return {string}   A formatted line
-	 */
-	TextMetrics.addLine = function addLine (line, newLine)
-	{
-	        if ( newLine === void 0 ) { newLine = true; }
-
-	    line = TextMetrics.trimRight(line);
-
-	    line = (newLine) ? (line + "\n") : line;
-
-	    return line;
-	};
-
-	/**
-	 * Gets & sets the widths of calculated characters in a cache object
-	 *
-	 * @private
-	 * @param  {string}                key        The key
-	 * @param  {number}                letterSpacing  The letter spacing
-	 * @param  {object}                cache      The cache
-	 * @param  {CanvasRenderingContext2D}  context    The canvas context
-	 * @return {number}                The from cache.
-	 */
-	TextMetrics.getFromCache = function getFromCache (key, letterSpacing, cache, context)
-	{
-	    var width = cache[key];
-
-	    if (width === undefined)
-	    {
-	        var spacing = ((key.length) * letterSpacing);
-
-	        width = context.measureText(key).width + spacing;
-	        cache[key] = width;
-	    }
-
-	    return width;
-	};
-
-	/**
-	 * Determines whether we should collapse breaking spaces
-	 *
-	 * @private
-	 * @param  {string}   whiteSpace  The TextStyle property whiteSpace
-	 * @return {boolean}  should collapse
-	 */
-	TextMetrics.collapseSpaces = function collapseSpaces (whiteSpace)
-	{
-	    return (whiteSpace === 'normal' || whiteSpace === 'pre-line');
-	};
-
-	/**
-	 * Determines whether we should collapse newLine chars
-	 *
-	 * @private
-	 * @param  {string}   whiteSpace  The white space
-	 * @return {boolean}  should collapse
-	 */
-	TextMetrics.collapseNewlines = function collapseNewlines (whiteSpace)
-	{
-	    return (whiteSpace === 'normal');
-	};
-
-	/**
-	 * trims breaking whitespaces from string
-	 *
-	 * @private
-	 * @param  {string}  text  The text
-	 * @return {string}  trimmed string
-	 */
-	TextMetrics.trimRight = function trimRight (text)
-	{
-	    if (typeof text !== 'string')
-	    {
-	        return '';
-	    }
-
-	    for (var i = text.length - 1; i >= 0; i--)
-	    {
-	        var char = text[i];
-
-	        if (!TextMetrics.isBreakingSpace(char))
-	        {
-	            break;
-	        }
-
-	        text = text.slice(0, -1);
-	    }
-
-	    return text;
-	};
-
-	/**
-	 * Determines if char is a newline.
-	 *
-	 * @private
-	 * @param  {string}  char  The character
-	 * @return {boolean}  True if newline, False otherwise.
-	 */
-	TextMetrics.isNewline = function isNewline (char)
-	{
-	    if (typeof char !== 'string')
-	    {
-	        return false;
-	    }
-
-	    return (TextMetrics._newlines.indexOf(char.charCodeAt(0)) >= 0);
-	};
-
-	/**
-	 * Determines if char is a breaking whitespace.
-	 *
-	 * @private
-	 * @param  {string}  char  The character
-	 * @return {boolean}  True if whitespace, False otherwise.
-	 */
-	TextMetrics.isBreakingSpace = function isBreakingSpace (char)
-	{
-	    if (typeof char !== 'string')
-	    {
-	        return false;
-	    }
-
-	    return (TextMetrics._breakingSpaces.indexOf(char.charCodeAt(0)) >= 0);
-	};
-
-	/**
-	 * Splits a string into words, breaking-spaces and newLine characters
-	 *
-	 * @private
-	 * @param  {string}  text   The text
-	 * @return {string[]}  A tokenized array
-	 */
-	TextMetrics.tokenize = function tokenize (text)
-	{
-	    var tokens = [];
-	    var token = '';
-
-	    if (typeof text !== 'string')
-	    {
-	        return tokens;
-	    }
-
-	    for (var i = 0; i < text.length; i++)
-	    {
-	        var char = text[i];
-
-	        if (TextMetrics.isBreakingSpace(char) || TextMetrics.isNewline(char))
-	        {
-	            if (token !== '')
-	            {
-	                tokens.push(token);
-	                token = '';
-	            }
-
-	            tokens.push(char);
-
-	            continue;
-	        }
-
-	        token += char;
-	    }
-
-	    if (token !== '')
-	    {
-	        tokens.push(token);
-	    }
-
-	    return tokens;
-	};
-
-	/**
-	 * This method exists to be easily overridden
-	 * It allows one to customise which words should break
-	 * Examples are if the token is CJK or numbers.
-	 * It must return a boolean.
-	 *
-	 * @private
-	 * @param  {string}  token   The token
-	 * @param  {boolean}  breakWords  The style attr break words
-	 * @return {boolean} whether to break word or not
-	 */
-	TextMetrics.canBreakWords = function canBreakWords (token, breakWords)
-	{
-	    return breakWords;
-	};
-
-	/**
-	 * This method exists to be easily overridden
-	 * It allows one to determine whether a pair of characters
-	 * should be broken by newlines
-	 * For example certain characters in CJK langs or numbers.
-	 * It must return a boolean.
-	 *
-	 * @private
-	 * @param  {string}  char  The character
-	 * @param  {string}  nextChar  The next character
-	 * @param  {string}  token The token/word the characters are from
-	 * @param  {number}  index The index in the token of the char
-	 * @param  {boolean}  breakWords  The style attr break words
-	 * @return {boolean} whether to break word or not
-	 */
-	TextMetrics.canBreakChars = function canBreakChars (char, nextChar, token, index$$1, breakWords) // eslint-disable-line no-unused-vars
-	{
-	    return true;
-	};
-
-	/**
-	 * Calculates the ascent, descent and fontSize of a given font-style
-	 *
-	 * @static
-	 * @param {string} font - String representing the style of the font
-	 * @return {PIXI.TextMetrics.FontMetrics} Font properties object
-	 */
-	TextMetrics.measureFont = function measureFont (font)
-	{
-	    // as this method is used for preparing assets, don't recalculate things if we don't need to
-	    if (TextMetrics._fonts[font])
-	    {
-	        return TextMetrics._fonts[font];
-	    }
-
-	    var properties = {};
-
-	    var canvas = TextMetrics._canvas;
-	    var context = TextMetrics._context;
-
-	    context.font = font;
-
-	    var metricsString = TextMetrics.METRICS_STRING + TextMetrics.BASELINE_SYMBOL;
-	    var width = Math.ceil(context.measureText(metricsString).width);
-	    var baseline = Math.ceil(context.measureText(TextMetrics.BASELINE_SYMBOL).width);
-	    var height = 2 * baseline;
-
-	    baseline = baseline * TextMetrics.BASELINE_MULTIPLIER | 0;
-
-	    canvas.width = width;
-	    canvas.height = height;
-
-	    context.fillStyle = '#f00';
-	    context.fillRect(0, 0, width, height);
-
-	    context.font = font;
-
-	    context.textBaseline = 'alphabetic';
-	    context.fillStyle = '#000';
-	    context.fillText(metricsString, 0, baseline);
-
-	    var imagedata = context.getImageData(0, 0, width, height).data;
-	    var pixels = imagedata.length;
-	    var line = width * 4;
-
-	    var i = 0;
-	    var idx = 0;
-	    var stop = false;
-
-	    // ascent. scan from top to bottom until we find a non red pixel
-	    for (i = 0; i < baseline; ++i)
-	    {
-	        for (var j = 0; j < line; j += 4)
-	        {
-	            if (imagedata[idx + j] !== 255)
-	            {
-	                stop = true;
-	                break;
-	            }
-	        }
-	        if (!stop)
-	        {
-	            idx += line;
-	        }
-	        else
-	        {
-	            break;
-	        }
-	    }
-
-	    properties.ascent = baseline - i;
-
-	    idx = pixels - line;
-	    stop = false;
-
-	    // descent. scan from bottom to top until we find a non red pixel
-	    for (i = height; i > baseline; --i)
-	    {
-	        for (var j$1 = 0; j$1 < line; j$1 += 4)
-	        {
-	            if (imagedata[idx + j$1] !== 255)
-	            {
-	                stop = true;
-	                break;
-	            }
-	        }
-
-	        if (!stop)
-	        {
-	            idx -= line;
-	        }
-	        else
-	        {
-	            break;
-	        }
-	    }
-
-	    properties.descent = i - baseline;
-	    properties.fontSize = properties.ascent + properties.descent;
-
-	    TextMetrics._fonts[font] = properties;
-
-	    return properties;
-	};
-
-	/**
-	 * Clear font metrics in metrics cache.
-	 *
-	 * @static
-	 * @param {string} [font] - font name. If font name not set then clear cache for all fonts.
-	 */
-	TextMetrics.clearMetrics = function clearMetrics (font)
-	{
-	        if ( font === void 0 ) { font = ''; }
-
-	    if (font)
-	    {
-	        delete TextMetrics._fonts[font];
-	    }
-	    else
-	    {
-	        TextMetrics._fonts = {};
-	    }
-	};
-
-	/**
-	 * Internal return object for {@link PIXI.TextMetrics.measureFont `TextMetrics.measureFont`}.
-	 *
-	 * @typedef {object} FontMetrics
-	 * @property {number} ascent - The ascent distance
-	 * @property {number} descent - The descent distance
-	 * @property {number} fontSize - Font size from ascent to descent
-	 * @memberof PIXI.TextMetrics
-	 * @private
-	 */
-
-	var canvas = document.createElement('canvas');
-
-	canvas.width = canvas.height = 10;
-
-	/**
-	 * Cached canvas element for measuring text
-	 * @memberof PIXI.TextMetrics
-	 * @type {HTMLCanvasElement}
-	 * @private
-	 */
-	TextMetrics._canvas = canvas;
-
-	/**
-	 * Cache for context to use.
-	 * @memberof PIXI.TextMetrics
-	 * @type {CanvasRenderingContext2D}
-	 * @private
-	 */
-	TextMetrics._context = canvas.getContext('2d');
-
-	/**
-	 * Cache of {@see PIXI.TextMetrics.FontMetrics} objects.
-	 * @memberof PIXI.TextMetrics
-	 * @type {Object}
-	 * @private
-	 */
-	TextMetrics._fonts = {};
-
-	/**
-	 * String used for calculate font metrics.
-	 * @static
-	 * @memberof PIXI.TextMetrics
-	 * @name METRICS_STRING
-	 * @type {string}
-	 * @default |Éq
-	 */
-	TextMetrics.METRICS_STRING = '|Éq';
-
-	/**
-	 * Baseline symbol for calculate font metrics.
-	 * @static
-	 * @memberof PIXI.TextMetrics
-	 * @name BASELINE_SYMBOL
-	 * @type {string}
-	 * @default M
-	 */
-	TextMetrics.BASELINE_SYMBOL = 'M';
-
-	/**
-	 * Baseline multiplier for calculate font metrics.
-	 * @static
-	 * @memberof PIXI.TextMetrics
-	 * @name BASELINE_MULTIPLIER
-	 * @type {number}
-	 * @default 1.4
-	 */
-	TextMetrics.BASELINE_MULTIPLIER = 1.4;
-
-	/**
-	 * Cache of new line chars.
-	 * @memberof PIXI.TextMetrics
-	 * @type {number[]}
-	 * @private
-	 */
-	TextMetrics._newlines = [
-	    0x000A, // line feed
-	    0x000D ];
-
-	/**
-	 * Cache of breaking spaces.
-	 * @memberof PIXI.TextMetrics
-	 * @type {number[]}
-	 * @private
-	 */
-	TextMetrics._breakingSpaces = [
-	    0x0009, // character tabulation
-	    0x0020, // space
-	    0x2000, // en quad
-	    0x2001, // em quad
-	    0x2002, // en space
-	    0x2003, // em space
-	    0x2004, // three-per-em space
-	    0x2005, // four-per-em space
-	    0x2006, // six-per-em space
-	    0x2008, // punctuation space
-	    0x2009, // thin space
-	    0x200A, // hair space
-	    0x205F, // medium mathematical space
-	    0x3000 ];
-
-	/* eslint max-depth: [2, 8] */
-
-	var defaultDestroyOptions = {
-	    texture: true,
-	    children: false,
-	    baseTexture: true,
-	};
-
-	/**
-	 * A Text Object will create a line or multiple lines of text.
-	 *
-	 * The text is created using the [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API).
-	 *
-	 * The primary advantage of this class over BitmapText is that you have great control over the style of the next,
-	 * which you can change at runtime.
-	 *
-	 * The primary disadvantages is that each piece of text has it's own texture, which can use more memory.
-	 * When text changes, this texture has to be re-generated and re-uploaded to the GPU, taking up time.
-	 *
-	 * To split a line you can use '\n' in your text string, or, on the `style` object,
-	 * change its `wordWrap` property to true and and give the `wordWrapWidth` property a value.
-	 *
-	 * A Text can be created directly from a string and a style object,
-	 * which can be generated [here](https://pixijs.io/pixi-text-style).
-	 *
-	 * ```js
-	 * let text = new PIXI.Text('This is a PixiJS text',{fontFamily : 'Arial', fontSize: 24, fill : 0xff1010, align : 'center'});
-	 * ```
-	 *
-	 * @class
-	 * @extends PIXI.Sprite
-	 * @memberof PIXI
-	 */
-	var Text = /*@__PURE__*/(function (Sprite$$1) {
-	    function Text(text, style, canvas)
-	    {
-	        canvas = canvas || document.createElement('canvas');
-
-	        canvas.width = 3;
-	        canvas.height = 3;
-
-	        var texture = Texture.from(canvas);
-
-	        texture.orig = new Rectangle();
-	        texture.trim = new Rectangle();
-
-	        Sprite$$1.call(this, texture);
-
-	        /**
-	         * The canvas element that everything is drawn to
-	         *
-	         * @member {HTMLCanvasElement}
-	         */
-	        this.canvas = canvas;
-
-	        /**
-	         * The canvas 2d context that everything is drawn with
-	         * @member {CanvasRenderingContext2D}
-	         */
-	        this.context = this.canvas.getContext('2d');
-
-	        /**
-	         * The resolution / device pixel ratio of the canvas.
-	         * This is set to automatically match the renderer resolution by default, but can be overridden by setting manually.
-	         * @member {number}
-	         * @default 1
-	         */
-	        this._resolution = settings.RESOLUTION;
-	        this._autoResolution = true;
-
-	        /**
-	         * Private tracker for the current text.
-	         *
-	         * @member {string}
-	         * @private
-	         */
-	        this._text = null;
-
-	        /**
-	         * Private tracker for the current style.
-	         *
-	         * @member {object}
-	         * @private
-	         */
-	        this._style = null;
-	        /**
-	         * Private listener to track style changes.
-	         *
-	         * @member {Function}
-	         * @private
-	         */
-	        this._styleListener = null;
-
-	        /**
-	         * Private tracker for the current font.
-	         *
-	         * @member {string}
-	         * @private
-	         */
-	        this._font = '';
-
-	        this.text = text;
-	        this.style = style;
-
-	        this.localStyleID = -1;
-	    }
-
-	    if ( Sprite$$1 ) { Text.__proto__ = Sprite$$1; }
-	    Text.prototype = Object.create( Sprite$$1 && Sprite$$1.prototype );
-	    Text.prototype.constructor = Text;
-
-	    var prototypeAccessors = { width: { configurable: true },height: { configurable: true },style: { configurable: true },text: { configurable: true },resolution: { configurable: true } };
-
-	    /**
-	     * Renders text and updates it when needed.
-	     *
-	     * @private
-	     * @param {boolean} respectDirty - Whether to abort updating the text if the Text isn't dirty and the function is called.
-	     */
-	    Text.prototype.updateText = function updateText (respectDirty)
-	    {
-	        var style = this._style;
-
-	        // check if style has changed..
-	        if (this.localStyleID !== style.styleID)
-	        {
-	            this.dirty = true;
-	            this.localStyleID = style.styleID;
-	        }
-
-	        if (!this.dirty && respectDirty)
-	        {
-	            return;
-	        }
-
-	        this._font = this._style.toFontString();
-
-	        var context = this.context;
-	        var measured = TextMetrics.measureText(this._text || ' ', this._style, this._style.wordWrap, this.canvas);
-	        var width = measured.width;
-	        var height = measured.height;
-	        var lines = measured.lines;
-	        var lineHeight = measured.lineHeight;
-	        var lineWidths = measured.lineWidths;
-	        var maxLineWidth = measured.maxLineWidth;
-	        var fontProperties = measured.fontProperties;
-
-	        this.canvas.width = Math.ceil((Math.max(1, width) + (style.padding * 2)) * this._resolution);
-	        this.canvas.height = Math.ceil((Math.max(1, height) + (style.padding * 2)) * this._resolution);
-
-	        context.scale(this._resolution, this._resolution);
-
-	        context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-	        context.font = this._font;
-	        context.strokeStyle = style.stroke;
-	        context.lineWidth = style.strokeThickness;
-	        context.textBaseline = style.textBaseline;
-	        context.lineJoin = style.lineJoin;
-	        context.miterLimit = style.miterLimit;
-
-	        var linePositionX;
-	        var linePositionY;
-
-	        if (style.dropShadow)
-	        {
-	            var dropShadowColor = style.dropShadowColor;
-	            var rgb = hex2rgb(typeof dropShadowColor === 'number' ? dropShadowColor : string2hex(dropShadowColor));
-
-	            context.shadowColor = "rgba(" + (rgb[0] * 255) + "," + (rgb[1] * 255) + "," + (rgb[2] * 255) + "," + (style.dropShadowAlpha) + ")";
-	            context.shadowBlur = style.dropShadowBlur;
-	            context.shadowOffsetX = Math.cos(style.dropShadowAngle) * style.dropShadowDistance;
-	            context.shadowOffsetY = Math.sin(style.dropShadowAngle) * style.dropShadowDistance;
-	        }
-	        else
-	        {
-	            context.shadowColor = 0;
-	            context.shadowBlur = 0;
-	            context.shadowOffsetX = 0;
-	            context.shadowOffsetY = 0;
-	        }
-
-	        // set canvas text styles
-	        context.fillStyle = this._generateFillStyle(style, lines);
-
-	        // draw lines line by line
-	        for (var i = 0; i < lines.length; i++)
-	        {
-	            linePositionX = style.strokeThickness / 2;
-	            linePositionY = ((style.strokeThickness / 2) + (i * lineHeight)) + fontProperties.ascent;
-
-	            if (style.align === 'right')
-	            {
-	                linePositionX += maxLineWidth - lineWidths[i];
-	            }
-	            else if (style.align === 'center')
-	            {
-	                linePositionX += (maxLineWidth - lineWidths[i]) / 2;
-	            }
-
-	            if (style.stroke && style.strokeThickness)
-	            {
-	                this.drawLetterSpacing(
-	                    lines[i],
-	                    linePositionX + style.padding,
-	                    linePositionY + style.padding,
-	                    true
-	                );
-	            }
-
-	            if (style.fill)
-	            {
-	                this.drawLetterSpacing(
-	                    lines[i],
-	                    linePositionX + style.padding,
-	                    linePositionY + style.padding
-	                );
-	            }
-	        }
-
-	        this.updateTexture();
-	    };
-
-	    /**
-	     * Render the text with letter-spacing.
-	     * @param {string} text - The text to draw
-	     * @param {number} x - Horizontal position to draw the text
-	     * @param {number} y - Vertical position to draw the text
-	     * @param {boolean} [isStroke=false] - Is this drawing for the outside stroke of the
-	     *  text? If not, it's for the inside fill
-	     * @private
-	     */
-	    Text.prototype.drawLetterSpacing = function drawLetterSpacing (text, x, y, isStroke)
-	    {
-	        if ( isStroke === void 0 ) { isStroke = false; }
-
-	        var style = this._style;
-
-	        // letterSpacing of 0 means normal
-	        var letterSpacing = style.letterSpacing;
-
-	        if (letterSpacing === 0)
-	        {
-	            if (isStroke)
-	            {
-	                this.context.strokeText(text, x, y);
-	            }
-	            else
-	            {
-	                this.context.fillText(text, x, y);
-	            }
-
-	            return;
-	        }
-
-	        var characters = String.prototype.split.call(text, '');
-	        var currentPosition = x;
-	        var index$$1 = 0;
-	        var current = '';
-
-	        while (index$$1 < text.length)
-	        {
-	            current = characters[index$$1++];
-	            if (isStroke)
-	            {
-	                this.context.strokeText(current, currentPosition, y);
-	            }
-	            else
-	            {
-	                this.context.fillText(current, currentPosition, y);
-	            }
-	            currentPosition += this.context.measureText(current).width + letterSpacing;
-	        }
-	    };
-
-	    /**
-	     * Updates texture size based on canvas size
-	     *
-	     * @private
-	     */
-	    Text.prototype.updateTexture = function updateTexture ()
-	    {
-	        var canvas = this.canvas;
-
-	        if (this._style.trim)
-	        {
-	            var trimmed = trimCanvas(canvas);
-
-	            if (trimmed.data)
-	            {
-	                canvas.width = trimmed.width;
-	                canvas.height = trimmed.height;
-	                this.context.putImageData(trimmed.data, 0, 0);
-	            }
-	        }
-
-	        var texture = this._texture;
-	        var style = this._style;
-	        var padding = style.trim ? 0 : style.padding;
-	        var baseTexture = texture.baseTexture;
-
-	        texture.trim.width = texture._frame.width = canvas.width / this._resolution;
-	        texture.trim.height = texture._frame.height = canvas.height / this._resolution;
-	        texture.trim.x = -padding;
-	        texture.trim.y = -padding;
-
-	        texture.orig.width = texture._frame.width - (padding * 2);
-	        texture.orig.height = texture._frame.height - (padding * 2);
-
-	        // call sprite onTextureUpdate to update scale if _width or _height were set
-	        this._onTextureUpdate();
-
-	        baseTexture.setRealSize(canvas.width, canvas.height, this._resolution);
-
-	        this.dirty = false;
-	    };
-
-	    /**
-	     * Renders the object using the WebGL renderer
-	     *
-	     * @param {PIXI.Renderer} renderer - The renderer
-	     */
-	    Text.prototype.render = function render (renderer)
-	    {
-	        if (this._autoResolution && this._resolution !== renderer.resolution)
-	        {
-	            this._resolution = renderer.resolution;
-	            this.dirty = true;
-	        }
-
-	        this.updateText(true);
-
-	        Sprite$$1.prototype.render.call(this, renderer);
-	    };
-
-	    /**
-	     * Renders the object using the Canvas renderer
-	     *
-	     * @private
-	     * @param {PIXI.CanvasRenderer} renderer - The renderer
-	     */
-	    Text.prototype._renderCanvas = function _renderCanvas (renderer)
-	    {
-	        if (this._autoResolution && this._resolution !== renderer.resolution)
-	        {
-	            this._resolution = renderer.resolution;
-	            this.dirty = true;
-	        }
-
-	        this.updateText(true);
-
-	        Sprite$$1.prototype._renderCanvas.call(this, renderer);
-	    };
-
-	    /**
-	     * Gets the local bounds of the text object.
-	     *
-	     * @param {Rectangle} rect - The output rectangle.
-	     * @return {Rectangle} The bounds.
-	     */
-	    Text.prototype.getLocalBounds = function getLocalBounds (rect)
-	    {
-	        this.updateText(true);
-
-	        return Sprite$$1.prototype.getLocalBounds.call(this, rect);
-	    };
-
-	    /**
-	     * calculates the bounds of the Text as a rectangle. The bounds calculation takes the worldTransform into account.
-	     * @protected
-	     */
-	    Text.prototype._calculateBounds = function _calculateBounds ()
-	    {
-	        this.updateText(true);
-	        this.calculateVertices();
-	        // if we have already done this on THIS frame.
-	        this._bounds.addQuad(this.vertexData);
-	    };
-
-	    /**
-	     * Method to be called upon a TextStyle change.
-	     * @private
-	     */
-	    Text.prototype._onStyleChange = function _onStyleChange ()
-	    {
-	        this.dirty = true;
-	    };
-
-	    /**
-	     * Generates the fill style. Can automatically generate a gradient based on the fill style being an array
-	     *
-	     * @private
-	     * @param {object} style - The style.
-	     * @param {string[]} lines - The lines of text.
-	     * @return {string|number|CanvasGradient} The fill style
-	     */
-	    Text.prototype._generateFillStyle = function _generateFillStyle (style, lines)
-	    {
-	        if (!Array.isArray(style.fill))
-	        {
-	            return style.fill;
-	        }
-
-	        // cocoon on canvas+ cannot generate textures, so use the first colour instead
-	        if (navigator.isCocoonJS)
-	        {
-	            return style.fill[0];
-	        }
-
-	        // the gradient will be evenly spaced out according to how large the array is.
-	        // ['#FF0000', '#00FF00', '#0000FF'] would created stops at 0.25, 0.5 and 0.75
-	        var gradient;
-	        var totalIterations;
-	        var currentIteration;
-	        var stop;
-
-	        var width = this.canvas.width / this._resolution;
-	        var height = this.canvas.height / this._resolution;
-
-	        // make a copy of the style settings, so we can manipulate them later
-	        var fill = style.fill.slice();
-	        var fillGradientStops = style.fillGradientStops.slice();
-
-	        // wanting to evenly distribute the fills. So an array of 4 colours should give fills of 0.25, 0.5 and 0.75
-	        if (!fillGradientStops.length)
-	        {
-	            var lengthPlus1 = fill.length + 1;
-
-	            for (var i = 1; i < lengthPlus1; ++i)
-	            {
-	                fillGradientStops.push(i / lengthPlus1);
-	            }
-	        }
-
-	        // stop the bleeding of the last gradient on the line above to the top gradient of the this line
-	        // by hard defining the first gradient colour at point 0, and last gradient colour at point 1
-	        fill.unshift(style.fill[0]);
-	        fillGradientStops.unshift(0);
-
-	        fill.push(style.fill[style.fill.length - 1]);
-	        fillGradientStops.push(1);
-
-	        if (style.fillGradientType === TEXT_GRADIENT.LINEAR_VERTICAL)
-	        {
-	            // start the gradient at the top center of the canvas, and end at the bottom middle of the canvas
-	            gradient = this.context.createLinearGradient(width / 2, 0, width / 2, height);
-
-	            // we need to repeat the gradient so that each individual line of text has the same vertical gradient effect
-	            // ['#FF0000', '#00FF00', '#0000FF'] over 2 lines would create stops at 0.125, 0.25, 0.375, 0.625, 0.75, 0.875
-	            totalIterations = (fill.length + 1) * lines.length;
-	            currentIteration = 0;
-	            for (var i$1 = 0; i$1 < lines.length; i$1++)
-	            {
-	                currentIteration += 1;
-	                for (var j = 0; j < fill.length; j++)
-	                {
-	                    if (typeof fillGradientStops[j] === 'number')
-	                    {
-	                        stop = (fillGradientStops[j] / lines.length) + (i$1 / lines.length);
-	                    }
-	                    else
-	                    {
-	                        stop = currentIteration / totalIterations;
-	                    }
-	                    gradient.addColorStop(stop, fill[j]);
-	                    currentIteration++;
-	                }
-	            }
-	        }
-	        else
-	        {
-	            // start the gradient at the center left of the canvas, and end at the center right of the canvas
-	            gradient = this.context.createLinearGradient(0, height / 2, width, height / 2);
-
-	            // can just evenly space out the gradients in this case, as multiple lines makes no difference
-	            // to an even left to right gradient
-	            totalIterations = fill.length + 1;
-	            currentIteration = 1;
-
-	            for (var i$2 = 0; i$2 < fill.length; i$2++)
-	            {
-	                if (typeof fillGradientStops[i$2] === 'number')
-	                {
-	                    stop = fillGradientStops[i$2];
-	                }
-	                else
-	                {
-	                    stop = currentIteration / totalIterations;
-	                }
-	                gradient.addColorStop(stop, fill[i$2]);
-	                currentIteration++;
-	            }
-	        }
-
-	        return gradient;
-	    };
-
-	    /**
-	     * Destroys this text object.
-	     * Note* Unlike a Sprite, a Text object will automatically destroy its baseTexture and texture as
-	     * the majority of the time the texture will not be shared with any other Sprites.
-	     *
-	     * @param {object|boolean} [options] - Options parameter. A boolean will act as if all options
-	     *  have been set to that value
-	     * @param {boolean} [options.children=false] - if set to true, all the children will have their
-	     *  destroy method called as well. 'options' will be passed on to those calls.
-	     * @param {boolean} [options.texture=true] - Should it destroy the current texture of the sprite as well
-	     * @param {boolean} [options.baseTexture=true] - Should it destroy the base texture of the sprite as well
-	     */
-	    Text.prototype.destroy = function destroy (options)
-	    {
-	        if (typeof options === 'boolean')
-	        {
-	            options = { children: options };
-	        }
-
-	        options = Object.assign({}, defaultDestroyOptions, options);
-
-	        Sprite$$1.prototype.destroy.call(this, options);
-
-	        // make sure to reset the the context and canvas.. dont want this hanging around in memory!
-	        this.context = null;
-	        this.canvas = null;
-
-	        this._style = null;
-	    };
-
-	    /**
-	     * The width of the Text, setting this will actually modify the scale to achieve the value set
-	     *
-	     * @member {number}
-	     */
-	    prototypeAccessors.width.get = function ()
-	    {
-	        this.updateText(true);
-
-	        return Math.abs(this.scale.x) * this._texture.orig.width;
-	    };
-
-	    prototypeAccessors.width.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        this.updateText(true);
-
-	        var s = sign(this.scale.x) || 1;
-
-	        this.scale.x = s * value / this._texture.orig.width;
-	        this._width = value;
-	    };
-
-	    /**
-	     * The height of the Text, setting this will actually modify the scale to achieve the value set
-	     *
-	     * @member {number}
-	     */
-	    prototypeAccessors.height.get = function ()
-	    {
-	        this.updateText(true);
-
-	        return Math.abs(this.scale.y) * this._texture.orig.height;
-	    };
-
-	    prototypeAccessors.height.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        this.updateText(true);
-
-	        var s = sign(this.scale.y) || 1;
-
-	        this.scale.y = s * value / this._texture.orig.height;
-	        this._height = value;
-	    };
-
-	    /**
-	     * Set the style of the text. Set up an event listener to listen for changes on the style
-	     * object and mark the text as dirty.
-	     *
-	     * @member {object|PIXI.TextStyle}
-	     */
-	    prototypeAccessors.style.get = function ()
-	    {
-	        return this._style;
-	    };
-
-	    prototypeAccessors.style.set = function (style) // eslint-disable-line require-jsdoc
-	    {
-	        style = style || {};
-
-	        if (style instanceof TextStyle)
-	        {
-	            this._style = style;
-	        }
-	        else
-	        {
-	            this._style = new TextStyle(style);
-	        }
-
-	        this.localStyleID = -1;
-	        this.dirty = true;
-	    };
-
-	    /**
-	     * Set the copy for the text object. To split a line you can use '\n'.
-	     *
-	     * @member {string}
-	     */
-	    prototypeAccessors.text.get = function ()
-	    {
-	        return this._text;
-	    };
-
-	    prototypeAccessors.text.set = function (text) // eslint-disable-line require-jsdoc
-	    {
-	        text = String(text === null || text === undefined ? '' : text);
-
-	        if (this._text === text)
-	        {
-	            return;
-	        }
-	        this._text = text;
-	        this.dirty = true;
-	    };
-
-	    /**
-	     * The resolution / device pixel ratio of the canvas.
-	     * This is set to automatically match the renderer resolution by default, but can be overridden by setting manually.
-	     * @member {number}
-	     * @default 1
-	     */
-	    prototypeAccessors.resolution.get = function ()
-	    {
-	        return this._resolution;
-	    };
-
-	    prototypeAccessors.resolution.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        this._autoResolution = false;
-
-	        if (this._resolution === value)
-	        {
-	            return;
-	        }
-
-	        this._resolution = value;
-	        this.dirty = true;
-	    };
-
-	    Object.defineProperties( Text.prototype, prototypeAccessors );
-
-	    return Text;
-	}(Sprite));
-
-	var text = ({
-		Text: Text,
-		TextStyle: TextStyle,
-		TextMetrics: TextMetrics,
-		TEXT_GRADIENT: TEXT_GRADIENT
-	});
-
-	/*!
-	 * @pixi/prepare - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
-	 *
-	 * @pixi/prepare is licensed under the MIT License.
-	 * http://www.opensource.org/licenses/mit-license
-	 */
-
-	/**
-	 * Default number of uploads per frame using prepare plugin.
-	 *
-	 * @static
-	 * @memberof PIXI.settings
-	 * @name UPLOADS_PER_FRAME
-	 * @type {number}
-	 * @default 4
-	 */
-	settings.UPLOADS_PER_FRAME = 4;
-
-	/**
-	 * CountLimiter limits the number of items handled by a {@link PIXI.prepare.BasePrepare} to a specified
-	 * number of items per frame.
-	 *
-	 * @class
-	 * @memberof PIXI.prepare
-	 */
-	var CountLimiter = function CountLimiter(maxItemsPerFrame)
-	{
-	    /**
-	     * The maximum number of items that can be prepared each frame.
-	     * @type {number}
-	     * @private
-	     */
-	    this.maxItemsPerFrame = maxItemsPerFrame;
-	    /**
-	     * The number of items that can be prepared in the current frame.
-	     * @type {number}
-	     * @private
-	     */
-	    this.itemsLeft = 0;
-	};
-
-	/**
-	 * Resets any counting properties to start fresh on a new frame.
-	 */
-	CountLimiter.prototype.beginFrame = function beginFrame ()
-	{
-	    this.itemsLeft = this.maxItemsPerFrame;
-	};
-
-	/**
-	 * Checks to see if another item can be uploaded. This should only be called once per item.
-	 * @return {boolean} If the item is allowed to be uploaded.
-	 */
-	CountLimiter.prototype.allowedToUpload = function allowedToUpload ()
-	{
-	    return this.itemsLeft-- > 0;
-	};
-
-	/**
-	 * The prepare manager provides functionality to upload content to the GPU.
-	 *
-	 * BasePrepare handles basic queuing functionality and is extended by
-	 * {@link PIXI.prepare.WebGLPrepare} and {@link PIXI.prepare.CanvasPrepare}
-	 * to provide preparation capabilities specific to their respective renderers.
-	 *
-	 * @example
-	 * // Create a sprite
-	 * const sprite = new PIXI.Sprite.from('something.png');
-	 *
-	 * // Load object into GPU
-	 * app.renderer.plugins.prepare.upload(sprite, () => {
-	 *
-	 *     //Texture(s) has been uploaded to GPU
-	 *     app.stage.addChild(sprite);
-	 *
-	 * })
-	 *
-	 * @abstract
-	 * @class
-	 * @memberof PIXI.prepare
-	 */
-	var BasePrepare = function BasePrepare(renderer)
-	{
-	    var this$1 = this;
-
-	    /**
-	     * The limiter to be used to control how quickly items are prepared.
-	     * @type {PIXI.prepare.CountLimiter|PIXI.prepare.TimeLimiter}
-	     */
-	    this.limiter = new CountLimiter(settings.UPLOADS_PER_FRAME);
-
-	    /**
-	     * Reference to the renderer.
-	     * @type {PIXI.AbstractRenderer}
-	     * @protected
-	     */
-	    this.renderer = renderer;
-
-	    /**
-	     * The only real difference between CanvasPrepare and WebGLPrepare is what they pass
-	     * to upload hooks. That different parameter is stored here.
-	     * @type {PIXI.prepare.CanvasPrepare|PIXI.Renderer}
-	     * @protected
-	     */
-	    this.uploadHookHelper = null;
-
-	    /**
-	     * Collection of items to uploads at once.
-	     * @type {Array<*>}
-	     * @private
-	     */
-	    this.queue = [];
-
-	    /**
-	     * Collection of additional hooks for finding assets.
-	     * @type {Array<Function>}
-	     * @private
-	     */
-	    this.addHooks = [];
-
-	    /**
-	     * Collection of additional hooks for processing assets.
-	     * @type {Array<Function>}
-	     * @private
-	     */
-	    this.uploadHooks = [];
-
-	    /**
-	     * Callback to call after completed.
-	     * @type {Array<Function>}
-	     * @private
-	     */
-	    this.completes = [];
-
-	    /**
-	     * If prepare is ticking (running).
-	     * @type {boolean}
-	     * @private
-	     */
-	    this.ticking = false;
-
-	    /**
-	     * 'bound' call for prepareItems().
-	     * @type {Function}
-	     * @private
-	     */
-	    this.delayedTick = function () {
-	        // unlikely, but in case we were destroyed between tick() and delayedTick()
-	        if (!this$1.queue)
-	        {
-	            return;
-	        }
-	        this$1.prepareItems();
-	    };
-
-	    // hooks to find the correct texture
-	    this.registerFindHook(findText);
-	    this.registerFindHook(findTextStyle);
-	    this.registerFindHook(findMultipleBaseTextures);
-	    this.registerFindHook(findBaseTexture);
-	    this.registerFindHook(findTexture);
-
-	    // upload hooks
-	    this.registerUploadHook(drawText);
-	    this.registerUploadHook(calculateTextStyle);
-	};
-
-	/**
-	 * Upload all the textures and graphics to the GPU.
-	 *
-	 * @param {Function|PIXI.DisplayObject|PIXI.Container|PIXI.BaseTexture|PIXI.Texture|PIXI.Graphics|PIXI.Text} item -
-	 *    Either the container or display object to search for items to upload, the items to upload themselves,
-	 *    or the callback function, if items have been added using `prepare.add`.
-	 * @param {Function} [done] - Optional callback when all queued uploads have completed
-	 */
-	BasePrepare.prototype.upload = function upload (item, done)
-	{
-	    if (typeof item === 'function')
-	    {
-	        done = item;
-	        item = null;
-	    }
-
-	    // If a display object, search for items
-	    // that we could upload
-	    if (item)
-	    {
-	        this.add(item);
-	    }
-
-	    // Get the items for upload from the display
-	    if (this.queue.length)
-	    {
-	        if (done)
-	        {
-	            this.completes.push(done);
-	        }
-
-	        if (!this.ticking)
-	        {
-	            this.ticking = true;
-	            Ticker.system.addOnce(this.tick, this, UPDATE_PRIORITY.UTILITY);
-	        }
-	    }
-	    else if (done)
-	    {
-	        done();
-	    }
-	};
-
-	/**
-	 * Handle tick update
-	 *
-	 * @private
-	 */
-	BasePrepare.prototype.tick = function tick ()
-	{
-	    setTimeout(this.delayedTick, 0);
-	};
-
-	/**
-	 * Actually prepare items. This is handled outside of the tick because it will take a while
-	 * and we do NOT want to block the current animation frame from rendering.
-	 *
-	 * @private
-	 */
-	BasePrepare.prototype.prepareItems = function prepareItems ()
-	{
-	    this.limiter.beginFrame();
-	    // Upload the graphics
-	    while (this.queue.length && this.limiter.allowedToUpload())
-	    {
-	        var item = this.queue[0];
-	        var uploaded = false;
-
-	        if (item && !item._destroyed)
-	        {
-	            for (var i = 0, len = this.uploadHooks.length; i < len; i++)
-	            {
-	                if (this.uploadHooks[i](this.uploadHookHelper, item))
-	                {
-	                    this.queue.shift();
-	                    uploaded = true;
-	                    break;
-	                }
-	            }
-	        }
-
-	        if (!uploaded)
-	        {
-	            this.queue.shift();
-	        }
-	    }
-
-	    // We're finished
-	    if (!this.queue.length)
-	    {
-	        this.ticking = false;
-
-	        var completes = this.completes.slice(0);
-
-	        this.completes.length = 0;
-
-	        for (var i$1 = 0, len$1 = completes.length; i$1 < len$1; i$1++)
-	        {
-	            completes[i$1]();
-	        }
-	    }
-	    else
-	    {
-	        // if we are not finished, on the next rAF do this again
-	        Ticker.system.addOnce(this.tick, this, UPDATE_PRIORITY.UTILITY);
-	    }
-	};
-
-	/**
-	 * Adds hooks for finding items.
-	 *
-	 * @param {Function} addHook - Function call that takes two parameters: `item:*, queue:Array`
-	 *      function must return `true` if it was able to add item to the queue.
-	 * @return {PIXI.prepare.BasePrepare} Instance of plugin for chaining.
-	 */
-	BasePrepare.prototype.registerFindHook = function registerFindHook (addHook)
-	{
-	    if (addHook)
-	    {
-	        this.addHooks.push(addHook);
-	    }
-
-	    return this;
-	};
-
-	/**
-	 * Adds hooks for uploading items.
-	 *
-	 * @param {Function} uploadHook - Function call that takes two parameters: `prepare:CanvasPrepare, item:*` and
-	 *      function must return `true` if it was able to handle upload of item.
-	 * @return {PIXI.prepare.BasePrepare} Instance of plugin for chaining.
-	 */
-	BasePrepare.prototype.registerUploadHook = function registerUploadHook (uploadHook)
-	{
-	    if (uploadHook)
-	    {
-	        this.uploadHooks.push(uploadHook);
-	    }
-
-	    return this;
-	};
-
-	/**
-	 * Manually add an item to the uploading queue.
-	 *
-	 * @param {PIXI.DisplayObject|PIXI.Container|PIXI.BaseTexture|PIXI.Texture|PIXI.Graphics|PIXI.Text|*} item - Object to
-	 *    add to the queue
-	 * @return {PIXI.prepare.BasePrepare} Instance of plugin for chaining.
-	 */
-	BasePrepare.prototype.add = function add (item)
-	{
-	    // Add additional hooks for finding elements on special
-	    // types of objects that
-	    for (var i = 0, len = this.addHooks.length; i < len; i++)
-	    {
-	        if (this.addHooks[i](item, this.queue))
-	        {
-	            break;
-	        }
-	    }
-
-	    // Get children recursively
-	    if (item instanceof Container)
-	    {
-	        for (var i$1 = item.children.length - 1; i$1 >= 0; i$1--)
-	        {
-	            this.add(item.children[i$1]);
-	        }
-	    }
-
-	    return this;
-	};
-
-	/**
-	 * Destroys the plugin, don't use after this.
-	 *
-	 */
-	BasePrepare.prototype.destroy = function destroy ()
-	{
-	    if (this.ticking)
-	    {
-	        Ticker.system.remove(this.tick, this);
-	    }
-	    this.ticking = false;
-	    this.addHooks = null;
-	    this.uploadHooks = null;
-	    this.renderer = null;
-	    this.completes = null;
-	    this.queue = null;
-	    this.limiter = null;
-	    this.uploadHookHelper = null;
-	};
-
-	/**
-	 * Built-in hook to find multiple textures from objects like AnimatedSprites.
-	 *
-	 * @private
-	 * @param {PIXI.DisplayObject} item - Display object to check
-	 * @param {Array<*>} queue - Collection of items to upload
-	 * @return {boolean} if a PIXI.Texture object was found.
-	 */
-	function findMultipleBaseTextures(item, queue)
-	{
-	    var result = false;
-
-	    // Objects with multiple textures
-	    if (item && item._textures && item._textures.length)
-	    {
-	        for (var i = 0; i < item._textures.length; i++)
-	        {
-	            if (item._textures[i] instanceof Texture)
-	            {
-	                var baseTexture = item._textures[i].baseTexture;
-
-	                if (queue.indexOf(baseTexture) === -1)
-	                {
-	                    queue.push(baseTexture);
-	                    result = true;
-	                }
-	            }
-	        }
-	    }
-
-	    return result;
-	}
-
-	/**
-	 * Built-in hook to find BaseTextures from Sprites.
-	 *
-	 * @private
-	 * @param {PIXI.DisplayObject} item - Display object to check
-	 * @param {Array<*>} queue - Collection of items to upload
-	 * @return {boolean} if a PIXI.Texture object was found.
-	 */
-	function findBaseTexture(item, queue)
-	{
-	    // Objects with textures, like Sprites/Text
-	    if (item instanceof BaseTexture)
-	    {
-	        if (queue.indexOf(item) === -1)
-	        {
-	            queue.push(item);
-	        }
-
-	        return true;
-	    }
-
-	    return false;
-	}
-
-	/**
-	 * Built-in hook to find textures from objects.
-	 *
-	 * @private
-	 * @param {PIXI.DisplayObject} item - Display object to check
-	 * @param {Array<*>} queue - Collection of items to upload
-	 * @return {boolean} if a PIXI.Texture object was found.
-	 */
-	function findTexture(item, queue)
-	{
-	    if (item._texture && item._texture instanceof Texture)
-	    {
-	        var texture = item._texture.baseTexture;
-
-	        if (queue.indexOf(texture) === -1)
-	        {
-	            queue.push(texture);
-	        }
-
-	        return true;
-	    }
-
-	    return false;
-	}
-
-	/**
-	 * Built-in hook to draw PIXI.Text to its texture.
-	 *
-	 * @private
-	 * @param {PIXI.Renderer|PIXI.CanvasPrepare} helper - Not used by this upload handler
-	 * @param {PIXI.DisplayObject} item - Item to check
-	 * @return {boolean} If item was uploaded.
-	 */
-	function drawText(helper, item)
-	{
-	    if (item instanceof Text)
-	    {
-	        // updating text will return early if it is not dirty
-	        item.updateText(true);
-
-	        return true;
-	    }
-
-	    return false;
-	}
-
-	/**
-	 * Built-in hook to calculate a text style for a PIXI.Text object.
-	 *
-	 * @private
-	 * @param {PIXI.Renderer|PIXI.CanvasPrepare} helper - Not used by this upload handler
-	 * @param {PIXI.DisplayObject} item - Item to check
-	 * @return {boolean} If item was uploaded.
-	 */
-	function calculateTextStyle(helper, item)
-	{
-	    if (item instanceof TextStyle)
-	    {
-	        var font = item.toFontString();
-
-	        TextMetrics.measureFont(font);
-
-	        return true;
-	    }
-
-	    return false;
-	}
-
-	/**
-	 * Built-in hook to find Text objects.
-	 *
-	 * @private
-	 * @param {PIXI.DisplayObject} item - Display object to check
-	 * @param {Array<*>} queue - Collection of items to upload
-	 * @return {boolean} if a PIXI.Text object was found.
-	 */
-	function findText(item, queue)
-	{
-	    if (item instanceof Text)
-	    {
-	        // push the text style to prepare it - this can be really expensive
-	        if (queue.indexOf(item.style) === -1)
-	        {
-	            queue.push(item.style);
-	        }
-	        // also push the text object so that we can render it (to canvas/texture) if needed
-	        if (queue.indexOf(item) === -1)
-	        {
-	            queue.push(item);
-	        }
-	        // also push the Text's texture for upload to GPU
-	        var texture = item._texture.baseTexture;
-
-	        if (queue.indexOf(texture) === -1)
-	        {
-	            queue.push(texture);
-	        }
-
-	        return true;
-	    }
-
-	    return false;
-	}
-
-	/**
-	 * Built-in hook to find TextStyle objects.
-	 *
-	 * @private
-	 * @param {PIXI.TextStyle} item - Display object to check
-	 * @param {Array<*>} queue - Collection of items to upload
-	 * @return {boolean} if a PIXI.TextStyle object was found.
-	 */
-	function findTextStyle(item, queue)
-	{
-	    if (item instanceof TextStyle)
-	    {
-	        if (queue.indexOf(item) === -1)
-	        {
-	            queue.push(item);
-	        }
-
-	        return true;
-	    }
-
-	    return false;
-	}
-
-	/**
-	 * The prepare manager provides functionality to upload content to the GPU.
-	 *
-	 * An instance of this class is automatically created by default, and can be found at `renderer.plugins.prepare`
-	 *
-	 * @class
-	 * @extends PIXI.prepare.BasePrepare
-	 * @memberof PIXI.prepare
-	 */
-	var Prepare = /*@__PURE__*/(function (BasePrepare$$1) {
-	    function Prepare(renderer)
-	    {
-	        BasePrepare$$1.call(this, renderer);
-
-	        this.uploadHookHelper = this.renderer;
-
-	        // Add textures and graphics to upload
-	        this.registerFindHook(findGraphics);
-	        this.registerUploadHook(uploadBaseTextures);
-	        this.registerUploadHook(uploadGraphics);
-	    }
-
-	    if ( BasePrepare$$1 ) { Prepare.__proto__ = BasePrepare$$1; }
-	    Prepare.prototype = Object.create( BasePrepare$$1 && BasePrepare$$1.prototype );
-	    Prepare.prototype.constructor = Prepare;
-
-	    return Prepare;
-	}(BasePrepare));
-	/**
-	 * Built-in hook to upload PIXI.Texture objects to the GPU.
-	 *
-	 * @private
-	 * @param {PIXI.Renderer} renderer - instance of the webgl renderer
-	 * @param {PIXI.DisplayObject} item - Item to check
-	 * @return {boolean} If item was uploaded.
-	 */
-	function uploadBaseTextures(renderer, item)
-	{
-	    if (item instanceof BaseTexture)
-	    {
-	        // if the texture already has a GL texture, then the texture has been prepared or rendered
-	        // before now. If the texture changed, then the changer should be calling texture.update() which
-	        // reuploads the texture without need for preparing it again
-	        if (!item._glTextures[renderer.CONTEXT_UID])
-	        {
-	            renderer.textureManager.updateTexture(item);
-	        }
-
-	        return true;
-	    }
-
-	    return false;
-	}
-
-	/**
-	 * Built-in hook to upload PIXI.Graphics to the GPU.
-	 *
-	 * @private
-	 * @param {PIXI.Renderer} renderer - instance of the webgl renderer
-	 * @param {PIXI.DisplayObject} item - Item to check
-	 * @return {boolean} If item was uploaded.
-	 */
-	function uploadGraphics(renderer, item)
-	{
-	    if (item instanceof Graphics)
-	    {
-	        // if the item is not dirty and already has webgl data, then it got prepared or rendered
-	        // before now and we shouldn't waste time updating it again
-	        if (item.dirty || item.clearDirty || !item._webGL[renderer.plugins.graphics.CONTEXT_UID])
-	        {
-	            renderer.plugins.graphics.updateGraphics(item);
-	        }
-
-	        return true;
-	    }
-
-	    return false;
-	}
-
-	/**
-	 * Built-in hook to find graphics.
-	 *
-	 * @private
-	 * @param {PIXI.DisplayObject} item - Display object to check
-	 * @param {Array<*>} queue - Collection of items to upload
-	 * @return {boolean} if a PIXI.Graphics object was found.
-	 */
-	function findGraphics(item, queue)
-	{
-	    if (item instanceof Graphics)
-	    {
-	        queue.push(item);
-
-	        return true;
-	    }
-
-	    return false;
-	}
-
-	/**
-	 * TimeLimiter limits the number of items handled by a {@link PIXI.BasePrepare} to a specified
-	 * number of milliseconds per frame.
-	 *
-	 * @class
-	 * @memberof PIXI.prepare
-	 */
-	var TimeLimiter = function TimeLimiter(maxMilliseconds)
-	{
-	    /**
-	     * The maximum milliseconds that can be spent preparing items each frame.
-	     * @type {number}
-	     * @private
-	     */
-	    this.maxMilliseconds = maxMilliseconds;
-	    /**
-	     * The start time of the current frame.
-	     * @type {number}
-	     * @private
-	     */
-	    this.frameStart = 0;
-	};
-
-	/**
-	 * Resets any counting properties to start fresh on a new frame.
-	 */
-	TimeLimiter.prototype.beginFrame = function beginFrame ()
-	{
-	    this.frameStart = Date.now();
-	};
-
-	/**
-	 * Checks to see if another item can be uploaded. This should only be called once per item.
-	 * @return {boolean} If the item is allowed to be uploaded.
-	 */
-	TimeLimiter.prototype.allowedToUpload = function allowedToUpload ()
-	{
-	    return Date.now() - this.frameStart < this.maxMilliseconds;
-	};
-
-	var prepare = ({
-		Prepare: Prepare,
-		BasePrepare: BasePrepare,
-		CountLimiter: CountLimiter,
-		TimeLimiter: TimeLimiter
-	});
-
-	/*!
-	 * @pixi/sprite-animated - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
-	 *
-	 * @pixi/sprite-animated is licensed under the MIT License.
-	 * http://www.opensource.org/licenses/mit-license
-	 */
-
-	/**
-	 * An AnimatedSprite is a simple way to display an animation depicted by a list of textures.
-	 *
-	 * ```js
-	 * let alienImages = ["image_sequence_01.png","image_sequence_02.png","image_sequence_03.png","image_sequence_04.png"];
-	 * let textureArray = [];
-	 *
-	 * for (let i=0; i < 4; i++)
-	 * {
-	 *      let texture = PIXI.Texture.from(alienImages[i]);
-	 *      textureArray.push(texture);
-	 * };
-	 *
-	 * let animatedSprite = new PIXI.AnimatedSprite(textureArray);
-	 * ```
-	 *
-	 * The more efficient and simpler way to create an animated sprite is using a {@link PIXI.Spritesheet}
-	 * containing the animation definitions:
-	 *
-	 * ```js
-	 * PIXI.loader.add("assets/spritesheet.json").load(setup);
-	 *
-	 * function setup() {
-	 *   let sheet = PIXI.loader.resources["assets/spritesheet.json"].spritesheet;
-	 *   animatedSprite = new PIXI.AnimatedSprite(sheet.animations["image_sequence"]);
-	 *   ...
-	 * }
-	 * ```
-	 *
-	 * @class
-	 * @extends PIXI.Sprite
-	 * @memberof PIXI
-	 */
-	var AnimatedSprite = /*@__PURE__*/(function (Sprite$$1) {
-	    function AnimatedSprite(textures, autoUpdate)
-	    {
-	        Sprite$$1.call(this, textures[0] instanceof Texture ? textures[0] : textures[0].texture);
-
-	        /**
-	         * @type {PIXI.Texture[]}
-	         * @private
-	         */
-	        this._textures = null;
-
-	        /**
-	         * @type {number[]}
-	         * @private
-	         */
-	        this._durations = null;
-
-	        this.textures = textures;
-
-	        /**
-	         * `true` uses PIXI.Ticker.shared to auto update animation time.
-	         * @type {boolean}
-	         * @default true
-	         * @private
-	         */
-	        this._autoUpdate = autoUpdate !== false;
-
-	        /**
-	         * The speed that the AnimatedSprite will play at. Higher is faster, lower is slower.
-	         *
-	         * @member {number}
-	         * @default 1
-	         */
-	        this.animationSpeed = 1;
-
-	        /**
-	         * Whether or not the animate sprite repeats after playing.
-	         *
-	         * @member {boolean}
-	         * @default true
-	         */
-	        this.loop = true;
-
-	        /**
-	         * Function to call when a AnimatedSprite finishes playing.
-	         *
-	         * @member {Function}
-	         */
-	        this.onComplete = null;
-
-	        /**
-	         * Function to call when a AnimatedSprite changes which texture is being rendered.
-	         *
-	         * @member {Function}
-	         */
-	        this.onFrameChange = null;
-
-	        /**
-	         * Function to call when `loop` is true, and an AnimatedSprite is played and loops around to start again.
-	         *
-	         * @member {Function}
-	         */
-	        this.onLoop = null;
-
-	        /**
-	         * Elapsed time since animation has been started, used internally to display current texture.
-	         *
-	         * @member {number}
-	         * @private
-	         */
-	        this._currentTime = 0;
-
-	        /**
-	         * Indicates if the AnimatedSprite is currently playing.
-	         *
-	         * @member {boolean}
-	         * @readonly
-	         */
-	        this.playing = false;
-	    }
-
-	    if ( Sprite$$1 ) { AnimatedSprite.__proto__ = Sprite$$1; }
-	    AnimatedSprite.prototype = Object.create( Sprite$$1 && Sprite$$1.prototype );
-	    AnimatedSprite.prototype.constructor = AnimatedSprite;
-
-	    var prototypeAccessors = { totalFrames: { configurable: true },textures: { configurable: true },currentFrame: { configurable: true } };
-
-	    /**
-	     * Stops the AnimatedSprite.
-	     *
-	     */
-	    AnimatedSprite.prototype.stop = function stop ()
-	    {
-	        if (!this.playing)
-	        {
-	            return;
-	        }
-
-	        this.playing = false;
-	        if (this._autoUpdate)
-	        {
-	            Ticker.shared.remove(this.update, this);
-	        }
-	    };
-
-	    /**
-	     * Plays the AnimatedSprite.
-	     *
-	     */
-	    AnimatedSprite.prototype.play = function play ()
-	    {
-	        if (this.playing)
-	        {
-	            return;
-	        }
-
-	        this.playing = true;
-	        if (this._autoUpdate)
-	        {
-	            Ticker.shared.add(this.update, this, UPDATE_PRIORITY.HIGH);
-	        }
-	    };
-
-	    /**
-	     * Stops the AnimatedSprite and goes to a specific frame.
-	     *
-	     * @param {number} frameNumber - Frame index to stop at.
-	     */
-	    AnimatedSprite.prototype.gotoAndStop = function gotoAndStop (frameNumber)
-	    {
-	        this.stop();
-
-	        var previousFrame = this.currentFrame;
-
-	        this._currentTime = frameNumber;
-
-	        if (previousFrame !== this.currentFrame)
-	        {
-	            this.updateTexture();
-	        }
-	    };
-
-	    /**
-	     * Goes to a specific frame and begins playing the AnimatedSprite.
-	     *
-	     * @param {number} frameNumber - Frame index to start at.
-	     */
-	    AnimatedSprite.prototype.gotoAndPlay = function gotoAndPlay (frameNumber)
-	    {
-	        var previousFrame = this.currentFrame;
-
-	        this._currentTime = frameNumber;
-
-	        if (previousFrame !== this.currentFrame)
-	        {
-	            this.updateTexture();
-	        }
-
-	        this.play();
-	    };
-
-	    /**
-	     * Updates the object transform for rendering.
-	     *
-	     * @private
-	     * @param {number} deltaTime - Time since last tick.
-	     */
-	    AnimatedSprite.prototype.update = function update (deltaTime)
-	    {
-	        var elapsed = this.animationSpeed * deltaTime;
-	        var previousFrame = this.currentFrame;
-
-	        if (this._durations !== null)
-	        {
-	            var lag = this._currentTime % 1 * this._durations[this.currentFrame];
-
-	            lag += elapsed / 60 * 1000;
-
-	            while (lag < 0)
-	            {
-	                this._currentTime--;
-	                lag += this._durations[this.currentFrame];
-	            }
-
-	            var sign = Math.sign(this.animationSpeed * deltaTime);
-
-	            this._currentTime = Math.floor(this._currentTime);
-
-	            while (lag >= this._durations[this.currentFrame])
-	            {
-	                lag -= this._durations[this.currentFrame] * sign;
-	                this._currentTime += sign;
-	            }
-
-	            this._currentTime += lag / this._durations[this.currentFrame];
-	        }
-	        else
-	        {
-	            this._currentTime += elapsed;
-	        }
-
-	        if (this._currentTime < 0 && !this.loop)
-	        {
-	            this.gotoAndStop(0);
-
-	            if (this.onComplete)
-	            {
-	                this.onComplete();
-	            }
-	        }
-	        else if (this._currentTime >= this._textures.length && !this.loop)
-	        {
-	            this.gotoAndStop(this._textures.length - 1);
-
-	            if (this.onComplete)
-	            {
-	                this.onComplete();
-	            }
-	        }
-	        else if (previousFrame !== this.currentFrame)
-	        {
-	            if (this.loop && this.onLoop)
-	            {
-	                if (this.animationSpeed > 0 && this.currentFrame < previousFrame)
-	                {
-	                    this.onLoop();
-	                }
-	                else if (this.animationSpeed < 0 && this.currentFrame > previousFrame)
-	                {
-	                    this.onLoop();
-	                }
-	            }
-
-	            this.updateTexture();
-	        }
-	    };
-
-	    /**
-	     * Updates the displayed texture to match the current frame index.
-	     *
-	     * @private
-	     */
-	    AnimatedSprite.prototype.updateTexture = function updateTexture ()
-	    {
-	        this._texture = this._textures[this.currentFrame];
-	        this._textureID = -1;
-	        this._textureTrimmedID = -1;
-	        this.cachedTint = 0xFFFFFF;
-	        this.uvs = this._texture._uvs.uvsFloat32;
-
-	        if (this.onFrameChange)
-	        {
-	            this.onFrameChange(this.currentFrame);
-	        }
-	    };
-
-	    /**
-	     * Stops the AnimatedSprite and destroys it.
-	     *
-	     * @param {object|boolean} [options] - Options parameter. A boolean will act as if all options
-	     *  have been set to that value.
-	     * @param {boolean} [options.children=false] - If set to true, all the children will have their destroy
-	     *      method called as well. 'options' will be passed on to those calls.
-	     * @param {boolean} [options.texture=false] - Should it destroy the current texture of the sprite as well.
-	     * @param {boolean} [options.baseTexture=false] - Should it destroy the base texture of the sprite as well.
-	     */
-	    AnimatedSprite.prototype.destroy = function destroy (options)
-	    {
-	        this.stop();
-	        Sprite$$1.prototype.destroy.call(this, options);
-
-	        this.onComplete = null;
-	        this.onFrameChange = null;
-	        this.onLoop = null;
-	    };
-
-	    /**
-	     * A short hand way of creating a movieclip from an array of frame ids.
-	     *
-	     * @static
-	     * @param {string[]} frames - The array of frames ids the movieclip will use as its texture frames.
-	     * @return {AnimatedSprite} The new animated sprite with the specified frames.
-	     */
-	    AnimatedSprite.fromFrames = function fromFrames (frames)
-	    {
-	        var textures = [];
-
-	        for (var i = 0; i < frames.length; ++i)
-	        {
-	            textures.push(Texture.from(frames[i]));
-	        }
-
-	        return new AnimatedSprite(textures);
-	    };
-
-	    /**
-	     * A short hand way of creating a movieclip from an array of image ids.
-	     *
-	     * @static
-	     * @param {string[]} images - The array of image urls the movieclip will use as its texture frames.
-	     * @return {AnimatedSprite} The new animate sprite with the specified images as frames.
-	     */
-	    AnimatedSprite.fromImages = function fromImages (images)
-	    {
-	        var textures = [];
-
-	        for (var i = 0; i < images.length; ++i)
-	        {
-	            textures.push(Texture.from(images[i]));
-	        }
-
-	        return new AnimatedSprite(textures);
-	    };
-
-	    /**
-	     * The total number of frames in the AnimatedSprite. This is the same as number of textures
-	     * assigned to the AnimatedSprite.
-	     *
-	     * @readonly
-	     * @member {number}
-	     * @default 0
-	     */
-	    prototypeAccessors.totalFrames.get = function ()
-	    {
-	        return this._textures.length;
-	    };
-
-	    /**
-	     * The array of textures used for this AnimatedSprite.
-	     *
-	     * @member {PIXI.Texture[]}
-	     */
-	    prototypeAccessors.textures.get = function ()
-	    {
-	        return this._textures;
-	    };
-
-	    prototypeAccessors.textures.set = function (value) // eslint-disable-line require-jsdoc
-	    {
-	        if (value[0] instanceof Texture)
-	        {
-	            this._textures = value;
-	            this._durations = null;
-	        }
-	        else
-	        {
-	            this._textures = [];
-	            this._durations = [];
-
-	            for (var i = 0; i < value.length; i++)
-	            {
-	                this._textures.push(value[i].texture);
-	                this._durations.push(value[i].time);
-	            }
-	        }
-	        this.gotoAndStop(0);
-	        this.updateTexture();
-	    };
-
-	    /**
-	    * The AnimatedSprites current frame index.
-	    *
-	    * @member {number}
-	    * @readonly
-	    */
-	    prototypeAccessors.currentFrame.get = function ()
-	    {
-	        var currentFrame = Math.floor(this._currentTime) % this._textures.length;
-
-	        if (currentFrame < 0)
-	        {
-	            currentFrame += this._textures.length;
-	        }
-
-	        return currentFrame;
-	    };
-
-	    Object.defineProperties( AnimatedSprite.prototype, prototypeAccessors );
-
-	    return AnimatedSprite;
-	}(Sprite));
-
-	var spriteAnimated = ({
-		AnimatedSprite: AnimatedSprite
-	});
-
-	/*!
-	 * @pixi/spritesheet - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/spritesheet - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/spritesheet is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -38113,20 +36181,15 @@
 	    return url.resolve(resource.url.replace(baseUrl, ''), resource.data.meta.image);
 	};
 
-	var spritesheet = ({
-		Spritesheet: Spritesheet,
-		SpritesheetLoader: SpritesheetLoader
-	});
-
 	/*!
-	 * @pixi/sprite-tiling - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/sprite-tiling - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/sprite-tiling is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
 	 */
 
-	var tempPoint$2 = new Point();
+	var tempPoint$1 = new Point();
 
 	/**
 	 * A tiling sprite is a fast way of rendering a tiling image
@@ -38344,17 +36407,17 @@
 	     */
 	    TilingSprite.prototype.containsPoint = function containsPoint (point)
 	    {
-	        this.worldTransform.applyInverse(point, tempPoint$2);
+	        this.worldTransform.applyInverse(point, tempPoint$1);
 
 	        var width = this._width;
 	        var height = this._height;
 	        var x1 = -width * this.anchor._x;
 
-	        if (tempPoint$2.x >= x1 && tempPoint$2.x < x1 + width)
+	        if (tempPoint$1.x >= x1 && tempPoint$1.x < x1 + width)
 	        {
 	            var y1 = -height * this.anchor._y;
 
-	            if (tempPoint$2.y >= y1 && tempPoint$2.y < y1 + height)
+	            if (tempPoint$1.y >= y1 && tempPoint$1.y < y1 + height)
 	            {
 	                return true;
 	            }
@@ -38480,9 +36543,9 @@
 	    return TilingSprite;
 	}(Sprite));
 
-	var vertex$4 = "attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\n\nuniform mat3 projectionMatrix;\nuniform mat3 translationMatrix;\nuniform mat3 uTransform;\n\nvarying vec2 vTextureCoord;\n\nvoid main(void)\n{\n    gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);\n\n    vTextureCoord = (uTransform * vec3(aTextureCoord, 1.0)).xy;\n}\n";
+	var vertex$3 = "attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\n\nuniform mat3 projectionMatrix;\nuniform mat3 translationMatrix;\nuniform mat3 uTransform;\n\nvarying vec2 vTextureCoord;\n\nvoid main(void)\n{\n    gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);\n\n    vTextureCoord = (uTransform * vec3(aTextureCoord, 1.0)).xy;\n}\n";
 
-	var fragment$3 = "varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform vec4 uColor;\nuniform mat3 uMapCoord;\nuniform vec4 uClampFrame;\nuniform vec2 uClampOffset;\n\nvoid main(void)\n{\n    vec2 coord = mod(vTextureCoord - uClampOffset, vec2(1.0, 1.0)) + uClampOffset;\n    coord = (uMapCoord * vec3(coord, 1.0)).xy;\n    coord = clamp(coord, uClampFrame.xy, uClampFrame.zw);\n\n    vec4 sample = texture2D(uSampler, coord);\n    gl_FragColor = sample * uColor;\n}\n";
+	var fragment$2 = "varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform vec4 uColor;\nuniform mat3 uMapCoord;\nuniform vec4 uClampFrame;\nuniform vec2 uClampOffset;\n\nvoid main(void)\n{\n    vec2 coord = mod(vTextureCoord - uClampOffset, vec2(1.0, 1.0)) + uClampOffset;\n    coord = (uMapCoord * vec3(coord, 1.0)).xy;\n    coord = clamp(coord, uClampFrame.xy, uClampFrame.zw);\n\n    vec4 sample = texture2D(uSampler, coord);\n    gl_FragColor = sample * uColor;\n}\n";
 
 	var fragmentSimple = "varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform vec4 uColor;\n\nvoid main(void)\n{\n    vec4 sample = texture2D(uSampler, vTextureCoord);\n    gl_FragColor = sample * uColor;\n}\n";
 
@@ -38502,9 +36565,9 @@
 
 	        var uniforms = { globals: this.renderer.globalUniforms };
 
-	        this.shader = Shader.from(vertex$4, fragment$3, uniforms);
+	        this.shader = Shader.from(vertex$3, fragment$2, uniforms);
 
-	        this.simpleShader = Shader.from(vertex$4, fragmentSimple, uniforms);
+	        this.simpleShader = Shader.from(vertex$3, fragmentSimple, uniforms);
 
 	        this.quad = new QuadUv();
 	    }
@@ -38614,14 +36677,9 @@
 	    return TilingSpriteRenderer;
 	}(ObjectRenderer));
 
-	var spriteTiling = ({
-		TilingSprite: TilingSprite,
-		TilingSpriteRenderer: TilingSpriteRenderer
-	});
-
 	/*!
-	 * @pixi/text-bitmap - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/text-bitmap - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/text-bitmap is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -39446,14 +37504,9 @@
 	    }
 	};
 
-	var textBitmap = ({
-		BitmapText: BitmapText,
-		BitmapFontLoader: BitmapFontLoader
-	});
-
 	/*!
-	 * @pixi/fragments - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/fragments - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/fragments is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -39463,14 +37516,14 @@
 	var defaultFilter = "attribute vec2 aVertexPosition;\n\nuniform mat3 projectionMatrix;\n\nvarying vec2 vTextureCoord;\n\nuniform vec4 inputSize;\nuniform vec4 outputFrame;\n\nvec4 filterVertexPosition( void )\n{\n    vec2 position = aVertexPosition * max(outputFrame.zw, vec2(0.)) + outputFrame.xy;\n\n    return vec4((projectionMatrix * vec3(position, 1.0)).xy, 0.0, 1.0);\n}\n\nvec2 filterTextureCoord( void )\n{\n    return aVertexPosition * (outputFrame.zw * inputSize.zw);\n}\n\nvoid main(void)\n{\n    gl_Position = filterVertexPosition();\n    vTextureCoord = filterTextureCoord();\n}\n";
 
 	/*!
-	 * @pixi/filter-alpha - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/filter-alpha - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/filter-alpha is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
 	 */
 
-	var fragment$4 = "varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform float uAlpha;\n\nvoid main(void)\n{\n   gl_FragColor = texture2D(uSampler, vTextureCoord) * uAlpha;\n}\n";
+	var fragment$3 = "varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform float uAlpha;\n\nvoid main(void)\n{\n   gl_FragColor = texture2D(uSampler, vTextureCoord) * uAlpha;\n}\n";
 
 	/**
 	 * Simplest filter - applies alpha.
@@ -39494,7 +37547,7 @@
 	    {
 	        if ( alpha === void 0 ) { alpha = 1.0; }
 
-	        Filter$$1.call(this, _default, fragment$4, { uAlpha: 1 });
+	        Filter$$1.call(this, _default, fragment$3, { uAlpha: 1 });
 
 	        this.alpha = alpha;
 	    }
@@ -39527,8 +37580,8 @@
 	}(Filter));
 
 	/*!
-	 * @pixi/filter-blur - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/filter-blur - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/filter-blur is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -39952,14 +38005,14 @@
 	}(Filter));
 
 	/*!
-	 * @pixi/filter-color-matrix - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/filter-color-matrix - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/filter-color-matrix is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
 	 */
 
-	var fragment$5 = "varying vec2 vTextureCoord;\nuniform sampler2D uSampler;\nuniform float m[20];\nuniform float uAlpha;\n\nvoid main(void)\n{\n    vec4 c = texture2D(uSampler, vTextureCoord);\n\n    if (uAlpha == 0.0) {\n        gl_FragColor = c;\n        return;\n    }\n\n    // Un-premultiply alpha before applying the color matrix. See issue #3539.\n    if (c.a > 0.0) {\n      c.rgb /= c.a;\n    }\n\n    vec4 result;\n\n    result.r = (m[0] * c.r);\n        result.r += (m[1] * c.g);\n        result.r += (m[2] * c.b);\n        result.r += (m[3] * c.a);\n        result.r += m[4];\n\n    result.g = (m[5] * c.r);\n        result.g += (m[6] * c.g);\n        result.g += (m[7] * c.b);\n        result.g += (m[8] * c.a);\n        result.g += m[9];\n\n    result.b = (m[10] * c.r);\n       result.b += (m[11] * c.g);\n       result.b += (m[12] * c.b);\n       result.b += (m[13] * c.a);\n       result.b += m[14];\n\n    result.a = (m[15] * c.r);\n       result.a += (m[16] * c.g);\n       result.a += (m[17] * c.b);\n       result.a += (m[18] * c.a);\n       result.a += m[19];\n\n    vec3 rgb = mix(c.rgb, result.rgb, uAlpha);\n\n    // Premultiply alpha again.\n    rgb *= result.a;\n\n    gl_FragColor = vec4(rgb, result.a);\n}\n";
+	var fragment$4 = "varying vec2 vTextureCoord;\nuniform sampler2D uSampler;\nuniform float m[20];\nuniform float uAlpha;\n\nvoid main(void)\n{\n    vec4 c = texture2D(uSampler, vTextureCoord);\n\n    if (uAlpha == 0.0) {\n        gl_FragColor = c;\n        return;\n    }\n\n    // Un-premultiply alpha before applying the color matrix. See issue #3539.\n    if (c.a > 0.0) {\n      c.rgb /= c.a;\n    }\n\n    vec4 result;\n\n    result.r = (m[0] * c.r);\n        result.r += (m[1] * c.g);\n        result.r += (m[2] * c.b);\n        result.r += (m[3] * c.a);\n        result.r += m[4];\n\n    result.g = (m[5] * c.r);\n        result.g += (m[6] * c.g);\n        result.g += (m[7] * c.b);\n        result.g += (m[8] * c.a);\n        result.g += m[9];\n\n    result.b = (m[10] * c.r);\n       result.b += (m[11] * c.g);\n       result.b += (m[12] * c.b);\n       result.b += (m[13] * c.a);\n       result.b += m[14];\n\n    result.a = (m[15] * c.r);\n       result.a += (m[16] * c.g);\n       result.a += (m[17] * c.b);\n       result.a += (m[18] * c.a);\n       result.a += m[19];\n\n    vec3 rgb = mix(c.rgb, result.rgb, uAlpha);\n\n    // Premultiply alpha again.\n    rgb *= result.a;\n\n    gl_FragColor = vec4(rgb, result.a);\n}\n";
 
 	/**
 	 * The ColorMatrixFilter class lets you apply a 5x4 matrix transformation on the RGBA
@@ -39987,7 +38040,7 @@
 	            uAlpha: 1,
 	        };
 
-	        Filter$$1.call(this, defaultFilter, fragment$5, uniforms);
+	        Filter$$1.call(this, defaultFilter, fragment$4, uniforms);
 
 	        this.alpha = 1;
 	    }
@@ -40550,16 +38603,16 @@
 	ColorMatrixFilter.prototype.grayscale = ColorMatrixFilter.prototype.greyscale;
 
 	/*!
-	 * @pixi/filter-displacement - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/filter-displacement - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/filter-displacement is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
 	 */
 
-	var vertex$5 = "attribute vec2 aVertexPosition;\n\nuniform mat3 projectionMatrix;\nuniform mat3 filterMatrix;\n\nvarying vec2 vTextureCoord;\nvarying vec2 vFilterCoord;\n\nuniform vec4 inputSize;\nuniform vec4 outputFrame;\n\nvec4 filterVertexPosition( void )\n{\n    vec2 position = aVertexPosition * max(outputFrame.zw, vec2(0.)) + outputFrame.xy;\n\n    return vec4((projectionMatrix * vec3(position, 1.0)).xy, 0.0, 1.0);\n}\n\nvec2 filterTextureCoord( void )\n{\n    return aVertexPosition * (outputFrame.zw * inputSize.zw);\n}\n\nvoid main(void)\n{\n\tgl_Position = filterVertexPosition();\n\tvTextureCoord = filterTextureCoord();\n\tvFilterCoord = ( filterMatrix * vec3( vTextureCoord, 1.0)  ).xy;\n}\n";
+	var vertex$4 = "attribute vec2 aVertexPosition;\n\nuniform mat3 projectionMatrix;\nuniform mat3 filterMatrix;\n\nvarying vec2 vTextureCoord;\nvarying vec2 vFilterCoord;\n\nuniform vec4 inputSize;\nuniform vec4 outputFrame;\n\nvec4 filterVertexPosition( void )\n{\n    vec2 position = aVertexPosition * max(outputFrame.zw, vec2(0.)) + outputFrame.xy;\n\n    return vec4((projectionMatrix * vec3(position, 1.0)).xy, 0.0, 1.0);\n}\n\nvec2 filterTextureCoord( void )\n{\n    return aVertexPosition * (outputFrame.zw * inputSize.zw);\n}\n\nvoid main(void)\n{\n\tgl_Position = filterVertexPosition();\n\tvTextureCoord = filterTextureCoord();\n\tvFilterCoord = ( filterMatrix * vec3( vTextureCoord, 1.0)  ).xy;\n}\n";
 
-	var fragment$6 = "varying vec2 vFilterCoord;\nvarying vec2 vTextureCoord;\n\nuniform vec2 scale;\nuniform sampler2D uSampler;\nuniform sampler2D mapSampler;\n\nuniform highp vec4 inputSize;\nuniform vec4 inputClamp;\n\nvoid main(void)\n{\n  vec4 map =  texture2D(mapSampler, vFilterCoord);\n\n  map -= 0.5;\n  map.xy *= scale * inputSize.zw;\n\n  gl_FragColor = texture2D(uSampler, clamp(vec2(vTextureCoord.x + map.x, vTextureCoord.y + map.y), inputClamp.xy, inputClamp.zw));\n}\n";
+	var fragment$5 = "varying vec2 vFilterCoord;\nvarying vec2 vTextureCoord;\n\nuniform vec2 scale;\nuniform sampler2D uSampler;\nuniform sampler2D mapSampler;\n\nuniform highp vec4 inputSize;\nuniform vec4 inputClamp;\n\nvoid main(void)\n{\n  vec4 map =  texture2D(mapSampler, vFilterCoord);\n\n  map -= 0.5;\n  map.xy *= scale * inputSize.zw;\n\n  gl_FragColor = texture2D(uSampler, clamp(vec2(vTextureCoord.x + map.x, vTextureCoord.y + map.y), inputClamp.xy, inputClamp.zw));\n}\n";
 
 	/**
 	 * The DisplacementFilter class uses the pixel values from the specified texture
@@ -40580,7 +38633,7 @@
 
 	        sprite.renderable = false;
 
-	        Filter$$1.call(this, vertex$5, fragment$6, {
+	        Filter$$1.call(this, vertex$4, fragment$5, {
 	            mapSampler: sprite._texture,
 	            filterMatrix: maskMatrix,
 	            scale: { x: 1, y: 1 },
@@ -40645,16 +38698,16 @@
 	}(Filter));
 
 	/*!
-	 * @pixi/filter-fxaa - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/filter-fxaa - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/filter-fxaa is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
 	 */
 
-	var vertex$6 = "\nattribute vec2 aVertexPosition;\n\nuniform mat3 projectionMatrix;\n\nvarying vec2 v_rgbNW;\nvarying vec2 v_rgbNE;\nvarying vec2 v_rgbSW;\nvarying vec2 v_rgbSE;\nvarying vec2 v_rgbM;\n\nvarying vec2 vFragCoord;\n\nuniform vec4 inputPixel;\nuniform vec4 outputFrame;\n\nvec4 filterVertexPosition( void )\n{\n    vec2 position = aVertexPosition * max(outputFrame.zw, vec2(0.)) + outputFrame.xy;\n\n    return vec4((projectionMatrix * vec3(position, 1.0)).xy, 0.0, 1.0);\n}\n\nvoid texcoords(vec2 fragCoord, vec2 inverseVP,\n               out vec2 v_rgbNW, out vec2 v_rgbNE,\n               out vec2 v_rgbSW, out vec2 v_rgbSE,\n               out vec2 v_rgbM) {\n    v_rgbNW = (fragCoord + vec2(-1.0, -1.0)) * inverseVP;\n    v_rgbNE = (fragCoord + vec2(1.0, -1.0)) * inverseVP;\n    v_rgbSW = (fragCoord + vec2(-1.0, 1.0)) * inverseVP;\n    v_rgbSE = (fragCoord + vec2(1.0, 1.0)) * inverseVP;\n    v_rgbM = vec2(fragCoord * inverseVP);\n}\n\nvoid main(void) {\n\n   gl_Position = filterVertexPosition();\n\n   vFragCoord = aVertexPosition * outputFrame.zw;\n\n   texcoords(vFragCoord, inputPixel.zw, v_rgbNW, v_rgbNE, v_rgbSW, v_rgbSE, v_rgbM);\n}\n";
+	var vertex$5 = "\nattribute vec2 aVertexPosition;\n\nuniform mat3 projectionMatrix;\n\nvarying vec2 v_rgbNW;\nvarying vec2 v_rgbNE;\nvarying vec2 v_rgbSW;\nvarying vec2 v_rgbSE;\nvarying vec2 v_rgbM;\n\nvarying vec2 vFragCoord;\n\nuniform vec4 inputPixel;\nuniform vec4 outputFrame;\n\nvec4 filterVertexPosition( void )\n{\n    vec2 position = aVertexPosition * max(outputFrame.zw, vec2(0.)) + outputFrame.xy;\n\n    return vec4((projectionMatrix * vec3(position, 1.0)).xy, 0.0, 1.0);\n}\n\nvoid texcoords(vec2 fragCoord, vec2 inverseVP,\n               out vec2 v_rgbNW, out vec2 v_rgbNE,\n               out vec2 v_rgbSW, out vec2 v_rgbSE,\n               out vec2 v_rgbM) {\n    v_rgbNW = (fragCoord + vec2(-1.0, -1.0)) * inverseVP;\n    v_rgbNE = (fragCoord + vec2(1.0, -1.0)) * inverseVP;\n    v_rgbSW = (fragCoord + vec2(-1.0, 1.0)) * inverseVP;\n    v_rgbSE = (fragCoord + vec2(1.0, 1.0)) * inverseVP;\n    v_rgbM = vec2(fragCoord * inverseVP);\n}\n\nvoid main(void) {\n\n   gl_Position = filterVertexPosition();\n\n   vFragCoord = aVertexPosition * outputFrame.zw;\n\n   texcoords(vFragCoord, inputPixel.zw, v_rgbNW, v_rgbNE, v_rgbSW, v_rgbSE, v_rgbM);\n}\n";
 
-	var fragment$7 = "varying vec2 v_rgbNW;\nvarying vec2 v_rgbNE;\nvarying vec2 v_rgbSW;\nvarying vec2 v_rgbSE;\nvarying vec2 v_rgbM;\n\nvarying vec2 vFragCoord;\nuniform sampler2D uSampler;\nuniform highp vec4 inputPixel;\n\n\n/**\n Basic FXAA implementation based on the code on geeks3d.com with the\n modification that the texture2DLod stuff was removed since it's\n unsupported by WebGL.\n\n --\n\n From:\n https://github.com/mitsuhiko/webgl-meincraft\n\n Copyright (c) 2011 by Armin Ronacher.\n\n Some rights reserved.\n\n Redistribution and use in source and binary forms, with or without\n modification, are permitted provided that the following conditions are\n met:\n\n * Redistributions of source code must retain the above copyright\n notice, this list of conditions and the following disclaimer.\n\n * Redistributions in binary form must reproduce the above\n copyright notice, this list of conditions and the following\n disclaimer in the documentation and/or other materials provided\n with the distribution.\n\n * The names of the contributors may not be used to endorse or\n promote products derived from this software without specific\n prior written permission.\n\n THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\n LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\n A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\n LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\n DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\n THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\n OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n */\n\n#ifndef FXAA_REDUCE_MIN\n#define FXAA_REDUCE_MIN   (1.0/ 128.0)\n#endif\n#ifndef FXAA_REDUCE_MUL\n#define FXAA_REDUCE_MUL   (1.0 / 8.0)\n#endif\n#ifndef FXAA_SPAN_MAX\n#define FXAA_SPAN_MAX     8.0\n#endif\n\n//optimized version for mobile, where dependent\n//texture reads can be a bottleneck\nvec4 fxaa(sampler2D tex, vec2 fragCoord, vec2 inverseVP,\n          vec2 v_rgbNW, vec2 v_rgbNE,\n          vec2 v_rgbSW, vec2 v_rgbSE,\n          vec2 v_rgbM) {\n    vec4 color;\n    vec3 rgbNW = texture2D(tex, v_rgbNW).xyz;\n    vec3 rgbNE = texture2D(tex, v_rgbNE).xyz;\n    vec3 rgbSW = texture2D(tex, v_rgbSW).xyz;\n    vec3 rgbSE = texture2D(tex, v_rgbSE).xyz;\n    vec4 texColor = texture2D(tex, v_rgbM);\n    vec3 rgbM  = texColor.xyz;\n    vec3 luma = vec3(0.299, 0.587, 0.114);\n    float lumaNW = dot(rgbNW, luma);\n    float lumaNE = dot(rgbNE, luma);\n    float lumaSW = dot(rgbSW, luma);\n    float lumaSE = dot(rgbSE, luma);\n    float lumaM  = dot(rgbM,  luma);\n    float lumaMin = min(lumaM, min(min(lumaNW, lumaNE), min(lumaSW, lumaSE)));\n    float lumaMax = max(lumaM, max(max(lumaNW, lumaNE), max(lumaSW, lumaSE)));\n\n    mediump vec2 dir;\n    dir.x = -((lumaNW + lumaNE) - (lumaSW + lumaSE));\n    dir.y =  ((lumaNW + lumaSW) - (lumaNE + lumaSE));\n\n    float dirReduce = max((lumaNW + lumaNE + lumaSW + lumaSE) *\n                          (0.25 * FXAA_REDUCE_MUL), FXAA_REDUCE_MIN);\n\n    float rcpDirMin = 1.0 / (min(abs(dir.x), abs(dir.y)) + dirReduce);\n    dir = min(vec2(FXAA_SPAN_MAX, FXAA_SPAN_MAX),\n              max(vec2(-FXAA_SPAN_MAX, -FXAA_SPAN_MAX),\n                  dir * rcpDirMin)) * inverseVP;\n\n    vec3 rgbA = 0.5 * (\n                       texture2D(tex, fragCoord * inverseVP + dir * (1.0 / 3.0 - 0.5)).xyz +\n                       texture2D(tex, fragCoord * inverseVP + dir * (2.0 / 3.0 - 0.5)).xyz);\n    vec3 rgbB = rgbA * 0.5 + 0.25 * (\n                                     texture2D(tex, fragCoord * inverseVP + dir * -0.5).xyz +\n                                     texture2D(tex, fragCoord * inverseVP + dir * 0.5).xyz);\n\n    float lumaB = dot(rgbB, luma);\n    if ((lumaB < lumaMin) || (lumaB > lumaMax))\n        color = vec4(rgbA, texColor.a);\n    else\n        color = vec4(rgbB, texColor.a);\n    return color;\n}\n\nvoid main() {\n\n      vec4 color;\n\n      color = fxaa(uSampler, vFragCoord, inputPixel.zw, v_rgbNW, v_rgbNE, v_rgbSW, v_rgbSE, v_rgbM);\n\n      gl_FragColor = color;\n}\n";
+	var fragment$6 = "varying vec2 v_rgbNW;\nvarying vec2 v_rgbNE;\nvarying vec2 v_rgbSW;\nvarying vec2 v_rgbSE;\nvarying vec2 v_rgbM;\n\nvarying vec2 vFragCoord;\nuniform sampler2D uSampler;\nuniform highp vec4 inputPixel;\n\n\n/**\n Basic FXAA implementation based on the code on geeks3d.com with the\n modification that the texture2DLod stuff was removed since it's\n unsupported by WebGL.\n\n --\n\n From:\n https://github.com/mitsuhiko/webgl-meincraft\n\n Copyright (c) 2011 by Armin Ronacher.\n\n Some rights reserved.\n\n Redistribution and use in source and binary forms, with or without\n modification, are permitted provided that the following conditions are\n met:\n\n * Redistributions of source code must retain the above copyright\n notice, this list of conditions and the following disclaimer.\n\n * Redistributions in binary form must reproduce the above\n copyright notice, this list of conditions and the following\n disclaimer in the documentation and/or other materials provided\n with the distribution.\n\n * The names of the contributors may not be used to endorse or\n promote products derived from this software without specific\n prior written permission.\n\n THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\n LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\n A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\n LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\n DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\n THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\n OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n */\n\n#ifndef FXAA_REDUCE_MIN\n#define FXAA_REDUCE_MIN   (1.0/ 128.0)\n#endif\n#ifndef FXAA_REDUCE_MUL\n#define FXAA_REDUCE_MUL   (1.0 / 8.0)\n#endif\n#ifndef FXAA_SPAN_MAX\n#define FXAA_SPAN_MAX     8.0\n#endif\n\n//optimized version for mobile, where dependent\n//texture reads can be a bottleneck\nvec4 fxaa(sampler2D tex, vec2 fragCoord, vec2 inverseVP,\n          vec2 v_rgbNW, vec2 v_rgbNE,\n          vec2 v_rgbSW, vec2 v_rgbSE,\n          vec2 v_rgbM) {\n    vec4 color;\n    vec3 rgbNW = texture2D(tex, v_rgbNW).xyz;\n    vec3 rgbNE = texture2D(tex, v_rgbNE).xyz;\n    vec3 rgbSW = texture2D(tex, v_rgbSW).xyz;\n    vec3 rgbSE = texture2D(tex, v_rgbSE).xyz;\n    vec4 texColor = texture2D(tex, v_rgbM);\n    vec3 rgbM  = texColor.xyz;\n    vec3 luma = vec3(0.299, 0.587, 0.114);\n    float lumaNW = dot(rgbNW, luma);\n    float lumaNE = dot(rgbNE, luma);\n    float lumaSW = dot(rgbSW, luma);\n    float lumaSE = dot(rgbSE, luma);\n    float lumaM  = dot(rgbM,  luma);\n    float lumaMin = min(lumaM, min(min(lumaNW, lumaNE), min(lumaSW, lumaSE)));\n    float lumaMax = max(lumaM, max(max(lumaNW, lumaNE), max(lumaSW, lumaSE)));\n\n    mediump vec2 dir;\n    dir.x = -((lumaNW + lumaNE) - (lumaSW + lumaSE));\n    dir.y =  ((lumaNW + lumaSW) - (lumaNE + lumaSE));\n\n    float dirReduce = max((lumaNW + lumaNE + lumaSW + lumaSE) *\n                          (0.25 * FXAA_REDUCE_MUL), FXAA_REDUCE_MIN);\n\n    float rcpDirMin = 1.0 / (min(abs(dir.x), abs(dir.y)) + dirReduce);\n    dir = min(vec2(FXAA_SPAN_MAX, FXAA_SPAN_MAX),\n              max(vec2(-FXAA_SPAN_MAX, -FXAA_SPAN_MAX),\n                  dir * rcpDirMin)) * inverseVP;\n\n    vec3 rgbA = 0.5 * (\n                       texture2D(tex, fragCoord * inverseVP + dir * (1.0 / 3.0 - 0.5)).xyz +\n                       texture2D(tex, fragCoord * inverseVP + dir * (2.0 / 3.0 - 0.5)).xyz);\n    vec3 rgbB = rgbA * 0.5 + 0.25 * (\n                                     texture2D(tex, fragCoord * inverseVP + dir * -0.5).xyz +\n                                     texture2D(tex, fragCoord * inverseVP + dir * 0.5).xyz);\n\n    float lumaB = dot(rgbB, luma);\n    if ((lumaB < lumaMin) || (lumaB > lumaMax))\n        color = vec4(rgbA, texColor.a);\n    else\n        color = vec4(rgbB, texColor.a);\n    return color;\n}\n\nvoid main() {\n\n      vec4 color;\n\n      color = fxaa(uSampler, vFragCoord, inputPixel.zw, v_rgbNW, v_rgbNE, v_rgbSW, v_rgbSE, v_rgbM);\n\n      gl_FragColor = color;\n}\n";
 
 	/**
 	 * Basic FXAA (Fast Approximate Anti-Aliasing) implementation based on the code on geeks3d.com
@@ -40671,7 +38724,7 @@
 	    function FXAAFilter()
 	    {
 	        // TODO - needs work
-	        Filter$$1.call(this, vertex$6, fragment$7);
+	        Filter$$1.call(this, vertex$5, fragment$6);
 	    }
 
 	    if ( Filter$$1 ) { FXAAFilter.__proto__ = Filter$$1; }
@@ -40682,14 +38735,14 @@
 	}(Filter));
 
 	/*!
-	 * @pixi/filter-noise - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/filter-noise - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/filter-noise is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
 	 */
 
-	var fragment$8 = "precision highp float;\n\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nuniform float uNoise;\nuniform float uSeed;\nuniform sampler2D uSampler;\n\nfloat rand(vec2 co)\n{\n    return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);\n}\n\nvoid main()\n{\n    vec4 color = texture2D(uSampler, vTextureCoord);\n    float randomValue = rand(gl_FragCoord.xy * uSeed);\n    float diff = (randomValue - 0.5) * uNoise;\n\n    // Un-premultiply alpha before applying the color matrix. See issue #3539.\n    if (color.a > 0.0) {\n        color.rgb /= color.a;\n    }\n\n    color.r += diff;\n    color.g += diff;\n    color.b += diff;\n\n    // Premultiply alpha again.\n    color.rgb *= color.a;\n\n    gl_FragColor = color;\n}\n";
+	var fragment$7 = "precision highp float;\n\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nuniform float uNoise;\nuniform float uSeed;\nuniform sampler2D uSampler;\n\nfloat rand(vec2 co)\n{\n    return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);\n}\n\nvoid main()\n{\n    vec4 color = texture2D(uSampler, vTextureCoord);\n    float randomValue = rand(gl_FragCoord.xy * uSeed);\n    float diff = (randomValue - 0.5) * uNoise;\n\n    // Un-premultiply alpha before applying the color matrix. See issue #3539.\n    if (color.a > 0.0) {\n        color.rgb /= color.a;\n    }\n\n    color.r += diff;\n    color.g += diff;\n    color.b += diff;\n\n    // Premultiply alpha again.\n    color.rgb *= color.a;\n\n    gl_FragColor = color;\n}\n";
 
 	/**
 	 * @author Vico @vicocotea
@@ -40709,7 +38762,7 @@
 	        if ( noise === void 0 ) { noise = 0.5; }
 	        if ( seed === void 0 ) { seed = Math.random(); }
 
-	        Filter$$1.call(this, defaultFilter, fragment$8, {
+	        Filter$$1.call(this, defaultFilter, fragment$7, {
 	            uNoise: 0,
 	            uSeed: 0,
 	        });
@@ -40761,8 +38814,8 @@
 	}(Filter));
 
 	/*!
-	 * @pixi/mixin-cache-as-bitmap - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/mixin-cache-as-bitmap - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/mixin-cache-as-bitmap is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -40839,7 +38892,7 @@
 	                data.originalRenderCanvas = this.renderCanvas;
 
 	                data.originalUpdateTransform = this.updateTransform;
-	                data.originalCalculateBounds = this._calculateBounds;
+	                data.originalCalculateBounds = this.calculateBounds;
 	                data.originalGetLocalBounds = this.getLocalBounds;
 
 	                data.originalDestroy = this.destroy;
@@ -40865,7 +38918,7 @@
 
 	                this.render = data.originalRender;
 	                this.renderCanvas = data.originalRenderCanvas;
-	                this._calculateBounds = data.originalCalculateBounds;
+	                this.calculateBounds = data.originalCalculateBounds;
 	                this.getLocalBounds = data.originalGetLocalBounds;
 
 	                this.destroy = data.originalDestroy;
@@ -40978,7 +39031,10 @@
 	    // renderer.filterManager.filterStack = stack;
 
 	    this.render = this._renderCached;
+	    // the rest is the same as for Canvas
 	    this.updateTransform = this.displayObjectUpdateTransform;
+	    this.calculateBounds = this._calculateCachedBounds;
+	    this.getLocalBounds = this._getCachedLocalBounds;
 
 	    this._mask = null;
 	    this.filterArea = null;
@@ -40991,10 +39047,6 @@
 	    cachedSprite.anchor.y = -(bounds.y / bounds.height);
 	    cachedSprite.alpha = cacheAlpha;
 	    cachedSprite._bounds = this._bounds;
-
-	    // easy bounds..
-	    this._calculateBounds = this._calculateCachedBounds;
-	    this.getLocalBounds = this._getCachedLocalBounds;
 
 	    this._cacheData.sprite = cachedSprite;
 
@@ -41092,7 +39144,10 @@
 	    renderer.context = cachedRenderTarget;
 
 	    this.renderCanvas = this._renderCachedCanvas;
+	    // the rest is the same as for WebGL
+	    this.updateTransform = this.displayObjectUpdateTransform;
 	    this.calculateBounds = this._calculateCachedBounds;
+	    this.getLocalBounds = this._getCachedLocalBounds;
 
 	    this._mask = null;
 	    this.filterArea = null;
@@ -41103,9 +39158,13 @@
 	    cachedSprite.transform.worldTransform = this.transform.worldTransform;
 	    cachedSprite.anchor.x = -(bounds.x / bounds.width);
 	    cachedSprite.anchor.y = -(bounds.y / bounds.height);
-	    cachedSprite._bounds = this._bounds;
 	    cachedSprite.alpha = cacheAlpha;
+	    cachedSprite._bounds = this._bounds;
 
+	    this._cacheData.sprite = cachedSprite;
+
+	    this.transform._parentID = -1;
+	    // restore the transform of the cached sprite to avoid the nasty flicker..
 	    if (!this.parent)
 	    {
 	        this.parent = renderer._tempDisplayObjectParent;
@@ -41117,10 +39176,7 @@
 	        this.updateTransform();
 	    }
 
-	    this.updateTransform = this.displayObjectUpdateTransform;
-
-	    this._cacheData.sprite = cachedSprite;
-
+	    // map the hit test..
 	    this.containsPoint = cachedSprite.containsPoint.bind(cachedSprite);
 	};
 
@@ -41179,8 +39235,8 @@
 	};
 
 	/*!
-	 * @pixi/mixin-get-child-by-name - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/mixin-get-child-by-name - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/mixin-get-child-by-name is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -41216,8 +39272,8 @@
 	};
 
 	/*!
-	 * @pixi/mixin-get-global-position - v5.0.0-rc
-	 * Compiled Fri, 01 Feb 2019 04:54:02 UTC
+	 * @pixi/mixin-get-global-position - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
 	 *
 	 * @pixi/mixin-get-global-position is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -41254,8 +39310,20 @@
 
 	var v5 = '5.0.0';
 
-	function deprecated(PIXI)
+	/**
+	 * Deprecations (backward compatibilities) are automatically applied for browser bundles
+	 * in the UMD module format. If using Webpack or Rollup, you'll need to apply these
+	 * deprecations manually by doing something like this:
+	 * @example
+	 * import * as PIXI from 'pixi.js';
+	 * PIXI.useDeprecated(); // MUST be bound to namespace
+	 * @memberof PIXI
+	 * @function useDeprecated
+	 */
+	function useDeprecated()
 	{
+	    var PIXI = this;
+
 	    Object.defineProperties(PIXI, {
 	        /**
 	         * @constant {RegExp|string} SVG_SIZE
@@ -42171,6 +40239,1975 @@
 	    });
 	}
 
+	/*!
+	 * @pixi/mesh - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
+	 *
+	 * @pixi/mesh is licensed under the MIT License.
+	 * http://www.opensource.org/licenses/mit-license
+	 */
+
+	/**
+	 * Class controls cache for UV mapping from Texture normal space to BaseTexture normal space.
+	 *
+	 * @class
+	 * @memberof PIXI
+	 */
+	var MeshBatchUvs = function MeshBatchUvs(uvBuffer, uvMatrix)
+	{
+	    /**
+	     * Buffer with normalized UV's
+	     * @member {PIXI.Buffer}
+	     */
+	    this.uvBuffer = uvBuffer;
+
+	    /**
+	     * Material UV matrix
+	     * @member {PIXI.TextureMatrix}
+	     */
+	    this.uvMatrix = uvMatrix;
+
+	    /**
+	     * UV Buffer data
+	     * @member {Float32Array}
+	     * @readonly
+	     */
+	    this.data = null;
+
+	    this._bufferUpdateId = -1;
+
+	    this._textureUpdateId = -1;
+
+	    this._updateID = 0;
+	};
+
+	/**
+	 * updates
+	 *
+	 * @param {boolean} forceUpdate - force the update
+	 */
+	MeshBatchUvs.prototype.update = function update (forceUpdate)
+	{
+	    if (!forceUpdate
+	        && this._bufferUpdateId === this.uvBuffer._updateID
+	        && this._textureUpdateId === this.uvMatrix._updateID)
+	    {
+	        return;
+	    }
+
+	    this._bufferUpdateId = this.uvBuffer._updateID;
+	    this._textureUpdateId = this.uvMatrix._updateID;
+
+	    var data = this.uvBuffer.data;
+
+	    if (!this.data || this.data.length !== data.length)
+	    {
+	        this.data = new Float32Array(data.length);
+	    }
+
+	    this.uvMatrix.multiplyUvs(data, this.data);
+
+	    this._updateID++;
+	};
+
+	var tempPoint$2 = new Point();
+	var tempPolygon = new Polygon();
+
+	/**
+	 * Base mesh class.
+	 *
+	 * This class empowers you to have maximum flexibility to render any kind of WebGL visuals you can think of.
+	 * This class assumes a certain level of WebGL knowledge.
+	 * If you know a bit this should abstract enough away to make you life easier!
+	 *
+	 * Pretty much ALL WebGL can be broken down into the following:
+	 * - Geometry - The structure and data for the mesh. This can include anything from positions, uvs, normals, colors etc..
+	 * - Shader - This is the shader that PixiJS will render the geometry with (attributes in the shader must match the geometry)
+	 * - State - This is the state of WebGL required to render the mesh.
+	 *
+	 * Through a combination of the above elements you can render anything you want, 2D or 3D!
+	 *
+	 * @class
+	 * @extends PIXI.Container
+	 * @memberof PIXI
+	 */
+	var Mesh = /*@__PURE__*/(function (Container$$1) {
+	    function Mesh(geometry, shader, state, drawMode)// vertices, uvs, indices, drawMode)
+	    {
+	        if ( drawMode === void 0 ) { drawMode = DRAW_MODES.TRIANGLES; }
+
+	        Container$$1.call(this);
+
+	        /**
+	         * Includes vertex positions, face indices, normals, colors, UVs, and
+	         * custom attributes within buffers, reducing the cost of passing all
+	         * this data to the GPU. Can be shared between multiple Mesh objects.
+	         * @member {PIXI.Geometry}
+	         * @readonly
+	         */
+	        this.geometry = geometry;
+
+	        geometry.refCount++;
+
+	        /**
+	         * Represents the vertex and fragment shaders that processes the geometry and runs on the GPU.
+	         * Can be shared between multiple Mesh objects.
+	         * @member {PIXI.Shader|PIXI.MeshMaterial}
+	         */
+	        this.shader = shader;
+
+	        /**
+	         * Represents the WebGL state the Mesh required to render, excludes shader and geometry. E.g.,
+	         * blend mode, culling, depth testing, direction of rendering triangles, backface, etc.
+	         * @member {PIXI.State}
+	         */
+	        this.state = state || State.for2d();
+
+	        /**
+	         * The way the Mesh should be drawn, can be any of the {@link PIXI.DRAW_MODES} constants.
+	         *
+	         * @member {number}
+	         * @see PIXI.DRAW_MODES
+	         */
+	        this.drawMode = drawMode;
+
+	        /**
+	         * Typically the index of the IndexBuffer where to start drawing.
+	         * @member {number}
+	         * @default 0
+	         */
+	        this.start = 0;
+
+	        /**
+	         * How much of the geometry to draw, by default `0` renders everything.
+	         * @member {number}
+	         * @default 0
+	         */
+	        this.size = 0;
+
+	        /**
+	         * thease are used as easy access for batching
+	         * @member {Float32Array}
+	         * @private
+	         */
+	        this.uvs = null;
+
+	        /**
+	         * thease are used as easy access for batching
+	         * @member {Uint16Array}
+	         * @private
+	         */
+	        this.indices = null;
+
+	        /**
+	         * this is the caching layer used by the batcher
+	         * @member {Float32Array}
+	         * @private
+	         */
+	        this.vertexData = new Float32Array(1);
+
+	        /**
+	         * If geometry is changed used to decide to re-transform
+	         * the vertexData.
+	         * @member {number}
+	         * @private
+	         */
+	        this.vertexDirty = 0;
+
+	        this._transformID = -1;
+
+	        // Inherited from DisplayMode, set defaults
+	        this.tint = 0xFFFFFF;
+	        this.blendMode = BLEND_MODES.NORMAL;
+
+	        /**
+	         * Internal roundPixels field
+	         *
+	         * @member {boolean}
+	         * @private
+	         */
+	        this._roundPixels = settings.ROUND_PIXELS;
+
+	        /**
+	         * Batched UV's are cached for atlas textures
+	         * @member {PIXI.MeshBatchUvs}
+	         * @private
+	         */
+	        this.batchUvs = null;
+	    }
+
+	    if ( Container$$1 ) { Mesh.__proto__ = Container$$1; }
+	    Mesh.prototype = Object.create( Container$$1 && Container$$1.prototype );
+	    Mesh.prototype.constructor = Mesh;
+
+	    var prototypeAccessors = { uvBuffer: { configurable: true },verticesBuffer: { configurable: true },material: { configurable: true },blendMode: { configurable: true },roundPixels: { configurable: true },tint: { configurable: true },texture: { configurable: true } };
+
+	    /**
+	     * To change mesh uv's, change its uvBuffer data and increment its _updateID.
+	     * @member {PIXI.Buffer}
+	     * @readonly
+	     */
+	    prototypeAccessors.uvBuffer.get = function ()
+	    {
+	        return this.geometry.buffers[1].data;
+	    };
+
+	    /**
+	     * To change mesh vertices, change its uvBuffer data and increment its _updateID.
+	     * Incrementing _updateID is optional because most of Mesh objects do it anyway.
+	     * @member {PIXI.Buffer}
+	     * @readonly
+	     */
+	    prototypeAccessors.verticesBuffer.get = function ()
+	    {
+	        return this.geometry.buffers[0].data;
+	    };
+
+	    /**
+	     * Alias for {@link PIXI.Mesh#shader}.
+	     * @member {PIXI.Shader|PIXI.MeshMaterial}
+	     */
+	    prototypeAccessors.material.set = function (value)
+	    {
+	        this.shader = value;
+	    };
+
+	    prototypeAccessors.material.get = function ()
+	    {
+	        return this.shader;
+	    };
+
+	    /**
+	     * The blend mode to be applied to the Mesh. Apply a value of
+	     * `PIXI.BLEND_MODES.NORMAL` to reset the blend mode.
+	     *
+	     * @member {number}
+	     * @default PIXI.BLEND_MODES.NORMAL;
+	     * @see PIXI.BLEND_MODES
+	     */
+	    prototypeAccessors.blendMode.set = function (value)
+	    {
+	        this.state.blendMode = value;
+	    };
+
+	    prototypeAccessors.blendMode.get = function ()
+	    {
+	        return this.state.blendMode;
+	    };
+
+	    /**
+	     * If true PixiJS will Math.floor() x/y values when rendering, stopping pixel interpolation.
+	     * Advantages can include sharper image quality (like text) and faster rendering on canvas.
+	     * The main disadvantage is movement of objects may appear less smooth.
+	     * To set the global default, change {@link PIXI.settings.ROUND_PIXELS}
+	     *
+	     * @member {boolean}
+	     * @default false
+	     */
+	    prototypeAccessors.roundPixels.set = function (value)
+	    {
+	        if (this._roundPixels !== value)
+	        {
+	            this._transformID = -1;
+	        }
+	        this._roundPixels = value;
+	    };
+
+	    prototypeAccessors.roundPixels.get = function ()
+	    {
+	        return this._roundPixels;
+	    };
+
+	    /**
+	     * The multiply tint applied to the Mesh. This is a hex value. A value of
+	     * `0xFFFFFF` will remove any tint effect.
+	     *
+	     * @member {number}
+	     * @default 0xFFFFFF
+	     */
+	    prototypeAccessors.tint.get = function ()
+	    {
+	        return this.shader.tint;
+	    };
+
+	    prototypeAccessors.tint.set = function (value)
+	    {
+	        this.shader.tint = value;
+	    };
+
+	    /**
+	     * The texture that the Mesh uses.
+	     *
+	     * @member {PIXI.Texture}
+	     */
+	    prototypeAccessors.texture.get = function ()
+	    {
+	        return this.shader.texture;
+	    };
+
+	    prototypeAccessors.texture.set = function (value)
+	    {
+	        this.shader.texture = value;
+	    };
+
+	    /**
+	     * Standard renderer draw.
+	     * @protected
+	     */
+	    Mesh.prototype._render = function _render (renderer)
+	    {
+	        // set properties for batching..
+	        // TODO could use a different way to grab verts?
+	        var vertices = this.geometry.buffers[0].data;
+
+	        // TODO benchmark check for attribute size..
+	        if (this.shader.batchable && this.drawMode === DRAW_MODES.TRIANGLES && vertices.length < Mesh.BATCHABLE_SIZE * 2)
+	        {
+	            this._renderToBatch(renderer);
+	        }
+	        else
+	        {
+	            this._renderDefault(renderer);
+	        }
+	    };
+
+	    /**
+	     * Standard non-batching way of rendering.
+	     * @protected
+	     * @param {PIXI.Renderer} renderer - Instance to renderer.
+	     */
+	    Mesh.prototype._renderDefault = function _renderDefault (renderer)
+	    {
+	        var shader = this.shader;
+
+	        shader.alpha = this.worldAlpha;
+	        if (shader.update)
+	        {
+	            shader.update();
+	        }
+
+	        renderer.batch.flush();
+
+	        if (shader.program.uniformData.translationMatrix)
+	        {
+	            shader.uniforms.translationMatrix = this.transform.worldTransform.toArray(true);
+	        }
+
+	        // bind and sync uniforms..
+	        renderer.shader.bind(shader);
+
+	        // set state..
+	        renderer.state.setState(this.state);
+
+	        // bind the geometry...
+	        renderer.geometry.bind(this.geometry, shader);
+
+	        // then render it
+	        renderer.geometry.draw(this.drawMode, this.size, this.start, this.geometry.instanceCount);
+	    };
+
+	    /**
+	     * Rendering by using the Batch system.
+	     * @protected
+	     * @param {PIXI.Renderer} renderer - Instance to renderer.
+	     */
+	    Mesh.prototype._renderToBatch = function _renderToBatch (renderer)
+	    {
+	        var geometry = this.geometry;
+
+	        if (this.shader.uvMatrix)
+	        {
+	            this.shader.uvMatrix.update();
+	            this.calculateUvs();
+	        }
+
+	        // set properties for batching..
+	        this.calculateVertices();
+	        this.indices = geometry.indexBuffer.data;
+	        this._tintRGB = this.shader._tintRGB;
+	        this._texture = this.shader.texture;
+
+	        var pluginName = this.material.pluginName;
+
+	        renderer.batch.setObjectRenderer(renderer.plugins[pluginName]);
+	        renderer.plugins[pluginName].render(this);
+	    };
+
+	    /**
+	     * Updates vertexData field based on transform and vertices
+	     */
+	    Mesh.prototype.calculateVertices = function calculateVertices ()
+	    {
+	        var geometry = this.geometry;
+	        var vertices = geometry.buffers[0].data;
+
+	        if (geometry.vertexDirtyId === this.vertexDirty && this._transformID === this.transform._worldID)
+	        {
+	            return;
+	        }
+
+	        this._transformID = this.transform._worldID;
+
+	        if (this.vertexData.length !== vertices.length)
+	        {
+	            this.vertexData = new Float32Array(vertices.length);
+	        }
+
+	        var wt = this.transform.worldTransform;
+	        var a = wt.a;
+	        var b = wt.b;
+	        var c = wt.c;
+	        var d = wt.d;
+	        var tx = wt.tx;
+	        var ty = wt.ty;
+
+	        var vertexData = this.vertexData;
+
+	        for (var i = 0; i < vertexData.length / 2; i++)
+	        {
+	            var x = vertices[(i * 2)];
+	            var y = vertices[(i * 2) + 1];
+
+	            vertexData[(i * 2)] = (a * x) + (c * y) + tx;
+	            vertexData[(i * 2) + 1] = (b * x) + (d * y) + ty;
+	        }
+
+	        if (this._roundPixels)
+	        {
+	            for (var i$1 = 0; i$1 < vertexData.length; i$1++)
+	            {
+	                vertexData[i$1] = Math.round(vertexData[i$1]);
+	            }
+	        }
+
+	        this.vertexDirty = geometry.vertexDirtyId;
+	    };
+
+	    /**
+	     * Updates uv field based on from geometry uv's or batchUvs
+	     */
+	    Mesh.prototype.calculateUvs = function calculateUvs ()
+	    {
+	        var geomUvs = this.geometry.buffers[1];
+
+	        if (!this.shader.uvMatrix.isSimple)
+	        {
+	            if (!this.batchUvs)
+	            {
+	                this.batchUvs = new MeshBatchUvs(geomUvs, this.shader.uvMatrix);
+	            }
+	            this.batchUvs.update();
+	            this.uvs = this.batchUvs.data;
+	        }
+	        else
+	        {
+	            this.uvs = geomUvs.data;
+	        }
+	    };
+
+	    /**
+	     * Updates the bounds of the mesh as a rectangle. The bounds calculation takes the worldTransform into account.
+	     * there must be a aVertexPosition attribute present in the geometry for bounds to be calculated correctly.
+	     *
+	     * @protected
+	     */
+	    Mesh.prototype._calculateBounds = function _calculateBounds ()
+	    {
+	        this.calculateVertices();
+
+	        this._bounds.addVertexData(this.vertexData, 0, this.vertexData.length);
+	    };
+
+	    /**
+	     * Tests if a point is inside this mesh. Works only for PIXI.DRAW_MODES.TRIANGLES.
+	     *
+	     * @param {PIXI.Point} point the point to test
+	     * @return {boolean} the result of the test
+	     */
+	    Mesh.prototype.containsPoint = function containsPoint (point)
+	    {
+	        if (!this.getBounds().contains(point.x, point.y))
+	        {
+	            return false;
+	        }
+
+	        this.worldTransform.applyInverse(point, tempPoint$2);
+
+	        var vertices = this.geometry.getAttribute('aVertexPosition').data;
+
+	        var points = tempPolygon.points;
+	        var indices =  this.geometry.getIndex().data;
+	        var len = indices.length;
+	        var step = this.drawMode === 4 ? 3 : 1;
+
+	        for (var i = 0; i + 2 < len; i += step)
+	        {
+	            var ind0 = indices[i] * 2;
+	            var ind1 = indices[i + 1] * 2;
+	            var ind2 = indices[i + 2] * 2;
+
+	            points[0] = vertices[ind0];
+	            points[1] = vertices[ind0 + 1];
+	            points[2] = vertices[ind1];
+	            points[3] = vertices[ind1 + 1];
+	            points[4] = vertices[ind2];
+	            points[5] = vertices[ind2 + 1];
+
+	            if (tempPolygon.contains(tempPoint$2.x, tempPoint$2.y))
+	            {
+	                return true;
+	            }
+	        }
+
+	        return false;
+	    };
+	    /**
+	     * Destroys the Mesh object.
+	     *
+	     * @param {object|boolean} [options] - Options parameter. A boolean will act as if all
+	     *  options have been set to that value
+	     * @param {boolean} [options.children=false] - if set to true, all the children will have
+	     *  their destroy method called as well. 'options' will be passed on to those calls.
+	     */
+	    Mesh.prototype.destroy = function destroy (options)
+	    {
+	        Container$$1.prototype.destroy.call(this, options);
+
+	        this.geometry.refCount--;
+	        if (this.geometry.refCount === 0)
+	        {
+	            this.geometry.dispose();
+	        }
+
+	        this.geometry = null;
+	        this.shader = null;
+	        this.state = null;
+	        this.uvs = null;
+	        this.indices = null;
+	        this.vertexData = null;
+	    };
+
+	    Object.defineProperties( Mesh.prototype, prototypeAccessors );
+
+	    return Mesh;
+	}(Container));
+
+	/**
+	 * The maximum number of vertices to consider batchable. Generally, the complexity
+	 * of the geometry.
+	 * @memberof PIXI.Mesh
+	 * @static
+	 * @member {number} BATCHABLE_SIZE
+	 */
+	Mesh.BATCHABLE_SIZE = 100;
+
+	var vertex$6 = "attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\n\nuniform mat3 projectionMatrix;\nuniform mat3 translationMatrix;\nuniform mat3 uTextureMatrix;\n\nvarying vec2 vTextureCoord;\n\nvoid main(void)\n{\n    gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);\n\n    vTextureCoord = (uTextureMatrix * vec3(aTextureCoord, 1.0)).xy;\n}\n";
+
+	var fragment$8 = "varying vec2 vTextureCoord;\nuniform vec4 uColor;\n\nuniform sampler2D uSampler;\n\nvoid main(void)\n{\n    gl_FragColor = texture2D(uSampler, vTextureCoord) * uColor;\n}\n";
+
+	/**
+	 * Slightly opinionated default shader for PixiJS 2D objects.
+	 * @class
+	 * @memberof PIXI
+	 * @extends PIXI.Shader
+	 */
+	var MeshMaterial = /*@__PURE__*/(function (Shader$$1) {
+	    function MeshMaterial(uSampler, options)
+	    {
+	        var uniforms = {
+	            uSampler: uSampler,
+	            alpha: 1,
+	            uTextureMatrix: Matrix.IDENTITY,
+	            uColor: new Float32Array([1, 1, 1, 1]),
+	        };
+
+	        // Set defaults
+	        options = Object.assign({
+	            tint: 0xFFFFFF,
+	            alpha: 1,
+	            pluginName: 'batch',
+	        }, options);
+
+	        if (options.uniforms)
+	        {
+	            Object.assign(uniforms, options.uniforms);
+	        }
+
+	        Shader$$1.call(this, options.program || Program.from(vertex$6, fragment$8), uniforms);
+
+	        /**
+	         * Only do update if tint or alpha changes.
+	         * @member {boolean}
+	         * @private
+	         * @default false
+	         */
+	        this._colorDirty = false;
+
+	        /**
+	         * TextureMatrix instance for this Mesh, used to track Texture changes
+	         *
+	         * @member {PIXI.TextureMatrix}
+	         * @readonly
+	         */
+	        this.uvMatrix = new TextureMatrix(uSampler);
+
+	        /**
+	         * `true` if shader can be batch with the renderer's batch system.
+	         * @member {boolean}
+	         * @default true
+	         */
+	        this.batchable = options.program === undefined;
+
+	        /**
+	         * Renderer plugin for batching
+	         *
+	         * @member {string}
+	         * @default 'batch'
+	         */
+	        this.pluginName = options.pluginName;
+
+	        this.tint = options.tint;
+	        this.alpha = options.alpha;
+	    }
+
+	    if ( Shader$$1 ) { MeshMaterial.__proto__ = Shader$$1; }
+	    MeshMaterial.prototype = Object.create( Shader$$1 && Shader$$1.prototype );
+	    MeshMaterial.prototype.constructor = MeshMaterial;
+
+	    var prototypeAccessors = { texture: { configurable: true },alpha: { configurable: true },tint: { configurable: true } };
+
+	    /**
+	     * Reference to the texture being rendered.
+	     * @member {PIXI.Texture}
+	     */
+	    prototypeAccessors.texture.get = function ()
+	    {
+	        return this.uniforms.uSampler;
+	    };
+	    prototypeAccessors.texture.set = function (value)
+	    {
+	        if (this.uniforms.uSampler !== value)
+	        {
+	            this.uniforms.uSampler = value;
+	            this.uvMatrix.texture = value;
+	        }
+	    };
+
+	    /**
+	     * This gets automatically set by the object using this.
+	     *
+	     * @default 1
+	     * @member {number}
+	     */
+	    prototypeAccessors.alpha.set = function (value)
+	    {
+	        if (value === this._alpha) { return; }
+
+	        this._alpha = value;
+	        this._colorDirty = true;
+	    };
+	    prototypeAccessors.alpha.get = function ()
+	    {
+	        return this._alpha;
+	    };
+
+	    /**
+	     * Multiply tint for the material.
+	     * @member {number}
+	     * @default 0xFFFFFF
+	     */
+	    prototypeAccessors.tint.set = function (value)
+	    {
+	        if (value === this._tint) { return; }
+
+	        this._tint = value;
+	        this._tintRGB = (value >> 16) + (value & 0xff00) + ((value & 0xff) << 16);
+	        this._colorDirty = true;
+	    };
+	    prototypeAccessors.tint.get = function ()
+	    {
+	        return this._tint;
+	    };
+
+	    /**
+	     * Gets called automatically by the Mesh. Intended to be overridden for custom
+	     * MeshMaterial objects.
+	     */
+	    MeshMaterial.prototype.update = function update ()
+	    {
+	        if (this._colorDirty)
+	        {
+	            this._colorDirty = false;
+	            var baseTexture = this.texture.baseTexture;
+
+	            premultiplyTintToRgba(this._tintRGB, this._alpha, this.uniforms.uColor, baseTexture.premultiplyAlpha);
+	        }
+	        if (this.uvMatrix.update())
+	        {
+	            this.uniforms.uTextureMatrix = this.uvMatrix.mapCoord;
+	        }
+	    };
+
+	    Object.defineProperties( MeshMaterial.prototype, prototypeAccessors );
+
+	    return MeshMaterial;
+	}(Shader));
+
+	/**
+	 * Standard 2D geometry used in PixiJS.
+	 *
+	 * Geometry can be defined without passing in a style or data if required.
+	 *
+	 * ```js
+	 * const geometry = new PIXI.Geometry();
+	 *
+	 * geometry.addAttribute('positions', [0, 0, 100, 0, 100, 100, 0, 100], 2);
+	 * geometry.addAttribute('uvs', [0,0,1,0,1,1,0,1], 2);
+	 * geometry.addIndex([0,1,2,1,3,2]);
+	 *
+	 * ```
+	 * @class
+	 * @memberof PIXI
+	 * @extends PIXI.Geometry
+	 */
+	var MeshGeometry = /*@__PURE__*/(function (Geometry$$1) {
+	    function MeshGeometry(vertices, uvs, index$$1)
+	    {
+	        Geometry$$1.call(this);
+
+	        var verticesBuffer = new Buffer(vertices);
+	        var uvsBuffer = new Buffer(uvs, true);
+	        var indexBuffer = new Buffer(index$$1, true, true);
+
+	        this.addAttribute('aVertexPosition', verticesBuffer, 2, false, TYPES.FLOAT)
+	            .addAttribute('aTextureCoord', uvsBuffer, 2, false, TYPES.FLOAT)
+	            .addIndex(indexBuffer);
+
+	        /**
+	         * Dirty flag to limit update calls on Mesh. For example,
+	         * limiting updates on a single Mesh instance with a shared Geometry
+	         * within the render loop.
+	         * @private
+	         * @member {number}
+	         * @default -1
+	         */
+	        this._updateId = -1;
+	    }
+
+	    if ( Geometry$$1 ) { MeshGeometry.__proto__ = Geometry$$1; }
+	    MeshGeometry.prototype = Object.create( Geometry$$1 && Geometry$$1.prototype );
+	    MeshGeometry.prototype.constructor = MeshGeometry;
+
+	    var prototypeAccessors = { vertexDirtyId: { configurable: true } };
+
+	    /**
+	     * If the vertex position is updated.
+	     * @member {number}
+	     * @readonly
+	     * @private
+	     */
+	    prototypeAccessors.vertexDirtyId.get = function ()
+	    {
+	        return this.buffers[0]._updateID;
+	    };
+
+	    Object.defineProperties( MeshGeometry.prototype, prototypeAccessors );
+
+	    return MeshGeometry;
+	}(Geometry));
+
+	/*!
+	 * @pixi/mesh-extras - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
+	 *
+	 * @pixi/mesh-extras is licensed under the MIT License.
+	 * http://www.opensource.org/licenses/mit-license
+	 */
+
+	var PlaneGeometry = /*@__PURE__*/(function (MeshGeometry$$1) {
+	    function PlaneGeometry(width, height, segWidth, segHeight)
+	    {
+	        if ( width === void 0 ) { width = 100; }
+	        if ( height === void 0 ) { height = 100; }
+	        if ( segWidth === void 0 ) { segWidth = 10; }
+	        if ( segHeight === void 0 ) { segHeight = 10; }
+
+	        MeshGeometry$$1.call(this);
+
+	        this.segWidth = segWidth;
+	        this.segHeight = segHeight;
+
+	        this.width = width;
+	        this.height = height;
+
+	        this.build();
+	    }
+
+	    if ( MeshGeometry$$1 ) { PlaneGeometry.__proto__ = MeshGeometry$$1; }
+	    PlaneGeometry.prototype = Object.create( MeshGeometry$$1 && MeshGeometry$$1.prototype );
+	    PlaneGeometry.prototype.constructor = PlaneGeometry;
+
+	    /**
+	     * Refreshes plane coordinates
+	     * @private
+	     */
+	    PlaneGeometry.prototype.build = function build ()
+	    {
+	        var total = this.segWidth * this.segHeight;
+	        var verts = [];
+	        var uvs = [];
+	        var indices = [];
+
+	        var segmentsX = this.segWidth - 1;
+	        var segmentsY = this.segHeight - 1;
+
+	        var sizeX = (this.width) / segmentsX;
+	        var sizeY = (this.height) / segmentsY;
+
+	        for (var i = 0; i < total; i++)
+	        {
+	            var x = (i % this.segWidth);
+	            var y = ((i / this.segWidth) | 0);
+
+	            verts.push(x * sizeX, y * sizeY);
+	            uvs.push(x / segmentsX, y / segmentsY);
+	        }
+
+	        var totalSub = segmentsX * segmentsY;
+
+	        for (var i$1 = 0; i$1 < totalSub; i$1++)
+	        {
+	            var xpos = i$1 % segmentsX;
+	            var ypos = (i$1 / segmentsX) | 0;
+
+	            var value = (ypos * this.segWidth) + xpos;
+	            var value2 = (ypos * this.segWidth) + xpos + 1;
+	            var value3 = ((ypos + 1) * this.segWidth) + xpos;
+	            var value4 = ((ypos + 1) * this.segWidth) + xpos + 1;
+
+	            indices.push(value, value2, value3,
+	                value2, value4, value3);
+	        }
+
+	        this.buffers[0].data = new Float32Array(verts);
+	        this.buffers[1].data = new Float32Array(uvs);
+	        this.indexBuffer.data = new Uint16Array(indices);
+
+	        // ensure that the changes are uploaded
+	        this.buffers[0].update();
+	        this.buffers[1].update();
+	        this.indexBuffer.update();
+	    };
+
+	    return PlaneGeometry;
+	}(MeshGeometry));
+
+	/**
+	 * The rope allows you to draw a texture across several points and then manipulate these points
+	 *
+	 *```js
+	 * for (let i = 0; i < 20; i++) {
+	 *     points.push(new PIXI.Point(i * 50, 0));
+	 * };
+	 * let rope = new PIXI.Rope(PIXI.Texture.from("snake.png"), points);
+	 *  ```
+	 *
+	 * @class
+	 * @extends PIXI.MeshGeometry
+	 * @memberof PIXI
+	 *
+	 */
+	var RopeGeometry = /*@__PURE__*/(function (MeshGeometry$$1) {
+	    function RopeGeometry(width, points)
+	    {
+	        if ( width === void 0 ) { width = 200; }
+
+	        MeshGeometry$$1.call(this, new Float32Array(points.length * 4),
+	            new Float32Array(points.length * 4),
+	            new Uint16Array((points.length - 1) * 6));
+
+	        /**
+	         * An array of points that determine the rope
+	         * @member {PIXI.Point[]}
+	         */
+	        this.points = points;
+
+	        this.width = width;
+
+	        this.build();
+	    }
+
+	    if ( MeshGeometry$$1 ) { RopeGeometry.__proto__ = MeshGeometry$$1; }
+	    RopeGeometry.prototype = Object.create( MeshGeometry$$1 && MeshGeometry$$1.prototype );
+	    RopeGeometry.prototype.constructor = RopeGeometry;
+	    /**
+	     * Refreshes Rope indices and uvs
+	     * @private
+	     */
+	    RopeGeometry.prototype.build = function build ()
+	    {
+	        var points = this.points;
+
+	        if (!points) { return; }
+
+	        var vertexBuffer = this.getAttribute('aVertexPosition');
+	        var uvBuffer = this.getAttribute('aTextureCoord');
+	        var indexBuffer = this.getIndex();
+
+	        // if too little points, or texture hasn't got UVs set yet just move on.
+	        if (points.length < 1)
+	        {
+	            return;
+	        }
+
+	        // if the number of points has changed we will need to recreate the arraybuffers
+	        if (vertexBuffer.data.length / 4 !== points.length)
+	        {
+	            vertexBuffer.data = new Float32Array(points.length * 4);
+	            uvBuffer.data = new Float32Array(points.length * 4);
+	            indexBuffer.data = new Uint16Array((points.length - 1) * 6);
+	        }
+
+	        var uvs = uvBuffer.data;
+	        var indices = indexBuffer.data;
+
+	        uvs[0] = 0;
+	        uvs[1] = 0;
+	        uvs[2] = 0;
+	        uvs[3] = 1;
+
+	        // indices[0] = 0;
+	        // indices[1] = 1;
+
+	        var total = points.length; // - 1;
+
+	        for (var i = 0; i < total; i++)
+	        {
+	            // time to do some smart drawing!
+	            var index$$1 = i * 4;
+	            var amount = i / (total - 1);
+
+	            uvs[index$$1] = amount;
+	            uvs[index$$1 + 1] = 0;
+
+	            uvs[index$$1 + 2] = amount;
+	            uvs[index$$1 + 3] = 1;
+	        }
+
+	        var indexCount = 0;
+
+	        for (var i$1 = 0; i$1 < total - 1; i$1++)
+	        {
+	            var index$1 = i$1 * 2;
+
+	            indices[indexCount++] = index$1;
+	            indices[indexCount++] = index$1 + 1;
+	            indices[indexCount++] = index$1 + 2;
+
+	            indices[indexCount++] = index$1 + 2;
+	            indices[indexCount++] = index$1 + 1;
+	            indices[indexCount++] = index$1 + 3;
+	        }
+
+	        // ensure that the changes are uploaded
+	        uvBuffer.update();
+	        indexBuffer.update();
+
+	        this.updateVertices();
+	    };
+
+	    /**
+	     * refreshes vertices of Rope mesh
+	     */
+	    RopeGeometry.prototype.updateVertices = function updateVertices ()
+	    {
+	        var points = this.points;
+
+	        if (points.length < 1)
+	        {
+	            return;
+	        }
+
+	        var lastPoint = points[0];
+	        var nextPoint;
+	        var perpX = 0;
+	        var perpY = 0;
+
+	        // this.count -= 0.2;
+
+	        var vertices = this.buffers[0].data;
+	        var total = points.length;
+
+	        for (var i = 0; i < total; i++)
+	        {
+	            var point = points[i];
+	            var index$$1 = i * 4;
+
+	            if (i < points.length - 1)
+	            {
+	                nextPoint = points[i + 1];
+	            }
+	            else
+	            {
+	                nextPoint = point;
+	            }
+
+	            perpY = -(nextPoint.x - lastPoint.x);
+	            perpX = nextPoint.y - lastPoint.y;
+
+	            var perpLength = Math.sqrt((perpX * perpX) + (perpY * perpY));
+	            var num = this.width / 2; // (20 + Math.abs(Math.sin((i + this.count) * 0.3) * 50) )* ratio;
+
+	            perpX /= perpLength;
+	            perpY /= perpLength;
+
+	            perpX *= num;
+	            perpY *= num;
+
+	            vertices[index$$1] = point.x + perpX;
+	            vertices[index$$1 + 1] = point.y + perpY;
+	            vertices[index$$1 + 2] = point.x - perpX;
+	            vertices[index$$1 + 3] = point.y - perpY;
+
+	            lastPoint = point;
+	        }
+
+	        this.buffers[0].update();
+	    };
+
+	    RopeGeometry.prototype.update = function update ()
+	    {
+	        this.updateVertices();
+	    };
+
+	    return RopeGeometry;
+	}(MeshGeometry));
+
+	/**
+	 * The rope allows you to draw a texture across several points and then manipulate these points
+	 *
+	 *```js
+	 * for (let i = 0; i < 20; i++) {
+	 *     points.push(new PIXI.Point(i * 50, 0));
+	 * };
+	 * let rope = new PIXI.Rope(PIXI.Texture.from("snake.png"), points);
+	 *  ```
+	 *
+	 * @class
+	 * @extends PIXI.Mesh
+	 * @memberof PIXI
+	 *
+	 */
+	var SimpleRope = /*@__PURE__*/(function (Mesh$$1) {
+	    function SimpleRope(texture, points)
+	    {
+	        var ropeGeometry = new RopeGeometry(texture.height, points);
+	        var meshMaterial = new MeshMaterial(texture);
+
+	        Mesh$$1.call(this, ropeGeometry, meshMaterial);
+
+	        /**
+	         * re-calculate vertices by rope points each frame
+	         *
+	         * @member {boolean}
+	         */
+	        this.autoUpdate = true;
+	    }
+
+	    if ( Mesh$$1 ) { SimpleRope.__proto__ = Mesh$$1; }
+	    SimpleRope.prototype = Object.create( Mesh$$1 && Mesh$$1.prototype );
+	    SimpleRope.prototype.constructor = SimpleRope;
+
+	    SimpleRope.prototype._render = function _render (renderer)
+	    {
+	        if (this.autoUpdate
+	            || this.geometry.width !== this.shader.texture.height)
+	        {
+	            this.geometry.width = this.shader.texture.height;
+	            this.geometry.update();
+	        }
+
+	        Mesh$$1.prototype._render.call(this, renderer);
+	    };
+
+	    return SimpleRope;
+	}(Mesh));
+
+	/**
+	 * The Plane allows you to draw a texture across several points and then manipulate these points
+	 *
+	 *```js
+	 * for (let i = 0; i < 20; i++) {
+	 *     points.push(new PIXI.Point(i * 50, 0));
+	 * };
+	 * let Plane = new PIXI.Plane(PIXI.Texture.from("snake.png"), points);
+	 *  ```
+	 *
+	 * @class
+	 * @extends PIXI.Mesh
+	 * @memberof PIXI
+	 *
+	 */
+	var SimplePlane = /*@__PURE__*/(function (Mesh$$1) {
+	    function SimplePlane(texture, verticesX, verticesY)
+	    {
+	        var planeGeometry = new PlaneGeometry(texture.width, texture.height, verticesX, verticesY);
+	        var meshMaterial = new MeshMaterial(Texture.WHITE);
+
+	        Mesh$$1.call(this, planeGeometry, meshMaterial);
+
+	        // lets call the setter to ensure all necessary updates are performed
+	        this.texture = texture;
+	    }
+
+	    if ( Mesh$$1 ) { SimplePlane.__proto__ = Mesh$$1; }
+	    SimplePlane.prototype = Object.create( Mesh$$1 && Mesh$$1.prototype );
+	    SimplePlane.prototype.constructor = SimplePlane;
+
+	    var prototypeAccessors = { texture: { configurable: true } };
+
+	    /**
+	     * Method used for overrides, to do something in case texture frame was changed.
+	     * Meshes based on plane can override it and change more details based on texture.
+	     */
+	    SimplePlane.prototype.textureUpdated = function textureUpdated ()
+	    {
+	        this._textureID = this.shader.texture._updateID;
+
+	        this.geometry.width = this.shader.texture.width;
+	        this.geometry.height = this.shader.texture.height;
+
+	        this.geometry.build();
+	    };
+
+	    prototypeAccessors.texture.set = function (value)
+	    {
+	        // Track texture same way sprite does.
+	        // For generated meshes like NineSlicePlane it can change the geometry.
+	        // Unfortunately, this method might not work if you directly change texture in material.
+
+	        if (this.shader.texture === value)
+	        {
+	            return;
+	        }
+
+	        this.shader.texture = value;
+	        this._textureID = -1;
+
+	        if (value.baseTexture.valid)
+	        {
+	            this.textureUpdated();
+	        }
+	        else
+	        {
+	            value.once('update', this.textureUpdated, this);
+	        }
+	    };
+
+	    prototypeAccessors.texture.get = function ()
+	    {
+	        return this.shader.texture;
+	    };
+
+	    SimplePlane.prototype._render = function _render (renderer)
+	    {
+	        if (this._textureID !== this.shader.texture._updateID)
+	        {
+	            this.textureUpdated();
+	        }
+
+	        Mesh$$1.prototype._render.call(this, renderer);
+	    };
+
+	    Object.defineProperties( SimplePlane.prototype, prototypeAccessors );
+
+	    return SimplePlane;
+	}(Mesh));
+
+	/**
+	 * The Simple Mesh class mimics Mesh in PixiJS v4, providing easy-to-use constructor arguments.
+	 * For more robust customization, use {@link PIXI.Mesh}.
+	 *
+	 * @class
+	 * @extends PIXI.Mesh
+	 * @memberof PIXI
+	 */
+	var SimpleMesh = /*@__PURE__*/(function (Mesh$$1) {
+	    function SimpleMesh(texture, vertices, uvs, indices, drawMode)
+	    {
+	        if ( texture === void 0 ) { texture = Texture.EMPTY; }
+
+	        var geometry = new MeshGeometry(vertices, uvs, indices);
+
+	        geometry.getAttribute('aVertexPosition').static = false;
+
+	        var meshMaterial = new MeshMaterial(texture);
+
+	        Mesh$$1.call(this, geometry, meshMaterial, null, drawMode);
+
+	        /**
+	         * upload vertices buffer each frame
+	         * @member {boolean}
+	         */
+	        this.autoUpdate = true;
+	    }
+
+	    if ( Mesh$$1 ) { SimpleMesh.__proto__ = Mesh$$1; }
+	    SimpleMesh.prototype = Object.create( Mesh$$1 && Mesh$$1.prototype );
+	    SimpleMesh.prototype.constructor = SimpleMesh;
+
+	    var prototypeAccessors = { vertices: { configurable: true } };
+
+	    /**
+	     * Collection of vertices data.
+	     * @member {Float32Array}
+	     */
+	    prototypeAccessors.vertices.get = function ()
+	    {
+	        return this.geometry.getAttribute('aVertexPosition').data;
+	    };
+	    prototypeAccessors.vertices.set = function (value)
+	    {
+	        this.geometry.getAttribute('aVertexPosition').data = value;
+	    };
+
+	    SimpleMesh.prototype._render = function _render (renderer)
+	    {
+	        if (this.autoUpdate)
+	        {
+	            this.geometry.getAttribute('aVertexPosition').update();
+	        }
+
+	        Mesh$$1.prototype._render.call(this, renderer);
+	    };
+
+	    Object.defineProperties( SimpleMesh.prototype, prototypeAccessors );
+
+	    return SimpleMesh;
+	}(Mesh));
+
+	var DEFAULT_BORDER_SIZE = 10;
+
+	/**
+	 * The NineSlicePlane allows you to stretch a texture using 9-slice scaling. The corners will remain unscaled (useful
+	 * for buttons with rounded corners for example) and the other areas will be scaled horizontally and or vertically
+	 *
+	 *```js
+	 * let Plane9 = new PIXI.NineSlicePlane(PIXI.Texture.from('BoxWithRoundedCorners.png'), 15, 15, 15, 15);
+	 *  ```
+	 * <pre>
+	 *      A                          B
+	 *    +---+----------------------+---+
+	 *  C | 1 |          2           | 3 |
+	 *    +---+----------------------+---+
+	 *    |   |                      |   |
+	 *    | 4 |          5           | 6 |
+	 *    |   |                      |   |
+	 *    +---+----------------------+---+
+	 *  D | 7 |          8           | 9 |
+	 *    +---+----------------------+---+
+
+	 *  When changing this objects width and/or height:
+	 *     areas 1 3 7 and 9 will remain unscaled.
+	 *     areas 2 and 8 will be stretched horizontally
+	 *     areas 4 and 6 will be stretched vertically
+	 *     area 5 will be stretched both horizontally and vertically
+	 * </pre>
+	 *
+	 * @class
+	 * @extends PIXI.SimplePlane
+	 * @memberof PIXI
+	 *
+	 */
+	var NineSlicePlane = /*@__PURE__*/(function (SimplePlane$$1) {
+	    function NineSlicePlane(texture, leftWidth, topHeight, rightWidth, bottomHeight)
+	    {
+	        SimplePlane$$1.call(this, Texture.WHITE, 4, 4);
+
+	        this._origWidth = texture.orig.width;
+	        this._origHeight = texture.orig.height;
+
+	        /**
+	         * The width of the NineSlicePlane, setting this will actually modify the vertices and UV's of this plane
+	         *
+	         * @member {number}
+	         * @override
+	         */
+	        this._width = this._origWidth;
+
+	        /**
+	         * The height of the NineSlicePlane, setting this will actually modify the vertices and UV's of this plane
+	         *
+	         * @member {number}
+	         * @override
+	         */
+	        this._height = this._origHeight;
+
+	        /**
+	         * The width of the left column (a)
+	         *
+	         * @member {number}
+	         * @private
+	         */
+	        this._leftWidth = typeof leftWidth !== 'undefined' ? leftWidth : DEFAULT_BORDER_SIZE;
+
+	        /**
+	         * The width of the right column (b)
+	         *
+	         * @member {number}
+	         * @private
+	         */
+	        this._rightWidth = typeof rightWidth !== 'undefined' ? rightWidth : DEFAULT_BORDER_SIZE;
+
+	        /**
+	         * The height of the top row (c)
+	         *
+	         * @member {number}
+	         * @private
+	         */
+	        this._topHeight = typeof topHeight !== 'undefined' ? topHeight : DEFAULT_BORDER_SIZE;
+
+	        /**
+	         * The height of the bottom row (d)
+	         *
+	         * @member {number}
+	         * @private
+	         */
+	        this._bottomHeight = typeof bottomHeight !== 'undefined' ? bottomHeight : DEFAULT_BORDER_SIZE;
+
+	        // lets call the setter to ensure all necessary updates are performed
+	        this.texture = texture;
+	    }
+
+	    if ( SimplePlane$$1 ) { NineSlicePlane.__proto__ = SimplePlane$$1; }
+	    NineSlicePlane.prototype = Object.create( SimplePlane$$1 && SimplePlane$$1.prototype );
+	    NineSlicePlane.prototype.constructor = NineSlicePlane;
+
+	    var prototypeAccessors = { vertices: { configurable: true },width: { configurable: true },height: { configurable: true },leftWidth: { configurable: true },rightWidth: { configurable: true },topHeight: { configurable: true },bottomHeight: { configurable: true } };
+
+	    NineSlicePlane.prototype.textureUpdated = function textureUpdated ()
+	    {
+	        this._textureID = this.shader.texture._updateID;
+	        this._refresh();
+	    };
+
+	    prototypeAccessors.vertices.get = function ()
+	    {
+	        return this.geometry.getAttribute('aVertexPosition').data;
+	    };
+
+	    prototypeAccessors.vertices.set = function (value)
+	    {
+	        this.geometry.getAttribute('aVertexPosition').data = value;
+	    };
+
+	    /**
+	     * Updates the horizontal vertices.
+	     *
+	     */
+	    NineSlicePlane.prototype.updateHorizontalVertices = function updateHorizontalVertices ()
+	    {
+	        var vertices = this.vertices;
+
+	        var h = this._topHeight + this._bottomHeight;
+	        var scale = this._height > h ? 1.0 : this._height / h;
+
+	        vertices[9] = vertices[11] = vertices[13] = vertices[15] = this._topHeight * scale;
+	        vertices[17] = vertices[19] = vertices[21] = vertices[23] = this._height - (this._bottomHeight * scale);
+	        vertices[25] = vertices[27] = vertices[29] = vertices[31] = this._height;
+	    };
+
+	    /**
+	     * Updates the vertical vertices.
+	     *
+	     */
+	    NineSlicePlane.prototype.updateVerticalVertices = function updateVerticalVertices ()
+	    {
+	        var vertices = this.vertices;
+
+	        var w = this._leftWidth + this._rightWidth;
+	        var scale = this._width > w ? 1.0 : this._width / w;
+
+	        vertices[2] = vertices[10] = vertices[18] = vertices[26] = this._leftWidth * scale;
+	        vertices[4] = vertices[12] = vertices[20] = vertices[28] = this._width - (this._rightWidth * scale);
+	        vertices[6] = vertices[14] = vertices[22] = vertices[30] = this._width;
+	    };
+
+	    /**
+	     * The width of the NineSlicePlane, setting this will actually modify the vertices and UV's of this plane
+	     *
+	     * @member {number}
+	     */
+	    prototypeAccessors.width.get = function ()
+	    {
+	        return this._width;
+	    };
+
+	    prototypeAccessors.width.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        this._width = value;
+	        this._refresh();
+	    };
+
+	    /**
+	     * The height of the NineSlicePlane, setting this will actually modify the vertices and UV's of this plane
+	     *
+	     * @member {number}
+	     */
+	    prototypeAccessors.height.get = function ()
+	    {
+	        return this._height;
+	    };
+
+	    prototypeAccessors.height.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        this._height = value;
+	        this._refresh();
+	    };
+
+	    /**
+	     * The width of the left column
+	     *
+	     * @member {number}
+	     */
+	    prototypeAccessors.leftWidth.get = function ()
+	    {
+	        return this._leftWidth;
+	    };
+
+	    prototypeAccessors.leftWidth.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        this._leftWidth = value;
+	        this._refresh();
+	    };
+
+	    /**
+	     * The width of the right column
+	     *
+	     * @member {number}
+	     */
+	    prototypeAccessors.rightWidth.get = function ()
+	    {
+	        return this._rightWidth;
+	    };
+
+	    prototypeAccessors.rightWidth.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        this._rightWidth = value;
+	        this._refresh();
+	    };
+
+	    /**
+	     * The height of the top row
+	     *
+	     * @member {number}
+	     */
+	    prototypeAccessors.topHeight.get = function ()
+	    {
+	        return this._topHeight;
+	    };
+
+	    prototypeAccessors.topHeight.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        this._topHeight = value;
+	        this._refresh();
+	    };
+
+	    /**
+	     * The height of the bottom row
+	     *
+	     * @member {number}
+	     */
+	    prototypeAccessors.bottomHeight.get = function ()
+	    {
+	        return this._bottomHeight;
+	    };
+
+	    prototypeAccessors.bottomHeight.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        this._bottomHeight = value;
+	        this._refresh();
+	    };
+
+	    /**
+	     * Refreshes NineSlicePlane coords. All of them.
+	     */
+	    NineSlicePlane.prototype._refresh = function _refresh ()
+	    {
+	        var texture = this.texture;
+
+	        var uvs = this.geometry.buffers[1].data;
+
+	        this._origWidth = texture.orig.width;
+	        this._origHeight = texture.orig.height;
+
+	        var _uvw = 1.0 / this._origWidth;
+	        var _uvh = 1.0 / this._origHeight;
+
+	        uvs[0] = uvs[8] = uvs[16] = uvs[24] = 0;
+	        uvs[1] = uvs[3] = uvs[5] = uvs[7] = 0;
+	        uvs[6] = uvs[14] = uvs[22] = uvs[30] = 1;
+	        uvs[25] = uvs[27] = uvs[29] = uvs[31] = 1;
+
+	        uvs[2] = uvs[10] = uvs[18] = uvs[26] = _uvw * this._leftWidth;
+	        uvs[4] = uvs[12] = uvs[20] = uvs[28] = 1 - (_uvw * this._rightWidth);
+	        uvs[9] = uvs[11] = uvs[13] = uvs[15] = _uvh * this._topHeight;
+	        uvs[17] = uvs[19] = uvs[21] = uvs[23] = 1 - (_uvh * this._bottomHeight);
+
+	        this.updateHorizontalVertices();
+	        this.updateVerticalVertices();
+
+	        this.geometry.buffers[0].update();
+	        this.geometry.buffers[1].update();
+	    };
+
+	    Object.defineProperties( NineSlicePlane.prototype, prototypeAccessors );
+
+	    return NineSlicePlane;
+	}(SimplePlane));
+
+	/*!
+	 * @pixi/sprite-animated - v5.0.0-rc.2
+	 * Compiled Mon, 18 Feb 2019 23:48:11 UTC
+	 *
+	 * @pixi/sprite-animated is licensed under the MIT License.
+	 * http://www.opensource.org/licenses/mit-license
+	 */
+
+	/**
+	 * An AnimatedSprite is a simple way to display an animation depicted by a list of textures.
+	 *
+	 * ```js
+	 * let alienImages = ["image_sequence_01.png","image_sequence_02.png","image_sequence_03.png","image_sequence_04.png"];
+	 * let textureArray = [];
+	 *
+	 * for (let i=0; i < 4; i++)
+	 * {
+	 *      let texture = PIXI.Texture.from(alienImages[i]);
+	 *      textureArray.push(texture);
+	 * };
+	 *
+	 * let animatedSprite = new PIXI.AnimatedSprite(textureArray);
+	 * ```
+	 *
+	 * The more efficient and simpler way to create an animated sprite is using a {@link PIXI.Spritesheet}
+	 * containing the animation definitions:
+	 *
+	 * ```js
+	 * PIXI.loader.add("assets/spritesheet.json").load(setup);
+	 *
+	 * function setup() {
+	 *   let sheet = PIXI.loader.resources["assets/spritesheet.json"].spritesheet;
+	 *   animatedSprite = new PIXI.AnimatedSprite(sheet.animations["image_sequence"]);
+	 *   ...
+	 * }
+	 * ```
+	 *
+	 * @class
+	 * @extends PIXI.Sprite
+	 * @memberof PIXI
+	 */
+	var AnimatedSprite = /*@__PURE__*/(function (Sprite$$1) {
+	    function AnimatedSprite(textures, autoUpdate)
+	    {
+	        Sprite$$1.call(this, textures[0] instanceof Texture ? textures[0] : textures[0].texture);
+
+	        /**
+	         * @type {PIXI.Texture[]}
+	         * @private
+	         */
+	        this._textures = null;
+
+	        /**
+	         * @type {number[]}
+	         * @private
+	         */
+	        this._durations = null;
+
+	        this.textures = textures;
+
+	        /**
+	         * `true` uses PIXI.Ticker.shared to auto update animation time.
+	         * @type {boolean}
+	         * @default true
+	         * @private
+	         */
+	        this._autoUpdate = autoUpdate !== false;
+
+	        /**
+	         * The speed that the AnimatedSprite will play at. Higher is faster, lower is slower.
+	         *
+	         * @member {number}
+	         * @default 1
+	         */
+	        this.animationSpeed = 1;
+
+	        /**
+	         * Whether or not the animate sprite repeats after playing.
+	         *
+	         * @member {boolean}
+	         * @default true
+	         */
+	        this.loop = true;
+
+	        /**
+	         * Update anchor to [Texture's defaultAnchor]{@link PIXI.Texture#defaultAnchor} when frame changes.
+	         *
+	         * Useful with [sprite sheet animations]{@link PIXI.Spritesheet#animations} created with tools.
+	         * Changing anchor for each frame allows to pin sprite origin to certain moving feature
+	         * of the frame (e.g. left foot).
+	         *
+	         * Note: Enabling this will override any previously set `anchor` on each frame change.
+	         *
+	         * @member {boolean}
+	         * @default false
+	         */
+	        this.updateAnchor = false;
+
+	        /**
+	         * Function to call when a AnimatedSprite finishes playing.
+	         *
+	         * @member {Function}
+	         */
+	        this.onComplete = null;
+
+	        /**
+	         * Function to call when a AnimatedSprite changes which texture is being rendered.
+	         *
+	         * @member {Function}
+	         */
+	        this.onFrameChange = null;
+
+	        /**
+	         * Function to call when `loop` is true, and an AnimatedSprite is played and loops around to start again.
+	         *
+	         * @member {Function}
+	         */
+	        this.onLoop = null;
+
+	        /**
+	         * Elapsed time since animation has been started, used internally to display current texture.
+	         *
+	         * @member {number}
+	         * @private
+	         */
+	        this._currentTime = 0;
+
+	        /**
+	         * Indicates if the AnimatedSprite is currently playing.
+	         *
+	         * @member {boolean}
+	         * @readonly
+	         */
+	        this.playing = false;
+	    }
+
+	    if ( Sprite$$1 ) { AnimatedSprite.__proto__ = Sprite$$1; }
+	    AnimatedSprite.prototype = Object.create( Sprite$$1 && Sprite$$1.prototype );
+	    AnimatedSprite.prototype.constructor = AnimatedSprite;
+
+	    var prototypeAccessors = { totalFrames: { configurable: true },textures: { configurable: true },currentFrame: { configurable: true } };
+
+	    /**
+	     * Stops the AnimatedSprite.
+	     *
+	     */
+	    AnimatedSprite.prototype.stop = function stop ()
+	    {
+	        if (!this.playing)
+	        {
+	            return;
+	        }
+
+	        this.playing = false;
+	        if (this._autoUpdate)
+	        {
+	            Ticker.shared.remove(this.update, this);
+	        }
+	    };
+
+	    /**
+	     * Plays the AnimatedSprite.
+	     *
+	     */
+	    AnimatedSprite.prototype.play = function play ()
+	    {
+	        if (this.playing)
+	        {
+	            return;
+	        }
+
+	        this.playing = true;
+	        if (this._autoUpdate)
+	        {
+	            Ticker.shared.add(this.update, this, UPDATE_PRIORITY.HIGH);
+	        }
+	    };
+
+	    /**
+	     * Stops the AnimatedSprite and goes to a specific frame.
+	     *
+	     * @param {number} frameNumber - Frame index to stop at.
+	     */
+	    AnimatedSprite.prototype.gotoAndStop = function gotoAndStop (frameNumber)
+	    {
+	        this.stop();
+
+	        var previousFrame = this.currentFrame;
+
+	        this._currentTime = frameNumber;
+
+	        if (previousFrame !== this.currentFrame)
+	        {
+	            this.updateTexture();
+	        }
+	    };
+
+	    /**
+	     * Goes to a specific frame and begins playing the AnimatedSprite.
+	     *
+	     * @param {number} frameNumber - Frame index to start at.
+	     */
+	    AnimatedSprite.prototype.gotoAndPlay = function gotoAndPlay (frameNumber)
+	    {
+	        var previousFrame = this.currentFrame;
+
+	        this._currentTime = frameNumber;
+
+	        if (previousFrame !== this.currentFrame)
+	        {
+	            this.updateTexture();
+	        }
+
+	        this.play();
+	    };
+
+	    /**
+	     * Updates the object transform for rendering.
+	     *
+	     * @private
+	     * @param {number} deltaTime - Time since last tick.
+	     */
+	    AnimatedSprite.prototype.update = function update (deltaTime)
+	    {
+	        var elapsed = this.animationSpeed * deltaTime;
+	        var previousFrame = this.currentFrame;
+
+	        if (this._durations !== null)
+	        {
+	            var lag = this._currentTime % 1 * this._durations[this.currentFrame];
+
+	            lag += elapsed / 60 * 1000;
+
+	            while (lag < 0)
+	            {
+	                this._currentTime--;
+	                lag += this._durations[this.currentFrame];
+	            }
+
+	            var sign = Math.sign(this.animationSpeed * deltaTime);
+
+	            this._currentTime = Math.floor(this._currentTime);
+
+	            while (lag >= this._durations[this.currentFrame])
+	            {
+	                lag -= this._durations[this.currentFrame] * sign;
+	                this._currentTime += sign;
+	            }
+
+	            this._currentTime += lag / this._durations[this.currentFrame];
+	        }
+	        else
+	        {
+	            this._currentTime += elapsed;
+	        }
+
+	        if (this._currentTime < 0 && !this.loop)
+	        {
+	            this.gotoAndStop(0);
+
+	            if (this.onComplete)
+	            {
+	                this.onComplete();
+	            }
+	        }
+	        else if (this._currentTime >= this._textures.length && !this.loop)
+	        {
+	            this.gotoAndStop(this._textures.length - 1);
+
+	            if (this.onComplete)
+	            {
+	                this.onComplete();
+	            }
+	        }
+	        else if (previousFrame !== this.currentFrame)
+	        {
+	            if (this.loop && this.onLoop)
+	            {
+	                if (this.animationSpeed > 0 && this.currentFrame < previousFrame)
+	                {
+	                    this.onLoop();
+	                }
+	                else if (this.animationSpeed < 0 && this.currentFrame > previousFrame)
+	                {
+	                    this.onLoop();
+	                }
+	            }
+
+	            this.updateTexture();
+	        }
+	    };
+
+	    /**
+	     * Updates the displayed texture to match the current frame index.
+	     *
+	     * @private
+	     */
+	    AnimatedSprite.prototype.updateTexture = function updateTexture ()
+	    {
+	        this._texture = this._textures[this.currentFrame];
+	        this._textureID = -1;
+	        this._textureTrimmedID = -1;
+	        this.cachedTint = 0xFFFFFF;
+	        this.uvs = this._texture._uvs.uvsFloat32;
+
+	        if (this.updateAnchor)
+	        {
+	            this._anchor.copy(this._texture.defaultAnchor);
+	        }
+
+	        if (this.onFrameChange)
+	        {
+	            this.onFrameChange(this.currentFrame);
+	        }
+	    };
+
+	    /**
+	     * Stops the AnimatedSprite and destroys it.
+	     *
+	     * @param {object|boolean} [options] - Options parameter. A boolean will act as if all options
+	     *  have been set to that value.
+	     * @param {boolean} [options.children=false] - If set to true, all the children will have their destroy
+	     *      method called as well. 'options' will be passed on to those calls.
+	     * @param {boolean} [options.texture=false] - Should it destroy the current texture of the sprite as well.
+	     * @param {boolean} [options.baseTexture=false] - Should it destroy the base texture of the sprite as well.
+	     */
+	    AnimatedSprite.prototype.destroy = function destroy (options)
+	    {
+	        this.stop();
+	        Sprite$$1.prototype.destroy.call(this, options);
+
+	        this.onComplete = null;
+	        this.onFrameChange = null;
+	        this.onLoop = null;
+	    };
+
+	    /**
+	     * A short hand way of creating a movieclip from an array of frame ids.
+	     *
+	     * @static
+	     * @param {string[]} frames - The array of frames ids the movieclip will use as its texture frames.
+	     * @return {AnimatedSprite} The new animated sprite with the specified frames.
+	     */
+	    AnimatedSprite.fromFrames = function fromFrames (frames)
+	    {
+	        var textures = [];
+
+	        for (var i = 0; i < frames.length; ++i)
+	        {
+	            textures.push(Texture.from(frames[i]));
+	        }
+
+	        return new AnimatedSprite(textures);
+	    };
+
+	    /**
+	     * A short hand way of creating a movieclip from an array of image ids.
+	     *
+	     * @static
+	     * @param {string[]} images - The array of image urls the movieclip will use as its texture frames.
+	     * @return {AnimatedSprite} The new animate sprite with the specified images as frames.
+	     */
+	    AnimatedSprite.fromImages = function fromImages (images)
+	    {
+	        var textures = [];
+
+	        for (var i = 0; i < images.length; ++i)
+	        {
+	            textures.push(Texture.from(images[i]));
+	        }
+
+	        return new AnimatedSprite(textures);
+	    };
+
+	    /**
+	     * The total number of frames in the AnimatedSprite. This is the same as number of textures
+	     * assigned to the AnimatedSprite.
+	     *
+	     * @readonly
+	     * @member {number}
+	     * @default 0
+	     */
+	    prototypeAccessors.totalFrames.get = function ()
+	    {
+	        return this._textures.length;
+	    };
+
+	    /**
+	     * The array of textures used for this AnimatedSprite.
+	     *
+	     * @member {PIXI.Texture[]}
+	     */
+	    prototypeAccessors.textures.get = function ()
+	    {
+	        return this._textures;
+	    };
+
+	    prototypeAccessors.textures.set = function (value) // eslint-disable-line require-jsdoc
+	    {
+	        if (value[0] instanceof Texture)
+	        {
+	            this._textures = value;
+	            this._durations = null;
+	        }
+	        else
+	        {
+	            this._textures = [];
+	            this._durations = [];
+
+	            for (var i = 0; i < value.length; i++)
+	            {
+	                this._textures.push(value[i].texture);
+	                this._durations.push(value[i].time);
+	            }
+	        }
+	        this.gotoAndStop(0);
+	        this.updateTexture();
+	    };
+
+	    /**
+	    * The AnimatedSprites current frame index.
+	    *
+	    * @member {number}
+	    * @readonly
+	    */
+	    prototypeAccessors.currentFrame.get = function ()
+	    {
+	        var currentFrame = Math.floor(this._currentTime) % this._textures.length;
+
+	        if (currentFrame < 0)
+	        {
+	            currentFrame += this._textures.length;
+	        }
+
+	        return currentFrame;
+	    };
+
+	    Object.defineProperties( AnimatedSprite.prototype, prototypeAccessors );
+
+	    return AnimatedSprite;
+	}(Sprite));
+
 	// Install renderer plugins
 	Renderer.registerPlugin('accessibility', AccessibilityManager);
 	Renderer.registerPlugin('extract', Extract);
@@ -42198,12 +42235,11 @@
 	 * @name VERSION
 	 * @type {string}
 	 */
-	var VERSION$1 = '5.0.0-rc';
+	var VERSION$1 = '5.0.0-rc.2';
 
 	/**
 	 * @namespace PIXI
 	 */
-	var PIXI = { VERSION: VERSION$1 };
 
 	/**
 	 * This namespace contains WebGL-only display filters that can be applied
@@ -42242,54 +42278,14 @@
 	    NoiseFilter: NoiseFilter,
 	};
 
-	// Add to namespace window object for people doing `import 'pixi.js'`
-	if (typeof window !== 'undefined')
-	{
-	    var namespaces = {
-	        accessibility: accessibility,
-	        extract: extract,
-	        filters: filters,
-	        interaction: interaction,
-	        prepare: prepare,
-	        settings: settings,
-	        utils: utils,
-	    };
-
-	    window.PIXI = Object.assign(
-	        PIXI,
-	        namespaces,
-	        app,
-	        constants,
-	        core,
-	        display,
-	        graphics,
-	        loaders,
-	        math,
-	        mesh,
-	        meshExtras,
-	        particles,
-	        sprite,
-	        spriteAnimated,
-	        spritesheet,
-	        spriteTiling,
-	        text,
-	        textBitmap,
-	        ticker
-	    );
-
-	    // Deprecations only apply to Window object
-	    deprecated(PIXI);
-	}
-
-	exports.PIXI = PIXI;
 	exports.VERSION = VERSION$1;
-	exports.accessibility = accessibility;
-	exports.extract = extract;
 	exports.filters = filters;
-	exports.interaction = interaction;
-	exports.prepare = prepare;
-	exports.settings = settings;
-	exports.utils = utils;
+	exports.accessibility = accessibility_es;
+	exports.extract = extract_es;
+	exports.interaction = interaction_es;
+	exports.prepare = prepare_es;
+	exports.utils = utils_es;
+	exports.useDeprecated = useDeprecated;
 	exports.Application = Application;
 	exports.ENV = ENV;
 	exports.RENDERER_TYPE = RENDERER_TYPE;
@@ -42300,6 +42296,7 @@
 	exports.TYPES = TYPES;
 	exports.SCALE_MODES = SCALE_MODES;
 	exports.WRAP_MODES = WRAP_MODES;
+	exports.MIPMAP_MODES = MIPMAP_MODES;
 	exports.GC_MODES = GC_MODES;
 	exports.PRECISION = PRECISION;
 	exports.systems = systems;
@@ -42386,8 +42383,10 @@
 	exports.Ticker = Ticker;
 	exports.TickerPlugin = TickerPlugin;
 	exports.UPDATE_PRIORITY = UPDATE_PRIORITY;
+	exports.settings = settings;
 
-	Object.defineProperty(exports, '__esModule', { value: true });
+	return exports;
 
-}));
+}({}));
+PIXI.useDeprecated();
 //# sourceMappingURL=pixi.js.map

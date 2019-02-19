@@ -1,10 +1,12 @@
+///<reference types="pixi.js"/>
+
 declare module PIXI {
 	export interface Container {
 		types?: ArrayLike<string>;
-		parentGroup?: string;
 		tiledId?: number;
 	}
-	var tiled: typeof TiledOG;
 }
 
-
+namespace TiledOG {
+	(PIXI as any).tiled = TiledOG;
+}

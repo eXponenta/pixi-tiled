@@ -141,13 +141,13 @@
 
 		let prim: ITiledPtimitive | undefined = undefined;
 
-		let type: Tiled.Utils.TiledObjectType = Tiled.Utils.Objectype(meta);
+		let type: Utils.TiledObjectType = Utils.Objectype(meta);
 
 		meta.x = meta.x || 0;
 		meta.y = meta.y || 0;
 		
 		switch (type) {
-			case Tiled.Utils.TiledObjectType.ELLIPSE: {
+			case Utils.TiledObjectType.ELLIPSE: {
 				prim = new TiledEllipse(
 					meta.x + 0.5 * meta.width,
 					meta.y + 0.5 * meta.height,
@@ -156,7 +156,7 @@
 
 				break;
 			}
-			case Tiled.Utils.TiledObjectType.POLYGON: {
+			case Utils.TiledObjectType.POLYGON: {
 				let points = meta.polygon as Array<{ x: number; y: number }>;
 				let poses = points.map(p => {
 					return new PIXI.Point(p.x + meta.x, p.y + meta.y);
@@ -164,7 +164,7 @@
 				prim = new TiledPolygon(poses);
 				break;
 			}
-			case Tiled.Utils.TiledObjectType.POLYLINE: {
+			case Utils.TiledObjectType.POLYLINE: {
 				let points = meta.polygon as Array<{ x: number; y: number }>;
 				let poses = points.map(p => {
 					return new PIXI.Point(p.x + meta.x, p.y + meta.y);

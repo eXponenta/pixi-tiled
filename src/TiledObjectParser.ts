@@ -1,5 +1,3 @@
-/// <reference path ="../../node_modules/pixi-layers/dist/pixi-layers.d.ts">
-
 //inject new field in resources
 declare module PIXI {
 	export interface LoaderResource {
@@ -17,7 +15,7 @@ namespace TiledOG {
 			if (layer.properties instanceof Array) {
 				for (var p of layer.properties) {
 					let val = p.value;
-					if (p.type == "color") val = Tiled.Utils.HexStringToHexInt(val);
+					if (p.type == "color") val = Utils.HexStringToHexInt(val);
 
 					props[p.name] = val;
 				}
@@ -77,7 +75,7 @@ namespace TiledOG {
 	export function CreateStage(
 		res: PIXI.LoaderResource | PIXI.Spritesheet | Tiled.MultiSpritesheet,
 		loader: any
-	): TiledOG.TiledContainer | undefined {
+	): TiledContainer | undefined {
 		let _data: any = {};
 
 		if (res instanceof PIXI.LoaderResource) {
@@ -185,10 +183,10 @@ namespace TiledOG {
 
 					if (layerObj.properties.ignore) continue;
 
-					const type = Tiled.Utils.Objectype(layerObj);
+					const type = Utils.Objectype(layerObj);
 					let pixiObject = null;
 					switch (type) {
-						case Tiled.Utils.TiledObjectType.IMAGE: {
+						case Utils.TiledObjectType.IMAGE: {
 							if (!layerObj.fromImageLayer) {
 								const img = ImageFromTileset(_data.tilesets, baseUrl, layerObj.gid);
 								if (!img) {
@@ -232,7 +230,7 @@ namespace TiledOG {
 							} else {
 								if (cached instanceof PIXI.LoaderResource) {
 									if (!cached.isComplete) {
-										cached.onAfterMiddleware.once((e:any) => {
+										(cached as any).onAfterMiddleware.once((e:any) => {
 											sprite.texture = (cached as any).texture;
 											if (layerObj.fromImageLayer) {
 												sprite.scale.set(1);
@@ -258,7 +256,7 @@ namespace TiledOG {
 						}
 
 						// TextLoader
-						case Tiled.Utils.TiledObjectType.TEXT: {
+						case Utils.TiledObjectType.TEXT: {
 							pixiObject = TextBuilder.Build(layerObj);
 							break;
 						}

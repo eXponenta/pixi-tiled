@@ -1,19 +1,30 @@
-declare namespace TiledOG.ContainerBuilder {
+declare module PIXI.tiled.ContainerBuilder {
     function ApplyMeta(meta: any, target: PIXI.Container): void;
     function Build(meta: any): PIXI.DisplayObject;
+}
+declare module PIXI.tiled {
+    let Config: ITiledProps;
+    let Builders: Array<Function>;
+    interface ITiledProps {
+        defSpriteAnchor?: PIXI.Point;
+        debugContainers?: boolean;
+        usePixiDisplay?: boolean;
+        roundFontAlpha?: boolean;
+    }
+    function InjectToPixi(props?: ITiledProps | undefined): void;
 }
 declare module PIXI {
     interface Container {
         types?: ArrayLike<string>;
-        parentGroup?: string;
         tiledId?: number;
     }
-    var tiled: typeof TiledOG;
 }
-declare namespace TiledOG.SpriteBuilder {
+declare module PIXI.tiled {
+}
+declare module PIXI.tiled.SpriteBuilder {
     function Build(meta: any): PIXI.DisplayObject;
 }
-declare namespace TiledOG.TextBuilder {
+declare module PIXI.tiled.TextBuilder {
     function Build(meta: any): PIXI.DisplayObject;
 }
 declare namespace Tiled {
@@ -33,29 +44,29 @@ declare namespace Tiled {
         };
     }
 }
-declare namespace TiledOG {
+declare module PIXI.tiled {
     class TiledContainer extends PIXI.Container {
         layerHeight: number;
         layerWidth: number;
         text?: PIXI.Text;
-        primitive?: TiledOG.Primitives.ITiledPtimitive;
+        primitive?: Primitives.ITiledPtimitive;
         tiledId?: number;
     }
 }
 declare module PIXI {
     interface LoaderResource {
-        stage?: TiledOG.TiledContainer;
+        stage?: PIXI.tiled.TiledContainer;
     }
 }
-declare namespace TiledOG {
-    function CreateStage(res: PIXI.LoaderResource | PIXI.Spritesheet | Tiled.MultiSpritesheet, loader: any): TiledOG.TiledContainer | undefined;
+declare module PIXI.tiled {
+    function CreateStage(res: PIXI.LoaderResource | PIXI.Spritesheet | Tiled.MultiSpritesheet, loader: any): TiledContainer | undefined;
     let Parser: {
         Parse(res: PIXI.LoaderResource, next: Function): void;
         use(res: PIXI.LoaderResource, next: Function): void;
         add(): void;
     };
 }
-declare namespace TiledOG.Primitives {
+declare module PIXI.tiled.Primitives {
     interface ITiledPtimitive {
         name: string;
         types: Array<string>;
@@ -100,7 +111,7 @@ declare namespace TiledOG.Primitives {
     }
     function BuildPrimitive(meta: any): ITiledPtimitive | undefined;
 }
-declare namespace Tiled.Utils {
+declare module PIXI.tiled.Utils {
     function HexStringToHexInt(value: string | number): number;
     function HexStringToAlpha(value: string | number): number;
     enum TiledObjectType {
@@ -113,15 +124,4 @@ declare namespace Tiled.Utils {
         IMAGE = 6
     }
     function Objectype(meta: any): TiledObjectType;
-}
-declare namespace TiledOG {
-    let Config: ITiledProps;
-    let Builders: Array<Function>;
-    interface ITiledProps {
-        defSpriteAnchor?: PIXI.Point;
-        debugContainers?: boolean;
-        usePixiDisplay?: boolean;
-        roundFontAlpha?: boolean;
-    }
-    function InjectToPixi(props?: ITiledProps | undefined): void;
 }
