@@ -1,0 +1,124 @@
+{"frames": {
+
+"arrow_btn.png":
+{
+	"frame": {"x":1,"y":1114,"w":173,"h":177},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":173,"h":177},
+	"sourceSize": {"w":173,"h":177}
+},
+"close_set_btn.png":
+{
+	"frame": {"x":388,"y":1223,"w":103,"h":106},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":103,"h":106},
+	"sourceSize": {"w":103,"h":106}
+},
+"game-btn-disabled.png":
+{
+	"frame": {"x":1,"y":696,"w":700,"h":147},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":700,"h":147},
+	"sourceSize": {"w":700,"h":147}
+},
+"game-btn-enabled.png":
+{
+	"frame": {"x":1,"y":845,"w":700,"h":147},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":700,"h":147},
+	"sourceSize": {"w":700,"h":147}
+},
+"head-difficulty.png":
+{
+	"frame": {"x":703,"y":696,"w":617,"h":156},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":617,"h":156},
+	"sourceSize": {"w":617,"h":156}
+},
+"level.png":
+{
+	"frame": {"x":176,"y":1114,"w":257,"h":97},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":257,"h":97},
+	"sourceSize": {"w":257,"h":97}
+},
+"menu-button.png":
+{
+	"frame": {"x":176,"y":1213,"w":104,"h":107},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":104,"h":107},
+	"sourceSize": {"w":104,"h":107}
+},
+"panel.png":
+{
+	"frame": {"x":1,"y":1,"w":851,"h":693},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":851,"h":693},
+	"sourceSize": {"w":851,"h":693}
+},
+"pause_btn.png":
+{
+	"frame": {"x":496,"y":1223,"w":103,"h":106},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":103,"h":106},
+	"sourceSize": {"w":103,"h":106}
+},
+"play-button.png":
+{
+	"frame": {"x":282,"y":1213,"w":104,"h":107},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":104,"h":107},
+	"sourceSize": {"w":104,"h":107}
+},
+"progress-bg.png":
+{
+	"frame": {"x":1,"y":994,"w":698,"h":67},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":698,"h":67},
+	"sourceSize": {"w":698,"h":67}
+},
+"progress-line.png":
+{
+	"frame": {"x":1,"y":1063,"w":675,"h":49},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":675,"h":49},
+	"sourceSize": {"w":675,"h":49}
+},
+"reload-button.png":
+{
+	"frame": {"x":435,"y":1114,"w":105,"h":107},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":105,"h":107},
+	"sourceSize": {"w":105,"h":107}
+},
+"settings_btn.png":
+{
+	"frame": {"x":542,"y":1114,"w":103,"h":106},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":103,"h":106},
+	"sourceSize": {"w":103,"h":106}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "ui-atlas.png",
+	"format": "RGBA8888",
+	"size": {"w":860,"h":1327},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:588dd9688c4f07c6aa6a7fbd47675c87:e01219d605a591f135b2e86935c0d627:28590b4d2ac7c5b47c72885b0b458085$"
+}
+}
