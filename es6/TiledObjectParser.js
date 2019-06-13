@@ -1,6 +1,7 @@
 import { Spritesheet, LoaderResource, Loader } from 'pixi.js';
 import { TiledContainer } from './TiledContainer';
 import { Config } from './Config';
+import MultiSpritesheet from './TildeMultiSheet';
 import * as Utils from "./Utils";
 import * as ContainerBuilder from "./ContainerBuilder";
 import * as TextBuilder from "./TextBuilder";
@@ -151,7 +152,7 @@ export function CreateStage(res, loader) {
                         if (loader instanceof Loader) {
                             cached = loader.resources[layerObj.img.image];
                         }
-                        else if (res instanceof Spritesheet) {
+                        else if (res instanceof Spritesheet || res instanceof MultiSpritesheet) {
                             cached = res.textures[layerObj.img.image];
                         }
                         if (!cached) {

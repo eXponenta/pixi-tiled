@@ -213,7 +213,7 @@ export function CreateStage(
 
 						if (loader instanceof Loader) {
 							cached = loader.resources[layerObj.img.image];
-						} else if (res instanceof Spritesheet) {
+						} else if (res instanceof Spritesheet || res instanceof MultiSpritesheet) {
 							cached = res.textures[layerObj.img.image];
 						}
 
