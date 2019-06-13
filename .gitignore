@@ -23,3 +23,5 @@ build-es6
 
 # build temp
 compilation.ts
+
+\.cache/
