@@ -1,16 +1,22 @@
 {
   "compilerOptions": {
-    "target": "es5",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */
-    "module": "none",
-    "lib": ["es2015","dom"],                  /* Specify library files to be included in the compilation. */
-    "sourceMap": true,                        /* Generates corresponding '.map' file. */
-    "outFile": "./dist/pixi-tiled.js",             /* Concatenate and emit output to single file. */
-    "rootDir": "./src",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
-    "strict": true,                           /* Enable all strict type-checking options. */
-    "esModuleInterop": true,                   /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
-    //"allowJs": true,
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es6", "dom"],
+    "outDir": "./dist",
+    "strict": true,
+    "sourceMap": true,
+    "preserveConstEnums": true,
+    "noImplicitAny": true,
+    "removeComments": true,
     "declaration": true,
+    "esModuleInterop": true
   },
-  "exclude": ["node_modules","demo", "dist"]
-  
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules/**/*",
+    "dist"
+  ]
 }

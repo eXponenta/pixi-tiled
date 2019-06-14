@@ -1,12 +1,13 @@
 {
-  "name": "pixi-tiled",
-  "version": "1.0.0",
+  "name": "pixiv5-tiled",
+  "version": "1.1.1",
   "description": "pixi-tiled",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
-    "watch":"tsc -w",
-    "build": "tsc",
-    "demo": "http-server ./ -p 8080 -o http://localhost:8080/demo/index.html"
+    "build": "del-cli ./dist && tsc",
+    "build:demo": "parcel build ./demo/index.html -d demo/dist --public-url ./"
   },
   "repository": {
     "type": "git",
@@ -17,13 +18,16 @@
     "tiled",
     "loader"
   ],
-  "author": "eXponeta",
-  "license": "ISC",
+  "author": "eXponenta",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/eXponenta/pixi-tiled/issues"
   },
   "homepage": "https://github.com/eXponenta/pixi-tiled#readme",
   "devDependencies": {
-    "@types/pixi.js": "^4.8.4"
+    "del-cli": "^2.0.0",
+    "pixi.js": "^5.0.4",
+    "ts-helpers": "~1.1.2",
+    "typescript": "~3.3.3"
   }
 }

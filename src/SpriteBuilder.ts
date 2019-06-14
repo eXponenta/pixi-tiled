@@ -1,40 +1,44 @@
-namespace TiledOG.SpriteBuilder {
-	function сreateSprite(meta: any): PIXI.Sprite {
-		// TODO make load from texture atlass
-		const sprite = new PIXI.Sprite();
+import { Config } from './Config';
+import { DisplayObject, Sprite, Texture } from "pixi.js";
+import * as ContainerBuilder from "./ContainerBuilder";
+import * as Primitives from "./TiledPrimitives";
 
-		//TODO Set anchor and offsets to center (.5, .5)
-		if (!meta.fromImageLayer) {
-			sprite.anchor = Config.defSpriteAnchor as PIXI.ObservablePoint;
-		}
+export function сreateSprite(meta: any): Sprite {
+	// TODO make load from texture atlass
+	const sprite = new Sprite(Texture.EMPTY);
 
-		//debugger
-		ContainerBuilder.ApplyMeta(meta, sprite);
-		const obj = meta.img.objectgroup;
-		if (obj) {
-			(sprite as any).primitive = TiledOG.Primitives.BuildPrimitive(obj.objects[0]);
-		}
-
-		const hFlip = meta.properties.hFlip;
-		const vFlip = meta.properties.vFlip;
-
-		if (hFlip) {
-			sprite.scale.x *= -1;
-			sprite.anchor.x = 1;
-		}
-
-		if (vFlip) {
-			sprite.scale.y *= -1;
-			sprite.anchor.y = 0;
-		}
-
-		return sprite;
+	//TODO Set anchor and offsets to center (.5, .5)
+	if (!meta.fromImageLayer) {
+		sprite.anchor = Config.defSpriteAnchor as any;
 	}
 
-	export function Build(meta: any): PIXI.DisplayObject {
-		//debugger
-		const sprite = сreateSprite(meta);
-
-		return sprite;
+	//debugger
+	ContainerBuilder.ApplyMeta(meta, sprite);
+	const obj = meta.img.objectgroup;
+	if (obj) {
+		(sprite as any).primitive = Primitives.BuildPrimitive(obj.objects[0]);
 	}
+
+	const hFlip = meta.properties.hFlip;
+	const vFlip = meta.properties.vFlip;
+
+	if (hFlip) {
+		sprite.scale.x *= -1;
+		sprite.anchor.x = 1;
+	}
+
+	if (vFlip) {
+		sprite.scale.y *= -1;
+		sprite.anchor.y = 0;
+	}
+
+	return sprite;
 }
+
+export function Build(meta: any): DisplayObject {
+	//debugger
+	const sprite = сreateSprite(meta);
+
+	return sprite;
+}
+

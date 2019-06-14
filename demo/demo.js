@@ -1,23 +1,32 @@
-
-/// <reference path="../dist/pixi-tiled.d.ts" />
+import * as TiledOG from "./../dist";
+import * as PIXI from "pixi.js";
 
 function init() {
 
-    var app = new PIXI.Application();
+	console.log("init")
+
+    var app = new PIXI.Application( {
+		width: 720, height : 1280 
+	});
     document.body.appendChild(app.view);
-
-    //inject to pixi loader 
-    TiledOG.InjectToPixi({
-        debugContainers: true // enable containers as shapes debugging 
-    });
-
+   
     //load map with dependencies
-    app.loader.add("demo", "./maps/demo.json").load(loaded);
+    app.loader.add("map", "./../maps/ui-map.json")
+            .add("atlas", "./../maps/ui-atlas.json")
+            .load(loaded);
 
     function loaded() {
         
         //stage generate automatiсaly, all sprites lo
-        app.stage.addChild(app.loader.resources["demo"].stage);
+        const map = app.loader.resources["map"].data;
+        const atlas = app.loader.resources["atlas"].spritesheet;
+        const create = TiledOG.CreateStage(atlas, map);
+		
+		const scale = app.renderer.screen.width / 1080;
+		
+		create.scale.set(scale);
+		app.stage.addChild(create);
+		
         app.ticker.add(gameLoop);
     }
 
@@ -25,3 +34,6 @@ function init() {
 
     }
 }
+
+
+document.addEventListener("DOMContentLoaded",   () => init());
