@@ -1,4 +1,4 @@
-import * as TiledOG from "./../es6/index.js";
+import * as TiledOG from "./../dist";
 import * as PIXI from "pixi.js";
 
 function init() {

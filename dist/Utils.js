@@ -1,4 +1,6 @@
-export function HexStringToHexInt(value) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function HexStringToHexInt(value) {
     if (!value)
         return 0;
     if (typeof value == "number")
@@ -12,7 +14,8 @@ export function HexStringToHexInt(value) {
         return 0;
     }
 }
-export function HexStringToAlpha(value) {
+exports.HexStringToHexInt = HexStringToHexInt;
+function HexStringToAlpha(value) {
     if (!value)
         return 1;
     if (typeof value == "number")
@@ -27,7 +30,8 @@ export function HexStringToAlpha(value) {
         return 1;
     }
 }
-export var TiledObjectType;
+exports.HexStringToAlpha = HexStringToAlpha;
+var TiledObjectType;
 (function (TiledObjectType) {
     TiledObjectType[TiledObjectType["DEFAULT"] = 0] = "DEFAULT";
     TiledObjectType[TiledObjectType["POINT"] = 1] = "POINT";
@@ -36,8 +40,8 @@ export var TiledObjectType;
     TiledObjectType[TiledObjectType["ELLIPSE"] = 4] = "ELLIPSE";
     TiledObjectType[TiledObjectType["TEXT"] = 5] = "TEXT";
     TiledObjectType[TiledObjectType["IMAGE"] = 6] = "IMAGE";
-})(TiledObjectType || (TiledObjectType = {}));
-export function Objectype(meta) {
+})(TiledObjectType = exports.TiledObjectType || (exports.TiledObjectType = {}));
+function Objectype(meta) {
     if (meta.properties && meta.properties.container)
         return TiledObjectType.DEFAULT;
     if (meta.gid || meta.image)
@@ -54,3 +58,5 @@ export function Objectype(meta) {
         return TiledObjectType.ELLIPSE;
     return TiledObjectType.DEFAULT;
 }
+exports.Objectype = Objectype;
+//# sourceMappingURL=Utils.js.map

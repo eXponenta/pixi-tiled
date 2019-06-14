@@ -1,19 +1,28 @@
-import { TiledContainer } from './TiledContainer';
-import { Text } from "pixi.js";
-import { Config } from './Config';
-import * as ContainerBuilder from "./ContainerBuilder";
-import * as Utils from "./Utils";
+"use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var TiledContainer_1 = require("./TiledContainer");
+var pixi_js_1 = require("pixi.js");
+var Config_1 = require("./Config");
+var ContainerBuilder = __importStar(require("./ContainerBuilder"));
+var Utils = __importStar(require("./Utils"));
 function roundAlpha(canvas) {
-    let ctx = canvas.getContext("2d");
-    let data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    for (let i = 3; i < data.data.length; i += 4) {
+    var ctx = canvas.getContext("2d");
+    var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    for (var i = 3; i < data.data.length; i += 4) {
         data.data[i] = data.data[i] > 200 ? 255 : 0;
     }
     ctx.putImageData(data, 0, 0);
 }
 function createText(meta) {
-    let container = new TiledContainer();
-    let pixiText = new Text(meta.text.text, {
+    var container = new TiledContainer_1.TiledContainer();
+    var pixiText = new pixi_js_1.Text(meta.text.text, {
         wordWrap: meta.text.wrap,
         wordWrapWidth: meta.width,
         fill: Utils.HexStringToHexInt(meta.text.color) || 0x000000,
@@ -24,14 +33,14 @@ function createText(meta) {
         fontSize: meta.text.pixelsize || "16px"
     });
     pixiText.name = meta.name + "_Text";
-    if (Config.roundFontAlpha) {
-        pixiText.texture.once("update", () => {
+    if (Config_1.Config.roundFontAlpha) {
+        pixiText.texture.once("update", function () {
             roundAlpha(pixiText.canvas);
             pixiText.texture.baseTexture.update();
             console.log("update");
         });
     }
-    const props = meta.properties;
+    var props = meta.properties;
     meta.properties = {};
     ContainerBuilder.ApplyMeta(meta, container);
     container.pivot.set(0, 0);
@@ -85,6 +94,8 @@ function createText(meta) {
     container.text = pixiText;
     return container;
 }
-export function Build(meta) {
+function Build(meta) {
     return createText(meta);
 }
+exports.Build = Build;
+//# sourceMappingURL=TextBuilder.js.map

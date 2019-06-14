@@ -1,18 +1,31 @@
-import { Spritesheet, LoaderResource, Loader } from 'pixi.js';
-import { TiledContainer } from './TiledContainer';
-import { Config } from './Config';
-import MultiSpritesheet from './TildeMultiSheet';
-import * as Utils from "./Utils";
-import * as ContainerBuilder from "./ContainerBuilder";
-import * as TextBuilder from "./TextBuilder";
-import * as SpriteBuilder from "./SpriteBuilder";
-let showHello = true;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var pixi_js_1 = require("pixi.js");
+var TiledContainer_1 = require("./TiledContainer");
+var Config_1 = require("./Config");
+var TildeMultiSheet_1 = __importDefault(require("./TildeMultiSheet"));
+var Utils = __importStar(require("./Utils"));
+var ContainerBuilder = __importStar(require("./ContainerBuilder"));
+var TextBuilder = __importStar(require("./TextBuilder"));
+var SpriteBuilder = __importStar(require("./SpriteBuilder"));
+var showHello = true;
 function PrepareOject(layer) {
-    let props = {};
+    var props = {};
     if (layer.properties) {
         if (layer.properties instanceof Array) {
-            for (var p of layer.properties) {
-                let val = p.value;
+            for (var _i = 0, _a = layer.properties; _i < _a.length; _i++) {
+                var p = _a[_i];
+                var val = p.value;
                 if (p.type == "color")
                     val = Utils.HexStringToHexInt(val);
                 props[p.name] = val;
@@ -23,21 +36,21 @@ function PrepareOject(layer) {
         }
     }
     if (layer.gid) {
-        const gid = layer.gid;
-        const vFlip = gid & 0x40000000;
-        const hFlip = gid & 0x80000000;
-        const dFlip = gid & 0x20000000;
+        var gid = layer.gid;
+        var vFlip = gid & 0x40000000;
+        var hFlip = gid & 0x80000000;
+        var dFlip = gid & 0x20000000;
         props["vFlip"] = vFlip;
         props["hFlip"] = hFlip;
         props["dFlip"] = dFlip;
-        const realGid = gid & (~(0x40000000 | 0x80000000 | 0x20000000));
+        var realGid = gid & (~(0x40000000 | 0x80000000 | 0x20000000));
         layer.gid = realGid;
     }
     layer.properties = props;
 }
 function ImageFromTileset(tilesets, baseUrl, gid) {
     var tileSet = undefined;
-    for (let i = 0; i < tilesets.length; i++) {
+    for (var i = 0; i < tilesets.length; i++) {
         if (tilesets[i].firstgid <= gid) {
             tileSet = tilesets[i];
         }
@@ -46,9 +59,9 @@ function ImageFromTileset(tilesets, baseUrl, gid) {
         console.log("Image with gid:" + gid + " not found!");
         return null;
     }
-    const realGid = gid - tileSet.firstgid;
-    let find = tileSet.tiles.filter((obj) => obj.id == realGid)[0];
-    let img = Object.assign({}, find);
+    var realGid = gid - tileSet.firstgid;
+    var find = tileSet.tiles.filter(function (obj) { return obj.id == realGid; })[0];
+    var img = Object.assign({}, find);
     if (!img) {
         console.log("Load res MISSED gid:" + realGid);
         return null;
@@ -56,9 +69,9 @@ function ImageFromTileset(tilesets, baseUrl, gid) {
     img.image = baseUrl + img.image;
     return img;
 }
-export function CreateStage(res, loader) {
-    let _data = {};
-    if (res instanceof LoaderResource) {
+function CreateStage(res, loader) {
+    var _data = {};
+    if (res instanceof pixi_js_1.LoaderResource) {
         _data = res.data;
     }
     else {
@@ -71,38 +84,39 @@ export function CreateStage(res, loader) {
         console.log("Tiled OG importer!\n eXponenta {rondo.devil[a]gmail.com}");
         showHello = false;
     }
-    const useDisplay = Config.usePixiDisplay != undefined && Config.usePixiDisplay && PIXI.display != undefined;
-    let Layer = useDisplay ? PIXI.display.Layer : {};
-    let Group = useDisplay ? PIXI.display.Group : {};
-    let Stage = useDisplay ? PIXI.display.Stage : {};
-    const _stage = new TiledContainer();
-    const cropName = new RegExp(/^.*[\\\/]/);
+    var useDisplay = Config_1.Config.usePixiDisplay != undefined && Config_1.Config.usePixiDisplay && PIXI.display != undefined;
+    var Layer = useDisplay ? PIXI.display.Layer : {};
+    var Group = useDisplay ? PIXI.display.Group : {};
+    var Stage = useDisplay ? PIXI.display.Stage : {};
+    var _stage = new TiledContainer_1.TiledContainer();
+    var cropName = new RegExp(/^.*[\\\/]/);
     _stage.layerHeight = _data.height;
     _stage.layerWidth = _data.width;
-    let baseUrl = "";
-    if (res instanceof LoaderResource) {
+    var baseUrl = "";
+    if (res instanceof pixi_js_1.LoaderResource) {
         _stage.name = res.url.replace(cropName, "").split(".")[0];
         baseUrl = res.url.replace(loader.baseUrl, "");
         baseUrl = baseUrl.match(cropName)[0];
     }
     if (_data.layers) {
-        let zOrder = 0;
+        var zOrder = 0;
         if (useDisplay)
             _data.layers = _data.layers.reverse();
-        for (let layer of _data.layers) {
+        for (var _i = 0, _a = _data.layers; _i < _a.length; _i++) {
+            var layer = _a[_i];
             if (layer.type !== "objectgroup" && layer.type !== "imagelayer") {
                 console.warn("OGParser support only OBJECT or IMAGE layes!!");
                 continue;
             }
             PrepareOject(layer);
-            const props = layer.properties;
+            var props = layer.properties;
             if (props.ignore || props.ignoreLoad) {
                 console.log("OGParser: ignore loading layer:" + layer.name);
                 continue;
             }
-            const pixiLayer = useDisplay
+            var pixiLayer = useDisplay
                 ? new Layer(new Group(props.zOrder !== undefined ? props.zOrder : zOrder, true))
-                : new TiledContainer();
+                : new TiledContainer_1.TiledContainer();
             zOrder++;
             pixiLayer.tiledId = layer.id;
             pixiLayer.name = layer.name;
@@ -130,68 +144,68 @@ export function CreateStage(res, loader) {
             }
             if (!layer.objects)
                 return undefined;
-            let localZIndex = 0;
-            for (let layerObj of layer.objects) {
+            var localZIndex = 0;
+            var _loop_1 = function (layerObj) {
                 PrepareOject(layerObj);
                 if (layerObj.properties.ignore)
-                    continue;
-                const type = Utils.Objectype(layerObj);
-                let pixiObject = null;
+                    return "continue";
+                var type = Utils.Objectype(layerObj);
+                var pixiObject = null;
                 switch (type) {
                     case Utils.TiledObjectType.IMAGE: {
                         if (!layerObj.fromImageLayer) {
-                            const img = ImageFromTileset(_data.tilesets, baseUrl, layerObj.gid);
+                            var img = ImageFromTileset(_data.tilesets, baseUrl, layerObj.gid);
                             if (!img) {
-                                continue;
+                                return "continue";
                             }
                             layerObj.img = img;
                         }
                         pixiObject = SpriteBuilder.Build(layerObj);
-                        let sprite = pixiObject;
-                        let cached = undefined;
-                        if (loader instanceof Loader) {
-                            cached = loader.resources[layerObj.img.image];
+                        var sprite_1 = pixiObject;
+                        var cached_1 = undefined;
+                        if (loader instanceof pixi_js_1.Loader) {
+                            cached_1 = loader.resources[layerObj.img.image];
                         }
-                        else if (res instanceof Spritesheet || res instanceof MultiSpritesheet) {
-                            cached = res.textures[layerObj.img.image];
+                        else if (res instanceof pixi_js_1.Spritesheet || res instanceof TildeMultiSheet_1.default) {
+                            cached_1 = res.textures[layerObj.img.image];
                         }
-                        if (!cached) {
-                            if (loader instanceof Loader) {
+                        if (!cached_1) {
+                            if (loader instanceof pixi_js_1.Loader) {
                                 loader.add(layerObj.img.image, {
                                     parentResource: res
-                                }, () => {
-                                    const tex = loader.resources[layerObj.img.image].texture;
-                                    sprite.texture = tex;
+                                }, function () {
+                                    var tex = loader.resources[layerObj.img.image].texture;
+                                    sprite_1.texture = tex;
                                     if (layerObj.fromImageLayer) {
-                                        sprite.scale.set(1);
+                                        sprite_1.scale.set(1);
                                     }
                                 });
                             }
                             else {
-                                continue;
+                                return "continue";
                             }
                         }
                         else {
-                            if (cached instanceof LoaderResource) {
-                                if (!cached.isComplete) {
-                                    cached.onAfterMiddleware.once((e) => {
-                                        sprite.texture = cached.texture;
+                            if (cached_1 instanceof pixi_js_1.LoaderResource) {
+                                if (!cached_1.isComplete) {
+                                    cached_1.onAfterMiddleware.once(function (e) {
+                                        sprite_1.texture = cached_1.texture;
                                         if (layerObj.fromImageLayer) {
-                                            sprite.scale.set(1);
+                                            sprite_1.scale.set(1);
                                         }
                                     });
                                 }
                                 else {
-                                    sprite.texture = cached.texture;
+                                    sprite_1.texture = cached_1.texture;
                                     if (layerObj.fromImageLayer) {
-                                        sprite.scale.set(1);
+                                        sprite_1.scale.set(1);
                                     }
                                 }
                             }
-                            else if (cached) {
-                                sprite.texture = cached;
+                            else if (cached_1) {
+                                sprite_1.texture = cached_1;
                                 if (layerObj.fromImageLayer) {
-                                    sprite.scale.set(1);
+                                    sprite_1.scale.set(1);
                                 }
                             }
                         }
@@ -205,7 +219,7 @@ export function CreateStage(res, loader) {
                         pixiObject = ContainerBuilder.Build(layerObj);
                     }
                 }
-                if (Config.usePixiDisplay) {
+                if (Config_1.Config.usePixiDisplay) {
                     pixiObject.parentGroup = pixiLayer.group;
                     _stage.addChildAt(pixiObject, localZIndex);
                 }
@@ -213,21 +227,27 @@ export function CreateStage(res, loader) {
                     pixiLayer.addChildAt(pixiObject, localZIndex);
                 }
                 localZIndex++;
+            };
+            for (var _b = 0, _c = layer.objects; _b < _c.length; _b++) {
+                var layerObj = _c[_b];
+                _loop_1(layerObj);
             }
         }
     }
     return _stage;
 }
-export const Parser = {
-    Parse(res, next) {
+exports.CreateStage = CreateStage;
+exports.Parser = {
+    Parse: function (res, next) {
         var stage = CreateStage(res, this);
         res.stage = stage;
         next();
     },
-    use(res, next) {
-        Parser.Parse.call(this, res, next);
+    use: function (res, next) {
+        exports.Parser.Parse.call(this, res, next);
     },
-    add() {
+    add: function () {
         console.log("Now you use Tiled!");
     }
 };
+//# sourceMappingURL=TiledObjectParser.js.map

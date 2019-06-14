@@ -1,0 +1,12 @@
+import * as ContainerBuilder from "./ContainerBuilder";
+import * as SpriteBuilder from "./SpriteBuilder";
+import * as TextBuilder from "./TextBuilder";
+import { Parser, CreateStage } from './TiledObjectParser';
+import { Config, ITiledProps } from './Config';
+import { TiledContainer } from './TiledContainer';
+export declare let Builders: Array<Function>;
+export declare function Inject(props?: ITiledProps | undefined): void;
+import * as Primitives from "./TiledPrimitives";
+import MultiSpritesheet from './TildeMultiSheet';
+export { Primitives };
+export { Parser, CreateStage, Config, ContainerBuilder, SpriteBuilder, TextBuilder, TiledContainer, MultiSpritesheet };

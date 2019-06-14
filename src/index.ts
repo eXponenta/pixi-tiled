@@ -5,6 +5,9 @@ import { Parser, CreateStage } from './TiledObjectParser';
 import { Config, ITiledProps } from './Config';
 import { TiledContainer } from './TiledContainer';
 
+import Mixin from "./pixi-utils";
+Mixin();
+
 export let Builders: Array<Function> = [
 	ContainerBuilder.Build,
 	SpriteBuilder.Build,
@@ -38,6 +41,10 @@ export function Inject(props: ITiledProps | undefined = undefined) {
 	window.PIXI.Loader.registerPlugin(Parser);
 }
 
+import * as Primitives from "./TiledPrimitives"
+import MultiSpritesheet from './TildeMultiSheet';
+export { Primitives }
+
 export {
 	Parser,
 	CreateStage,
@@ -45,9 +52,7 @@ export {
 	ContainerBuilder,
 	SpriteBuilder,
 	TextBuilder,
-	TiledContainer
+	TiledContainer,
+	MultiSpritesheet
 }
-
-import * as Primitives from "./TiledPrimitives"
-export { Primitives }
 
