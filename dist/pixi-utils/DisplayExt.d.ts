@@ -3,4 +3,6 @@ declare module "pixi.js" {
         replaceWithTransform(from: DisplayObject): void;
     }
 }
-export default function (): void;
+export default function (pack: {
+    DisplayObject: any;
+}): void;

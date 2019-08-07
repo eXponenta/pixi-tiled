@@ -3,9 +3,9 @@ import * as PIXI from "pixi.js";
 
 function init() {
 
-	console.log("init")
-
-    var app = new PIXI.Application( {
+	//inject TILED importer but skip middleware Injecting, only mixins and configs
+	TiledOG.Inject(PIXI, {injectMiddleware : false, debugContainers : true})
+	var app = new PIXI.Application( {
 		width: 720, height : 1280 
 	});
     document.body.appendChild(app.view);
@@ -15,9 +15,7 @@ function init() {
             .add("atlas", "./../maps/ui-atlas.json")
             .load(loaded);
 
-    function loaded() {
-        
-        //stage generate automatiсaly, all sprites lo
+    function loaded() {	
         const map = app.loader.resources["map"].data;
         const atlas = app.loader.resources["atlas"].spritesheet;
         const create = TiledOG.CreateStage(atlas, map);

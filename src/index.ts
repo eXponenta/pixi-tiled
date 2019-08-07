@@ -1,12 +1,14 @@
+declare global {
+	interface Window {PIXI: any}
+}
+
 import * as ContainerBuilder from "./ContainerBuilder";
 import * as SpriteBuilder from "./SpriteBuilder";
 import * as TextBuilder from "./TextBuilder";
 import { Parser, CreateStage } from './TiledObjectParser';
 import { Config, ITiledProps } from './Config';
 import { TiledContainer } from './TiledContainer';
-
 import Mixin from "./pixi-utils";
-Mixin();
 
 export let Builders: Array<Function> = [
 	ContainerBuilder.Build,
@@ -14,35 +16,26 @@ export let Builders: Array<Function> = [
 	TextBuilder.Build
 ];
 
-export function Inject(props: ITiledProps | undefined = undefined) {
-
+export function Inject(pixiPack = window.PIXI, props: ITiledProps | undefined = undefined) {
 	// @ts-ignore
-	if (!window.PIXI) {
+	if (!pixiPack) {
 		console.warn("Auto injection works only with globals scoped PIXI, not in modules\nuse \'Loader.registerPlugin(Parser)\' otherwith");
 		return;
 	}
 
 	if (props) {
-		Config.defSpriteAnchor = props.defSpriteAnchor || Config.defSpriteAnchor;
-		Config.debugContainers = props.debugContainers != undefined
-			? props.debugContainers
-			: Config.debugContainers;
-
-		Config.usePixiDisplay = props.usePixiDisplay != undefined
-			? props.usePixiDisplay
-			: Config.usePixiDisplay;
-
-		Config.roundFontAlpha = props.roundFontAlpha != undefined
-			? props.roundFontAlpha
-			: Config.roundFontAlpha;
+		Object.assign(Config, props)
 	}
 
-	//@ts-ignore
-	window.PIXI.Loader.registerPlugin(Parser);
+	Mixin(pixiPack);
+	
+	if(Config.injectMiddleware){
+		pixiPack.Loader.registerPlugin(Parser);
+	}
 }
 
 import * as Primitives from "./TiledPrimitives"
-import MultiSpritesheet from './TildeMultiSheet';
+import MultiSpritesheet from './TiledMultiSheet';
 export { Primitives }
 
 export {

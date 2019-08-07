@@ -35,9 +35,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var pixi_js_1 = require("pixi.js");
-function default_1() {
-    pixi_js_1.utils.EventEmitter.prototype.onceAsynce = function (event) {
+function default_1(pack) {
+    if (!pack.utils)
+        throw new Error("Cant't find utils in package!");
+    pack.utils.EventEmitter.prototype.onceAsync = function (event) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {

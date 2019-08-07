@@ -1,6 +1,6 @@
 import { Spritesheet, LoaderResource } from 'pixi.js';
 import { TiledContainer } from './TiledContainer';
-import MultiSpritesheet from './TildeMultiSheet';
+import MultiSpritesheet from './TiledMultiSheet';
 declare module "pixi.js" {
     interface LoaderResource {
         stage?: TiledContainer;

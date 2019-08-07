@@ -47,4 +47,4 @@ var MultiSpritesheet = (function () {
     return MultiSpritesheet;
 }());
 exports.default = MultiSpritesheet;
-//# sourceMappingURL=TildeMultiSheet.js.map
+//# sourceMappingURL=TiledMultiSheet.js.map

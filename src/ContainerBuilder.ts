@@ -5,23 +5,17 @@ import  * as Primitives from "./TiledPrimitives"
 import * as Utils from "./Utils";
 
 export function ApplyMeta(meta: any, target: Container) {
-
 	target.name = meta.name;
 	target.tiledId = meta.id;
 	target.width = meta.width || target.width;
 	target.height = meta.height || target.height;
-
 	target.rotation = ((meta.rotation || 0) * Math.PI) / 180.0;
 
-	if (meta.x)
-		target.x = meta.x;
-	if (meta.y)
-		target.y = meta.y;
+	target.x = meta.x || 0;
+	target.y = meta.y || 0;
 
 	target.visible = meta.visible == undefined ? true : meta.visible;
 	target.types = meta.type ? meta.type.split(":") : [];
-
-	const type = Utils.Objectype(meta);
 
 	(target as TiledContainer).primitive = Primitives.BuildPrimitive(meta);
 
@@ -38,7 +32,7 @@ export function ApplyMeta(meta: any, target: Container) {
 			rect.lineStyle(2, 0xff0000, 0.7)
 				.drawRect(target.x, target.y, meta.width, meta.height)
 				.endFill();
-			if (target instanceof PIXI.Sprite) {
+			if (target instanceof Sprite) {
 				rect.y -= target.height;
 			}
 			target.parent.addChild(rect);

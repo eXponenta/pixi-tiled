@@ -5,4 +5,6 @@ declare module "pixi.js" {
         addGlobalChild(...child: PIXI.DisplayObject[]): PIXI.DisplayObject;
     }
 }
-export default function (): void;
+export default function (pack: {
+    Container: any;
+}): void;

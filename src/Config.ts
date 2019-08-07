@@ -5,11 +5,13 @@ export interface ITiledProps {
 	debugContainers?: boolean;
 	usePixiDisplay?: boolean;
 	roundFontAlpha?: boolean;
+	injectMiddleware ? : boolean;
 }
 
 export let Config: ITiledProps = {
 	defSpriteAnchor: new Point(0, 1),
 	debugContainers: false,
 	usePixiDisplay: false,
-	roundFontAlpha: false
+	roundFontAlpha: false,
+	injectMiddleware : true
 };

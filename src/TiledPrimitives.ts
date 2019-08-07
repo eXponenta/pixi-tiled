@@ -156,7 +156,6 @@ export function BuildPrimitive(meta: any): ITiledPtimitive | undefined {
 				meta.y + 0.5 * meta.height,
 				meta.width * 0.5,
 				meta.height * 0.5);
-
 			break;
 		}
 		case Utils.TiledObjectType.POLYGON: {

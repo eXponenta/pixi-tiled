@@ -4,5 +4,6 @@ export interface ITiledProps {
     debugContainers?: boolean;
     usePixiDisplay?: boolean;
     roundFontAlpha?: boolean;
+    injectMiddleware?: boolean;
 }
 export declare let Config: ITiledProps;

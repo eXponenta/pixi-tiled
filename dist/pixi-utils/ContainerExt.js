@@ -8,7 +8,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var PIXI = __importStar(require("pixi.js"));
-function default_1() {
+function default_1(pack) {
+    if (!pack.Container)
+        throw new Error("Cant't find Container in package!");
     PIXI.Container.prototype.getChildByPath = function (path) {
         if (!this.children || this.children.length == 0)
             return undefined;

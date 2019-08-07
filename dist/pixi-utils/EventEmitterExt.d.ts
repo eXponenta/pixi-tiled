@@ -1,8 +1,10 @@
 declare module "pixi.js" {
     namespace utils {
         interface EventEmitter {
-            onceAsynce(event: string): Promise<any>;
+            onceAsync(event: string): Promise<any>;
         }
     }
 }
-export default function (): void;
+export default function (pack: {
+    utils: any;
+}): void;

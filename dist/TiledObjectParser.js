@@ -1,7 +1,4 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -13,21 +10,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var pixi_js_1 = require("pixi.js");
 var TiledContainer_1 = require("./TiledContainer");
 var Config_1 = require("./Config");
-var TildeMultiSheet_1 = __importDefault(require("./TildeMultiSheet"));
 var Utils = __importStar(require("./Utils"));
 var ContainerBuilder = __importStar(require("./ContainerBuilder"));
 var TextBuilder = __importStar(require("./TextBuilder"));
 var SpriteBuilder = __importStar(require("./SpriteBuilder"));
 var showHello = true;
-function PrepareOject(layer) {
+function _prepareProperties(layer) {
     var props = {};
     if (layer.properties) {
         if (layer.properties instanceof Array) {
             for (var _i = 0, _a = layer.properties; _i < _a.length; _i++) {
                 var p = _a[_i];
                 var val = p.value;
-                if (p.type == "color")
+                if (p.type == "color") {
                     val = Utils.HexStringToHexInt(val);
+                }
                 props[p.name] = val;
             }
         }
@@ -48,7 +45,7 @@ function PrepareOject(layer) {
     }
     layer.properties = props;
 }
-function ImageFromTileset(tilesets, baseUrl, gid) {
+function _getImageFromTileset(tilesets, baseUrl, gid) {
     var tileSet = undefined;
     for (var i = 0; i < tilesets.length; i++) {
         if (tilesets[i].firstgid <= gid) {
@@ -81,10 +78,10 @@ function CreateStage(res, loader) {
         return undefined;
     }
     if (showHello) {
-        console.log("Tiled OG importer!\n eXponenta {rondo.devil[a]gmail.com}");
+        console.log("[TILED] Importer!\neXponenta {rondo.devil[a]gmail.com}");
         showHello = false;
     }
-    var useDisplay = Config_1.Config.usePixiDisplay != undefined && Config_1.Config.usePixiDisplay && PIXI.display != undefined;
+    var useDisplay = !!Config_1.Config.usePixiDisplay && PIXI.display !== undefined;
     var Layer = useDisplay ? PIXI.display.Layer : {};
     var Group = useDisplay ? PIXI.display.Group : {};
     var Stage = useDisplay ? PIXI.display.Stage : {};
@@ -100,18 +97,19 @@ function CreateStage(res, loader) {
     }
     if (_data.layers) {
         var zOrder = 0;
-        if (useDisplay)
+        if (useDisplay) {
             _data.layers = _data.layers.reverse();
+        }
         for (var _i = 0, _a = _data.layers; _i < _a.length; _i++) {
             var layer = _a[_i];
             if (layer.type !== "objectgroup" && layer.type !== "imagelayer") {
-                console.warn("OGParser support only OBJECT or IMAGE layes!!");
+                console.warn("[TILED] Importer support only OBJECT or IMAGE layers yet!");
                 continue;
             }
-            PrepareOject(layer);
+            _prepareProperties(layer);
             var props = layer.properties;
             if (props.ignore || props.ignoreLoad) {
-                console.log("OGParser: ignore loading layer:" + layer.name);
+                console.log("[TILED] layer ignored:" + layer.name);
                 continue;
             }
             var pixiLayer = useDisplay
@@ -133,7 +131,7 @@ function CreateStage(res, loader) {
                         img: {
                             image: baseUrl + layer.image
                         },
-                        gid: 123456789,
+                        gid: -1,
                         name: layer.name,
                         x: layer.x + layer.offsetx,
                         y: layer.y + layer.offsety,
@@ -142,19 +140,21 @@ function CreateStage(res, loader) {
                     }
                 ];
             }
-            if (!layer.objects)
+            if (!layer.objects) {
                 return undefined;
+            }
             var localZIndex = 0;
             var _loop_1 = function (layerObj) {
-                PrepareOject(layerObj);
-                if (layerObj.properties.ignore)
+                _prepareProperties(layerObj);
+                if (layerObj.properties.ignore) {
                     return "continue";
+                }
                 var type = Utils.Objectype(layerObj);
                 var pixiObject = null;
                 switch (type) {
                     case Utils.TiledObjectType.IMAGE: {
                         if (!layerObj.fromImageLayer) {
-                            var img = ImageFromTileset(_data.tilesets, baseUrl, layerObj.gid);
+                            var img = _getImageFromTileset(_data.tilesets, baseUrl, layerObj.gid);
                             if (!img) {
                                 return "continue";
                             }
@@ -166,7 +166,7 @@ function CreateStage(res, loader) {
                         if (loader instanceof pixi_js_1.Loader) {
                             cached_1 = loader.resources[layerObj.img.image];
                         }
-                        else if (res instanceof pixi_js_1.Spritesheet || res instanceof TildeMultiSheet_1.default) {
+                        else if (res.textures) {
                             cached_1 = res.textures[layerObj.img.image];
                         }
                         if (!cached_1) {
@@ -247,7 +247,7 @@ exports.Parser = {
         exports.Parser.Parse.call(this, res, next);
     },
     add: function () {
-        console.log("Now you use Tiled!");
+        console.log("Congratulations! Now you use Tiled importer!");
     }
 };
 //# sourceMappingURL=TiledObjectParser.js.map

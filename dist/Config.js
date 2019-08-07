@@ -5,6 +5,7 @@ exports.Config = {
     defSpriteAnchor: new pixi_js_1.Point(0, 1),
     debugContainers: false,
     usePixiDisplay: false,
-    roundFontAlpha: false
+    roundFontAlpha: false,
+    injectMiddleware: true
 };
 //# sourceMappingURL=Config.js.map

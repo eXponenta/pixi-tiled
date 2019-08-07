@@ -11,20 +11,16 @@ var TiledContainer_1 = require("./TiledContainer");
 var Config_1 = require("./Config");
 var pixi_js_1 = require("pixi.js");
 var Primitives = __importStar(require("./TiledPrimitives"));
-var Utils = __importStar(require("./Utils"));
 function ApplyMeta(meta, target) {
     target.name = meta.name;
     target.tiledId = meta.id;
     target.width = meta.width || target.width;
     target.height = meta.height || target.height;
     target.rotation = ((meta.rotation || 0) * Math.PI) / 180.0;
-    if (meta.x)
-        target.x = meta.x;
-    if (meta.y)
-        target.y = meta.y;
+    target.x = meta.x || 0;
+    target.y = meta.y || 0;
     target.visible = meta.visible == undefined ? true : meta.visible;
     target.types = meta.type ? meta.type.split(":") : [];
-    var type = Utils.Objectype(meta);
     target.primitive = Primitives.BuildPrimitive(meta);
     if (meta.properties) {
         target.alpha = meta.properties.opacity || 1;
@@ -36,7 +32,7 @@ function ApplyMeta(meta, target) {
             rect.lineStyle(2, 0xff0000, 0.7)
                 .drawRect(target.x, target.y, meta.width, meta.height)
                 .endFill();
-            if (target instanceof PIXI.Sprite) {
+            if (target instanceof pixi_js_1.Sprite) {
                 rect.y -= target.height;
             }
             target.parent.addChild(rect);

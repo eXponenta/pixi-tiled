@@ -24,35 +24,29 @@ exports.Config = Config_1.Config;
 var TiledContainer_1 = require("./TiledContainer");
 exports.TiledContainer = TiledContainer_1.TiledContainer;
 var pixi_utils_1 = __importDefault(require("./pixi-utils"));
-pixi_utils_1.default();
 exports.Builders = [
     ContainerBuilder.Build,
     SpriteBuilder.Build,
     TextBuilder.Build
 ];
-function Inject(props) {
+function Inject(pixiPack, props) {
+    if (pixiPack === void 0) { pixiPack = window.PIXI; }
     if (props === void 0) { props = undefined; }
-    if (!window.PIXI) {
+    if (!pixiPack) {
         console.warn("Auto injection works only with globals scoped PIXI, not in modules\nuse \'Loader.registerPlugin(Parser)\' otherwith");
         return;
     }
     if (props) {
-        Config_1.Config.defSpriteAnchor = props.defSpriteAnchor || Config_1.Config.defSpriteAnchor;
-        Config_1.Config.debugContainers = props.debugContainers != undefined
-            ? props.debugContainers
-            : Config_1.Config.debugContainers;
-        Config_1.Config.usePixiDisplay = props.usePixiDisplay != undefined
-            ? props.usePixiDisplay
-            : Config_1.Config.usePixiDisplay;
-        Config_1.Config.roundFontAlpha = props.roundFontAlpha != undefined
-            ? props.roundFontAlpha
-            : Config_1.Config.roundFontAlpha;
+        Object.assign(Config_1.Config, props);
     }
-    window.PIXI.Loader.registerPlugin(TiledObjectParser_1.Parser);
+    pixi_utils_1.default(pixiPack);
+    if (Config_1.Config.injectMiddleware) {
+        pixiPack.Loader.registerPlugin(TiledObjectParser_1.Parser);
+    }
 }
 exports.Inject = Inject;
 var Primitives = __importStar(require("./TiledPrimitives"));
 exports.Primitives = Primitives;
-var TildeMultiSheet_1 = __importDefault(require("./TildeMultiSheet"));
-exports.MultiSpritesheet = TildeMultiSheet_1.default;
+var TiledMultiSheet_1 = __importDefault(require("./TiledMultiSheet"));
+exports.MultiSpritesheet = TiledMultiSheet_1.default;
 //# sourceMappingURL=index.js.map
