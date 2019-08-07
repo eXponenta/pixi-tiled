@@ -7,7 +7,10 @@ declare module "pixi.js" {
 	}
 }
 
-export default function() {
+export default function(pack : {Container : any}) {
+	
+	if(!pack.Container)
+		throw new Error("Cant't find Container in package!");
 	
 	/**
 	 * @mixes
