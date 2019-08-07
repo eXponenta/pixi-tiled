@@ -1,7 +1,7 @@
 declare module "pixi.js" {
     namespace utils {
         interface EventEmitter {
-            onceAsync(event: string): Promise<any>;
+            onceAsync(event: string, context?: any): Promise<any>;
         }
     }
 }
