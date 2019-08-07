@@ -7,7 +7,7 @@
   "typings": "./dist/index.d.ts",
   "scripts": {
     "build": "del-cli ./dist && tsc",
-    "build:demo": "parcel build ./demo/index.html -d demo/dist --public-url ./"
+    "build:demo": "parcel build ./demo/index.html -d demo/dist --public-url ./ --no-source-maps"
   },
   "repository": {
     "type": "git",
