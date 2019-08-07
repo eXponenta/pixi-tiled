@@ -7,7 +7,7 @@ __NOT SUPPORT TILEMAPS yet!__
 # How to use #
 `npm install pixiv5-tiled`
 
-### Fully automaticaly importing. Images would be resolved automaticaly
+### Fully automatically importing. Images would be resolved automatically
 
 ```
 import {Inject} from "pixiv5-tiled"
@@ -59,8 +59,11 @@ loader.add("map","path/to/your/map.json")
 
 `PIXI.DisplayObject`:
 * `replaceWithTransform (target : DisplayObject)` - replaсe `target` into `this` from  `target` parent container and copying it transforms (position, scale, rotation, pivot);
-Go to demo folder: [./demo](./demo)
 
 `PIXI.utils.EventEmitter` : 
 * `onceAsync(eventName : string, context : eny) : Promise<any>` - call `once` in promise-like style for `async/await` support.
 
+
+
+### Demo
+Go to demo folder: [./demo](./demo)
