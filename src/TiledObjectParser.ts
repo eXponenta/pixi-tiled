@@ -228,7 +228,8 @@ export function CreateStage(
 									Object.assign(
 									(res as LoaderResource).metadata,
 									{
-										parentResource: res
+										parentResource: res,
+										crossOrigin: (res as LoaderResource).crossOrigin
 									}),
 									() => {
 										const tex = loader.resources[layerObj.img.image].texture;
