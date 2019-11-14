@@ -7,7 +7,7 @@
   "typings": "./dist/index.d.ts",
   "scripts": {
     "build": "del-cli ./dist && tsc",
-    "build:demo": "parcel build ./demo/index.html -d demo/dist --public-url ./ --no-source-maps"
+    "build:demo": "parcel build ./demo/index.html -d demo/dist --public-url ./ "
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,7 @@
   "homepage": "https://github.com/eXponenta/pixi-tiled#readme",
   "devDependencies": {
     "del-cli": "^2.0.0",
-    "pixi.js": "^5.1.1",
+    "pixi.js": "^5.2.0",
     "ts-helpers": "~1.1.2",
     "typescript": "~3.3.3"
   },

@@ -171,9 +171,9 @@ function CreateStage(res, loader) {
                         }
                         if (!cached_1) {
                             if (loader instanceof pixi_js_1.Loader) {
-                                loader.add(layerObj.img.image, {
+                                loader.add(layerObj.img.image, Object.assign(res.metadata, {
                                     parentResource: res
-                                }, function () {
+                                }), function () {
                                     var tex = loader.resources[layerObj.img.image].texture;
                                     sprite_1.texture = tex;
                                     if (layerObj.fromImageLayer) {

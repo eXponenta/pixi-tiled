@@ -225,9 +225,11 @@ export function CreateStage(
 
 								loader.add(
 									layerObj.img.image,
+									Object.assign(
+									(res as LoaderResource).metadata,
 									{
 										parentResource: res
-									},
+									}),
 									() => {
 										const tex = loader.resources[layerObj.img.image].texture;
 										sprite.texture = tex;
