@@ -20,7 +20,10 @@ export function ApplyMeta(meta: any, target: Container) {
 	(target as TiledContainer).primitive = Primitives.BuildPrimitive(meta);
 
 	if (meta.properties) {
-		target.alpha = meta.properties.opacity || target.alpha;
+		if(!isNaN(meta.properties.opacity)){
+			target.alpha = Number(meta.properties.opacity);
+		}
+			
 		//@ts-ignore
 		Object.assign(target, meta.properties);
 		target.properties = meta.properties;

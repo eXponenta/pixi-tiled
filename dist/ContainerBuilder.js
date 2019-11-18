@@ -23,8 +23,11 @@ function ApplyMeta(meta, target) {
     target.types = meta.type ? meta.type.split(":") : [];
     target.primitive = Primitives.BuildPrimitive(meta);
     if (meta.properties) {
-        target.alpha = meta.properties.opacity || 1;
+        if (!isNaN(meta.properties.opacity)) {
+            target.alpha = Number(meta.properties.opacity);
+        }
         Object.assign(target, meta.properties);
+        target.properties = meta.properties;
     }
     if (Config_1.Config.debugContainers) {
         setTimeout(function () {
