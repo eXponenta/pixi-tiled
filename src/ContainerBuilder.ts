@@ -20,9 +20,10 @@ export function ApplyMeta(meta: any, target: Container) {
 	(target as TiledContainer).primitive = Primitives.BuildPrimitive(meta);
 
 	if (meta.properties) {
-		target.alpha = meta.properties.opacity || 1;
+		target.alpha = meta.properties.opacity || target.alpha;
 		//@ts-ignore
 		Object.assign(target, meta.properties);
+		target.properties = meta.properties;
 	}
 
 	if (Config.debugContainers) {

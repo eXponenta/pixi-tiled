@@ -3,7 +3,8 @@ import * as PIXI from "pixi.js";
 declare module "pixi.js" {
 	export interface Container {
         getChildByPath<T extends PIXI.DisplayObject>(query: string): T | undefined;
-        addGlobalChild(...child: PIXI.DisplayObject[]): PIXI.DisplayObject; 
+		addGlobalChild(...child: PIXI.DisplayObject[]): PIXI.DisplayObject;
+		properties: any;
 	}
 }
 
