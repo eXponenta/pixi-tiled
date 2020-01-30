@@ -1,6 +1,6 @@
 {
   "name": "pixiv5-tiled",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "pixi-tiled",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
