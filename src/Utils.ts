@@ -110,7 +110,7 @@ export function _prepareProperties(layer: ITiledMap | ITiledLayer | ITiledObject
 	const spriteObject = layer as ITiledSprite;
 
 	// http://doc.mapeditor.org/en/stable/reference/tmx-map-format/#tile-flipping
-	if (spriteObject.gid) {
+	if (spriteObject.gid > 0) {
 		const gid = spriteObject.gid;
 
 		const vFlip = !!(gid & 0x40000000);

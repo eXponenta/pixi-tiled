@@ -101,7 +101,7 @@ function _prepareProperties(layer) {
         }
     }
     var spriteObject = layer;
-    if (spriteObject.gid) {
+    if (spriteObject.gid > 0) {
         var gid = spriteObject.gid;
         var vFlip = !!(gid & 0x40000000);
         var hFlip = !!(gid & 0x80000000);
