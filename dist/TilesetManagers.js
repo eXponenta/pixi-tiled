@@ -23,15 +23,24 @@ var TilesetManager = (function () {
         enumerable: true,
         configurable: true
     });
-    TilesetManager.prototype.getTextureByGid = function (gid, tryLoad) {
+    TilesetManager.prototype.getTileByGid = function (gid, tryLoad) {
         if (tryLoad === void 0) { tryLoad = this.loadUnknowImages; }
         var tile = Utils_1.resolveImageUrl(this._tileSets, this.baseUrl, gid);
-        return this.getTextureByTile(tile, tryLoad);
+        return this.getTileByTile(tile, tryLoad);
     };
-    TilesetManager.prototype.getTextureByTile = function (tile, tryLoad) {
+    TilesetManager.prototype.getTileByTile = function (tile, tryLoad, skipAnim) {
+        var _this = this;
         if (tryLoad === void 0) { tryLoad = this.loadUnknowImages; }
+        if (skipAnim === void 0) { skipAnim = false; }
         if (!tile || !tile.image) {
             return undefined;
+        }
+        if (tile.animation && !skipAnim) {
+            var ts_1 = this._tileSets[tile.tilesetId];
+            tile.animation.forEach(function (e) {
+                e.texture = _this.getTileByTile(ts_1.tiles[e.tileid], tryLoad, true).texture;
+                e.time = e.duration;
+            });
         }
         var absUrl = this.baseUrl + tile.image;
         var texture = this.spritesheet.textures[tile.image];

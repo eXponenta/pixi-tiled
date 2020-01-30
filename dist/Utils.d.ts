@@ -11,5 +11,7 @@ export declare enum TiledObjectType {
     IMAGE = 6
 }
 export declare function Objectype(meta: any): TiledObjectType;
-export declare function resolveImageUrl(tilesets: ITiledTileset[], baseUrl: string, gid: number): import("./ITiledMap").ITiledTile | null;
+export declare function resolveImageUrl(tilesets: ITiledTileset[], baseUrl: string, gid: number): (import("./ITiledMap").ITiledTile & {
+    tilesetId: number;
+}) | null;
 export declare function _prepareProperties(layer: ITiledMap | ITiledLayer | ITiledObject): void;

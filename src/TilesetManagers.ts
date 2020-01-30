@@ -31,14 +31,23 @@ export class TilesetManager {
 		return this._sheet;
 	}
 
-	getTextureByGid(gid: number, tryLoad = this.loadUnknowImages): ITiledTile | undefined {
+	getTileByGid(gid: number, tryLoad = this.loadUnknowImages): ITiledTile | undefined {
 		const tile = resolveImageUrl(this._tileSets, this.baseUrl, gid);
-		return this.getTextureByTile(tile, tryLoad);
+		return this.getTileByTile(tile, tryLoad);
 	}
 
-	getTextureByTile(tile: ITiledTile | null, tryLoad = this.loadUnknowImages) {
+	getTileByTile(tile: ITiledTile | null, tryLoad = this.loadUnknowImages, skipAnim  = false) {
 		if (!tile || !tile.image) {
 			return undefined;
+		}
+		
+		if(tile.animation && !skipAnim) {
+			const ts =this._tileSets[tile.tilesetId!];
+			
+			tile.animation.forEach((e)=>{
+				e.texture = this.getTileByTile(ts.tiles![e.tileid], tryLoad, true)!.texture;
+				e.time = e.duration;
+			});
 		}
 
 		const absUrl = this.baseUrl + tile.image!;

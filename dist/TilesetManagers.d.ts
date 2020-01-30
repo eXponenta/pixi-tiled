@@ -9,6 +9,6 @@ export declare class TilesetManager {
     constructor(_tileSets: ITiledTileset[], sheet?: MultiSpritesheet | Spritesheet);
     register(spritesheet: MultiSpritesheet | Spritesheet): void;
     readonly spritesheet: MultiSpritesheet;
-    getTextureByGid(gid: number, tryLoad?: boolean): ITiledTile | undefined;
-    getTextureByTile(tile: ITiledTile | null, tryLoad?: boolean): ITiledTile | undefined;
+    getTileByGid(gid: number, tryLoad?: boolean): ITiledTile | undefined;
+    getTileByTile(tile: ITiledTile | null, tryLoad?: boolean, skipAnim?: boolean): ITiledTile | undefined;
 }

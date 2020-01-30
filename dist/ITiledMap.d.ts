@@ -12,6 +12,8 @@ export interface IPropDefinition {
 export interface ITiledFrame {
     tileid: number;
     duration: number;
+    texture: Texture;
+    time: number;
 }
 export interface ITiledTile {
     animation?: Array<ITiledFrame>;
@@ -24,6 +26,7 @@ export interface ITiledTile {
     properties: Array<IPropDefinition>;
     parsedProps: IParsedProps;
     texture: Texture;
+    tilesetId?: number;
 }
 export interface ITiledTileset {
     type: "tileset";

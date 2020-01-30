@@ -61,9 +61,12 @@ function Objectype(meta) {
 exports.Objectype = Objectype;
 function resolveImageUrl(tilesets, baseUrl, gid) {
     var tileSet = undefined;
+    var tilesetId = 0;
     for (var i = 0; i < tilesets.length; i++) {
         if (tilesets[i].firstgid <= gid) {
             tileSet = tilesets[i];
+            tilesetId = i;
+            break;
         }
     }
     if (!tileSet) {
@@ -72,7 +75,7 @@ function resolveImageUrl(tilesets, baseUrl, gid) {
     }
     var realGid = gid - tileSet.firstgid;
     var find = tileSet.tiles.filter(function (obj) { return obj.id == realGid; })[0];
-    var img = Object.assign({}, find);
+    var img = Object.assign({}, find, { tilesetId: tilesetId });
     if (!img) {
         console.error("Load res MISSED gid:" + realGid);
         return null;

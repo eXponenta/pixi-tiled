@@ -15,10 +15,9 @@ export const ObjectLayerBuilder = {
 	__gen: <Record<TiledObjectType, TGeneratorType | undefined>>{
 		[TiledObjectType.IMAGE](meta: ITiledObject, tileset: TilesetManager) {
 			const smeta = meta as ITiledSprite;
-			const frame = smeta.image ? tileset.getTextureByTile(smeta.image!) : tileset.getTextureByGid(smeta.gid);
+			const frame = smeta.image ? tileset.getTileByTile(smeta.image!) : tileset.getTileByGid(smeta.gid);
 
 			smeta.image = frame;
-
 			const sprite = SB.Build(smeta) as TiledSprite;
 
 			if (frame && frame.texture) {

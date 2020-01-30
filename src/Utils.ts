@@ -60,10 +60,13 @@ export function resolveImageUrl(
 	gid: number
 ) {
 	let tileSet = undefined; //_data.tilesets[0];
+	let tilesetId = 0;
 
 	for (let i = 0; i < tilesets.length; i++) {
 		if (tilesets[i].firstgid <= gid) {
 			tileSet = tilesets[i];
+			tilesetId = i;
+			break;
 		}
 	}
 
@@ -75,7 +78,7 @@ export function resolveImageUrl(
 	const realGid = gid - tileSet.firstgid;
 
 	let find = tileSet.tiles!.filter(obj => obj.id == realGid)[0];
-	let img = Object.assign({}, find);
+	let img = Object.assign({}, find, {tilesetId});
 
 	if (!img) {
 		console.error("Load res MISSED gid:" + realGid);

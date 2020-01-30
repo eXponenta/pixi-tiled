@@ -12,7 +12,16 @@ var pixi_js_1 = require("pixi.js");
 var ContainerBuilder = __importStar(require("./ContainerBuilder"));
 var Primitives = __importStar(require("./TiledPrimitives"));
 function Build(meta) {
-    var sprite = new pixi_js_1.Sprite(pixi_js_1.Texture.EMPTY);
+    var sprite;
+    if (meta.image.animation) {
+        sprite = new pixi_js_1.AnimatedSprite(meta.image.animation, !!meta.parsedProps.autoUpdate || true);
+        var a = sprite;
+        a.play && (meta.parsedProps.animPlaying) && a.play();
+        a.loop = meta.parsedProps.animLoop !== undefined ? meta.parsedProps.animLoop : true;
+    }
+    else {
+        sprite = new pixi_js_1.Sprite(meta.image.texture || pixi_js_1.Texture.EMPTY);
+    }
     if (!meta.fromImageLayer) {
         sprite.anchor = Config_1.Config.defSpriteAnchor;
     }

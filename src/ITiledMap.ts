@@ -17,6 +17,10 @@ export interface IPropDefinition {
 export interface ITiledFrame {
 	tileid: number;
 	duration: number;
+
+	// pixi
+	texture: Texture;
+	time: number;
 }
 
 export interface ITiledTile {
@@ -32,6 +36,7 @@ export interface ITiledTile {
 	
 	// PIXI
 	texture: Texture;
+	tilesetId?: number;
 }
 
 export interface ITiledTileset {

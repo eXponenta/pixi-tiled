@@ -17,7 +17,7 @@ exports.ObjectLayerBuilder = {
     __gen: (_a = {},
         _a[Utils_1.TiledObjectType.IMAGE] = function (meta, tileset) {
             var smeta = meta;
-            var frame = smeta.image ? tileset.getTextureByTile(smeta.image) : tileset.getTextureByGid(smeta.gid);
+            var frame = smeta.image ? tileset.getTileByTile(smeta.image) : tileset.getTileByGid(smeta.gid);
             smeta.image = frame;
             var sprite = SB.Build(smeta);
             if (frame && frame.texture) {
