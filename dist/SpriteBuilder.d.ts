@@ -1,3 +1,3 @@
-import { DisplayObject, Sprite } from "pixi.js";
-export declare function сreateSprite(meta: any): Sprite;
-export declare function Build(meta: any): DisplayObject;
+import { Sprite } from "pixi.js";
+import { ITiledSprite } from "./ITiledMap";
+export declare function Build(meta: ITiledSprite): Sprite;

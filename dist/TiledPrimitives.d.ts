@@ -1,4 +1,5 @@
 import { Rectangle, Point, Polygon, Ellipse } from "pixi.js";
+import { ITiledObject } from "./ITiledMap";
 export interface ITiledPtimitive {
     name: string;
     types: Array<string>;
@@ -41,4 +42,4 @@ export declare class TiledEllipse extends Ellipse implements ITiledPtimitive {
     visible: boolean;
     constructor(x?: number, y?: number, hw?: number, hh?: number);
 }
-export declare function BuildPrimitive(meta: any): ITiledPtimitive | undefined;
+export declare function BuildPrimitive(meta: ITiledObject): ITiledPtimitive | undefined;

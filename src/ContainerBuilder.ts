@@ -1,15 +1,23 @@
-import { TiledContainer } from './TiledContainer';
-import { Config } from './Config';
-import { Sprite, Rectangle, Texture, DisplayObject, Graphics, Container } from "pixi.js";
-import  * as Primitives from "./TiledPrimitives"
-import * as Utils from "./Utils";
+import { TiledContainer } from "./TiledContainer";
+import { Config } from "./Config";
+import {
+	Sprite,
+	Rectangle,
+	Texture,
+	DisplayObject,
+	Graphics,
+	Container
+} from "pixi.js";
 
-export function ApplyMeta(meta: any, target: Container) {
+import * as Primitives from "./TiledPrimitives";
+import { ITiledObject, ITiledLayer } from "./ITiledMap";
+
+export function ApplyMeta(meta: ITiledObject | ITiledLayer, target: Container) {
 	target.name = meta.name;
 	target.tiledId = meta.id;
 	target.width = meta.width || target.width;
 	target.height = meta.height || target.height;
-	target.rotation = ((meta.rotation || 0) * Math.PI) / 180.0;
+	target.rotation = (((meta as ITiledObject).rotation || 0) * Math.PI) / 180.0;
 
 	target.x = meta.x || 0;
 	target.y = meta.y || 0;
@@ -17,16 +25,19 @@ export function ApplyMeta(meta: any, target: Container) {
 	target.visible = meta.visible == undefined ? true : meta.visible;
 	target.types = meta.type ? meta.type.split(":") : [];
 
-	(target as TiledContainer).primitive = Primitives.BuildPrimitive(meta);
+	(target as TiledContainer).primitive = Primitives.BuildPrimitive(meta as ITiledObject);
 
-	if (meta.properties) {
-		if(!isNaN(meta.properties.opacity)){
-			target.alpha = Number(meta.properties.opacity);
+	const props = meta.parsedProps;
+
+	if (props) {
+		if (!isNaN(props.opacity as number)) {
+			target.alpha = Number(props.opacity);
 		}
-			
+
 		//@ts-ignore
-		Object.assign(target, meta.properties);
-		target.properties = meta.properties;
+		Object.assign(target, props);
+
+		target.properties = props;
 	}
 
 	if (Config.debugContainers) {
@@ -44,7 +55,7 @@ export function ApplyMeta(meta: any, target: Container) {
 	}
 }
 
-export function Build(meta: any): DisplayObject {
+export function Build(meta: ITiledObject): DisplayObject {
 	const types: Array<string> = meta.type ? meta.type.split(":") : [];
 
 	let container = undefined; // new TiledOG.TiledContainer();

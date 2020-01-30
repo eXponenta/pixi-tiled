@@ -11,18 +11,18 @@ var Config_1 = require("./Config");
 var pixi_js_1 = require("pixi.js");
 var ContainerBuilder = __importStar(require("./ContainerBuilder"));
 var Primitives = __importStar(require("./TiledPrimitives"));
-function сreateSprite(meta) {
+function Build(meta) {
     var sprite = new pixi_js_1.Sprite(pixi_js_1.Texture.EMPTY);
     if (!meta.fromImageLayer) {
         sprite.anchor = Config_1.Config.defSpriteAnchor;
     }
     ContainerBuilder.ApplyMeta(meta, sprite);
-    var obj = meta.img.objectgroup;
+    var obj = meta.image.objectgroup;
     if (obj) {
         sprite.primitive = Primitives.BuildPrimitive(obj.objects[0]);
     }
-    var hFlip = meta.properties.hFlip;
-    var vFlip = meta.properties.vFlip;
+    var hFlip = meta.hFlip;
+    var vFlip = meta.vFlip;
     if (hFlip) {
         sprite.scale.x *= -1;
         sprite.anchor.x = 1;
@@ -31,11 +31,6 @@ function сreateSprite(meta) {
         sprite.scale.y *= -1;
         sprite.anchor.y = 0;
     }
-    return sprite;
-}
-exports.сreateSprite = сreateSprite;
-function Build(meta) {
-    var sprite = сreateSprite(meta);
     return sprite;
 }
 exports.Build = Build;

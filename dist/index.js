@@ -23,7 +23,7 @@ var Config_1 = require("./Config");
 exports.Config = Config_1.Config;
 var TiledContainer_1 = require("./TiledContainer");
 exports.TiledContainer = TiledContainer_1.TiledContainer;
-var pixi_utils_1 = __importDefault(require("./pixi-utils"));
+var pixi_utils_1 = require("./pixi-utils");
 exports.Builders = [
     ContainerBuilder.Build,
     SpriteBuilder.Build,
@@ -33,13 +33,13 @@ function Inject(pixiPack, props) {
     if (pixiPack === void 0) { pixiPack = window.PIXI; }
     if (props === void 0) { props = undefined; }
     if (!pixiPack) {
-        console.warn("Auto injection works only with globals scoped PIXI, not in modules\nuse \'Loader.registerPlugin(Parser)\' otherwith");
+        console.warn("Auto injection works only with globals scoped PIXI, not in modules\nuse 'Loader.registerPlugin(Parser)' otherwith");
         return;
     }
     if (props) {
         Object.assign(Config_1.Config, props);
     }
-    pixi_utils_1.default(pixiPack);
+    pixi_utils_1.InjectMixins(pixiPack);
     if (Config_1.Config.injectMiddleware) {
         pixiPack.Loader.registerPlugin(TiledObjectParser_1.Parser);
     }

@@ -1,6 +1,6 @@
-
-import { Rectangle, Point, Polygon, Ellipse } from "pixi.js"
+import { Rectangle, Point, Polygon, Ellipse } from "pixi.js";
 import * as Utils from "./Utils";
+import { ITiledObject } from "./ITiledMap";
 
 export interface ITiledPtimitive {
 	name: string;
@@ -28,6 +28,7 @@ export class TiledPolygon extends Polygon implements ITiledPtimitive {
 	name: string = "";
 	types: string[] = [];
 	visible: boolean = true;
+
 	private _x: number = 0;
 	private _y: number = 0;
 
@@ -36,7 +37,6 @@ export class TiledPolygon extends Polygon implements ITiledPtimitive {
 	}
 
 	set x(sX: number) {
-
 		const delta = sX - this._x;
 		this._x = sX;
 
@@ -46,7 +46,6 @@ export class TiledPolygon extends Polygon implements ITiledPtimitive {
 	}
 
 	set y(sY: number) {
-
 		const delta = sY - this._y;
 		this._y = sY;
 
@@ -98,23 +97,19 @@ export class TiledPolygon extends Polygon implements ITiledPtimitive {
 		const factor = h / this.height;
 
 		for (let yIndex = 1; yIndex < this.points.length; yIndex += 2) {
-
 			const delta = (this.points[yIndex] - this._y) * factor;
-			this.points[yIndex] = this._y + delta;;
+			this.points[yIndex] = this._y + delta;
 		}
-
 	}
 
 	set width(w: number) {
 		const factor = w / this.width;
 
 		for (let xIndex = 0; xIndex < this.points.length; xIndex += 2) {
-
 			const delta = (this.points[xIndex] - this._x) * factor;
 			this.points[xIndex] = this._x + delta;
 		}
 	}
-
 }
 
 export class TiledPolypine implements ITiledPtimitive {
@@ -139,12 +134,15 @@ export class TiledEllipse extends Ellipse implements ITiledPtimitive {
 	}
 }
 
-export function BuildPrimitive(meta: any): ITiledPtimitive | undefined {
-	if (!meta) return;
+export function BuildPrimitive( meta: ITiledObject ): ITiledPtimitive | undefined {
+	
+	if (!meta) {
+		return;
+	}
 
 	let prim: ITiledPtimitive | undefined = undefined;
 
-	let type: Utils.TiledObjectType = Utils.Objectype(meta);
+	const type: Utils.TiledObjectType = Utils.Objectype(meta);
 
 	meta.x = meta.x || 0;
 	meta.y = meta.y || 0;
@@ -155,30 +153,35 @@ export function BuildPrimitive(meta: any): ITiledPtimitive | undefined {
 				meta.x + 0.5 * meta.width,
 				meta.y + 0.5 * meta.height,
 				meta.width * 0.5,
-				meta.height * 0.5);
+				meta.height * 0.5
+			);
 			break;
 		}
 		case Utils.TiledObjectType.POLYGON: {
-			let points = meta.polygon as Array<{ x: number; y: number }>;
-			let poses = points.map(p => {
+			const points = meta.polygon!;
+			const poses = points.map(p => {
 				return new Point(p.x + meta.x, p.y + meta.y);
 			});
+			
 			prim = new TiledPolygon(poses);
 			break;
 		}
 		case Utils.TiledObjectType.POLYLINE: {
-			let points = meta.polygon as Array<{ x: number; y: number }>;
-			let poses = points.map(p => {
+			const points = meta.polygon!;
+			const poses = points.map(p => {
 				return new Point(p.x + meta.x, p.y + meta.y);
 			});
+
 			prim = new TiledPolypine(poses);
 			break;
 		}
 		default:
 			prim = new TiledRect(meta.x, meta.y, meta.width, meta.height);
 	}
+
 	prim.types = meta.type ? meta.type.split(":") : [];
 	prim.visible = meta.visible;
 	prim.name = meta.name;
+	
 	return prim;
 }

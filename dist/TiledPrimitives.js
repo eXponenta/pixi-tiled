@@ -124,7 +124,6 @@ var TiledPolygon = (function (_super) {
             for (var yIndex = 1; yIndex < this.points.length; yIndex += 2) {
                 var delta = (this.points[yIndex] - this._y) * factor;
                 this.points[yIndex] = this._y + delta;
-                ;
             }
         },
         enumerable: true,
@@ -157,8 +156,9 @@ var TiledEllipse = (function (_super) {
 }(pixi_js_1.Ellipse));
 exports.TiledEllipse = TiledEllipse;
 function BuildPrimitive(meta) {
-    if (!meta)
+    if (!meta) {
         return;
+    }
     var prim = undefined;
     var type = Utils.Objectype(meta);
     meta.x = meta.x || 0;

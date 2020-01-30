@@ -1,26 +1,29 @@
-import { Config } from './Config';
+import { Config } from "./Config";
 import { DisplayObject, Sprite, Texture } from "pixi.js";
 import * as ContainerBuilder from "./ContainerBuilder";
 import * as Primitives from "./TiledPrimitives";
+import { ITiledSprite, ITiledObjectLayer } from "./ITiledMap";
 
-export function сreateSprite(meta: any): Sprite {
+export function Build(meta: ITiledSprite): Sprite {
 	// TODO make load from texture atlass
 	const sprite = new Sprite(Texture.EMPTY);
 
 	//TODO Set anchor and offsets to center (.5, .5)
 	if (!meta.fromImageLayer) {
-		sprite.anchor = Config.defSpriteAnchor as any;
+		sprite.anchor = Config.defSpriteAnchor!;
 	}
 
 	//debugger
 	ContainerBuilder.ApplyMeta(meta, sprite);
-	const obj = meta.img.objectgroup;
+
+	const obj = meta.image!.objectgroup as ITiledObjectLayer;
+
 	if (obj) {
 		(sprite as any).primitive = Primitives.BuildPrimitive(obj.objects[0]);
 	}
 
-	const hFlip = meta.properties.hFlip;
-	const vFlip = meta.properties.vFlip;
+	const hFlip = meta.hFlip;
+	const vFlip = meta.vFlip;
 
 	if (hFlip) {
 		sprite.scale.x *= -1;
@@ -34,11 +37,3 @@ export function сreateSprite(meta: any): Sprite {
 
 	return sprite;
 }
-
-export function Build(meta: any): DisplayObject {
-	//debugger
-	const sprite = сreateSprite(meta);
-
-	return sprite;
-}
-

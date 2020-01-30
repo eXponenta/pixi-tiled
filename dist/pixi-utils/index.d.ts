@@ -1,2 +1,1 @@
-declare const path: (pixiPackage: any) => void;
-export default path;
+export declare function InjectMixins(pixiPackage: any): void;

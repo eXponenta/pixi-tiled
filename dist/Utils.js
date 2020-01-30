@@ -59,4 +59,60 @@ function Objectype(meta) {
     return TiledObjectType.DEFAULT;
 }
 exports.Objectype = Objectype;
+function resolveImageUrl(tilesets, baseUrl, gid) {
+    var tileSet = undefined;
+    for (var i = 0; i < tilesets.length; i++) {
+        if (tilesets[i].firstgid <= gid) {
+            tileSet = tilesets[i];
+        }
+    }
+    if (!tileSet) {
+        console.error("Image with gid:" + gid + " not found!");
+        return null;
+    }
+    var realGid = gid - tileSet.firstgid;
+    var find = tileSet.tiles.filter(function (obj) { return obj.id == realGid; })[0];
+    var img = Object.assign({}, find);
+    if (!img) {
+        console.error("Load res MISSED gid:" + realGid);
+        return null;
+    }
+    img.image = baseUrl + img.image;
+    return img;
+}
+exports.resolveImageUrl = resolveImageUrl;
+function _prepareProperties(layer) {
+    var props = {};
+    if (layer.properties) {
+        if (layer.properties instanceof Array) {
+            for (var _i = 0, _a = layer.properties; _i < _a.length; _i++) {
+                var p = _a[_i];
+                var val = p.value;
+                if (p.type == "color") {
+                    val = HexStringToHexInt(val);
+                }
+                props[p.name] = val;
+            }
+        }
+        else {
+            props = layer.properties;
+        }
+    }
+    var spriteObject = layer;
+    if (spriteObject.gid) {
+        var gid = spriteObject.gid;
+        var vFlip = !!(gid & 0x40000000);
+        var hFlip = !!(gid & 0x80000000);
+        var dFlip = !!(gid & 0x20000000);
+        props["vFlip"] = vFlip;
+        props["hFlip"] = hFlip;
+        props["dFlip"] = dFlip;
+        spriteObject.vFlip = vFlip;
+        spriteObject.hFlip = hFlip;
+        var realGid = gid & ~(0x40000000 | 0x80000000 | 0x20000000);
+        spriteObject.gid = realGid;
+    }
+    layer.parsedProps = props;
+}
+exports._prepareProperties = _prepareProperties;
 //# sourceMappingURL=Utils.js.map

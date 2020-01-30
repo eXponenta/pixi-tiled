@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ContainerExt_1 = __importDefault(require("./ContainerExt"));
 var DisplayExt_1 = __importDefault(require("./DisplayExt"));
 var EventEmitterExt_1 = __importDefault(require("./EventEmitterExt"));
-var path = function (pixiPackage) {
+function InjectMixins(pixiPackage) {
     ContainerExt_1.default(pixiPackage);
     DisplayExt_1.default(pixiPackage);
     EventEmitterExt_1.default(pixiPackage);
-};
-exports.default = path;
+}
+exports.InjectMixins = InjectMixins;
 //# sourceMappingURL=index.js.map

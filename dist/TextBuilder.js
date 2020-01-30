@@ -12,39 +12,27 @@ var pixi_js_1 = require("pixi.js");
 var Config_1 = require("./Config");
 var ContainerBuilder = __importStar(require("./ContainerBuilder"));
 var Utils = __importStar(require("./Utils"));
-function roundAlpha(canvas) {
-    var ctx = canvas.getContext("2d");
-    var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    for (var i = 3; i < data.data.length; i += 4) {
-        data.data[i] = data.data[i] > 200 ? 255 : 0;
-    }
-    ctx.putImageData(data, 0, 0);
-}
-function createText(meta) {
+function Build(meta) {
     var container = new TiledContainer_1.TiledContainer();
-    var pixiText = new pixi_js_1.Text(meta.text.text, {
-        wordWrap: meta.text.wrap,
+    var text = meta.text;
+    var pixiText = new pixi_js_1.Text(text.text, {
+        wordWrap: text.wrap,
         wordWrapWidth: meta.width,
-        fill: Utils.HexStringToHexInt(meta.text.color) || 0x000000,
-        align: meta.text.valign || "center",
-        fontFamily: meta.text.fontfamily || "Arial",
-        fontWeight: meta.text.bold ? "bold" : "normal",
-        fontStyle: meta.text.italic ? "italic" : "normal",
-        fontSize: meta.text.pixelsize || "16px"
+        fill: Utils.HexStringToHexInt(text.color || "#000000") || 0x000000,
+        align: text.valign || "top",
+        fontFamily: text.fontfamily || "sans-serif",
+        fontWeight: text.bold ? "bold" : "normal",
+        fontStyle: text.italic ? "italic" : "normal",
+        fontSize: text.pixelsize || "16px"
     });
     pixiText.name = meta.name + "_Text";
-    if (Config_1.Config.roundFontAlpha) {
-        pixiText.texture.once("update", function () {
-            roundAlpha(pixiText.canvas);
-            pixiText.texture.baseTexture.update();
-            console.log("update");
-        });
-    }
-    var props = meta.properties;
-    meta.properties = {};
+    pixiText.roundPixels = !!Config_1.Config.roundFontAlpha;
+    var props = meta.parsedProps;
+    meta.properties = [];
+    meta.parsedProps = {};
     ContainerBuilder.ApplyMeta(meta, container);
     container.pivot.set(0, 0);
-    switch (meta.text.halign) {
+    switch (text.halign) {
         case "right":
             {
                 pixiText.anchor.x = 1;
@@ -64,7 +52,7 @@ function createText(meta) {
             }
             break;
     }
-    switch (meta.text.valign) {
+    switch (text.valign) {
         case "bottom":
             {
                 pixiText.anchor.y = 1;
@@ -85,17 +73,16 @@ function createText(meta) {
             break;
     }
     if (props) {
-        pixiText.style.stroke = Utils.HexStringToHexInt(meta.properties.strokeColor) || 0;
-        pixiText.style.strokeThickness = meta.properties.strokeThickness || 0;
-        pixiText.style.padding = meta.properties.fontPadding || 0;
+        pixiText.style.stroke =
+            Utils.HexStringToHexInt(props.strokeColor) || 0;
+        pixiText.style.strokeThickness = props.strokeThickness || 0;
+        pixiText.style.padding = props.fontPadding || 0;
         Object.assign(pixiText, props);
     }
     container.addChild(pixiText);
     container.text = pixiText;
+    container.properties = props;
     return container;
-}
-function Build(meta) {
-    return createText(meta);
 }
 exports.Build = Build;
 //# sourceMappingURL=TextBuilder.js.map

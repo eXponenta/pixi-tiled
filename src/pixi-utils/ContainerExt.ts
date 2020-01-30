@@ -1,10 +1,11 @@
 import * as PIXI from "pixi.js";
+import { IParsedProps } from "../ITiledMap";
 
 declare module "pixi.js" {
 	export interface Container {
         getChildByPath<T extends PIXI.DisplayObject>(query: string): T | undefined;
 		addGlobalChild(...child: PIXI.DisplayObject[]): PIXI.DisplayObject;
-		properties: any;
+		properties?: IParsedProps;
 	}
 }
 

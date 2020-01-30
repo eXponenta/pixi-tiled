@@ -22,12 +22,13 @@ function ApplyMeta(meta, target) {
     target.visible = meta.visible == undefined ? true : meta.visible;
     target.types = meta.type ? meta.type.split(":") : [];
     target.primitive = Primitives.BuildPrimitive(meta);
-    if (meta.properties) {
-        if (!isNaN(meta.properties.opacity)) {
-            target.alpha = Number(meta.properties.opacity);
+    var props = meta.parsedProps;
+    if (props) {
+        if (!isNaN(props.opacity)) {
+            target.alpha = Number(props.opacity);
         }
-        Object.assign(target, meta.properties);
-        target.properties = meta.properties;
+        Object.assign(target, props);
+        target.properties = props;
     }
     if (Config_1.Config.debugContainers) {
         setTimeout(function () {
