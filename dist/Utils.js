@@ -77,7 +77,6 @@ function resolveImageUrl(tilesets, baseUrl, gid) {
         console.error("Load res MISSED gid:" + realGid);
         return null;
     }
-    img.image = baseUrl + img.image;
     return img;
 }
 exports.resolveImageUrl = resolveImageUrl;

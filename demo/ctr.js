@@ -1,4 +1,4 @@
-import * as TiledOG from "./../dist";
+import * as TiledOG from "../dist";
 import * as PIXI from "pixi.js";
 
 function init() {
@@ -17,13 +17,13 @@ function init() {
 
     function loaded() {	
         const map = app.loader.resources["map"].data;
-        const atlas = app.loader.resources["atlas"].spritesheet;
+		 const atlas = app.loader.resources["atlas"].spritesheet;
+		 
+		 console.log(map);
         const create = TiledOG.CreateStage(atlas, map);
 		
-		const scale = app.renderer.screen.width / 1080;
-		
-		create.scale.set(scale);
 		app.stage.addChild(create);
+		app.stage.scale.set(app.screen.width / 1080)
 		
         app.ticker.add(gameLoop);
     }

@@ -1,6 +1,7 @@
 /// <reference types="pixi.js" />
 import { ITiledLayer } from "./ITiledMap";
 import { TiledContainer } from ".";
+import { TilesetManager } from "./TilesetManagers";
 export interface ITiledProps {
     defSpriteAnchor?: PIXI.Point;
     debugContainers?: boolean;
@@ -10,7 +11,7 @@ export interface ITiledProps {
 }
 export declare const Config: ITiledProps;
 declare type TLayerBuilder = {
-    Build(meta: ITiledLayer, ...args: any[]): TiledContainer | undefined;
+    Build(meta: ITiledLayer, tileset: TilesetManager, ...args: any[]): TiledContainer | undefined;
 };
 export declare const LayerBuildersMap: {
     [key: string]: TLayerBuilder | undefined;

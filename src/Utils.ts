@@ -82,8 +82,6 @@ export function resolveImageUrl(
 		return null;
 	}
 
-	img.image = baseUrl + img.image;
-
 	return img;
 }
 

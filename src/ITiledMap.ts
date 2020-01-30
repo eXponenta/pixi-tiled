@@ -1,3 +1,5 @@
+import { Texture } from "pixi.js";
+
 export type IPropType = "float" | "int" | "color" | "bool" | "string";
 
 export type ILayerType = "tilelayer" | "objectgroup" | "imagelayer" | "group";
@@ -26,7 +28,10 @@ export interface ITiledTile {
 	objectgroup: ITiledLayer;
 	type?: number;
     properties: Array<IPropDefinition>;
-    parsedProps: IParsedProps;
+	parsedProps: IParsedProps;
+	
+	// PIXI
+	texture: Texture;
 }
 
 export interface ITiledTileset {
@@ -95,6 +100,7 @@ export interface ITiledSprite extends ITiledObject {
 }
 
 export interface ITiledLayer extends ITiledBaseObject {
+	type: ILayerType;
 	offsetx: number;
 	offsety: number;
 	opacity: number;

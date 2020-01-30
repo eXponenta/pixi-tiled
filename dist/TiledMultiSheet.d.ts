@@ -1,11 +1,11 @@
-import { Spritesheet, Texture } from 'pixi.js';
-export default class MultiSpritesheet {
-    sheets: Spritesheet[];
+import { Spritesheet, Texture } from "pixi.js";
+export declare class MultiSpritesheet {
+    sheets: Array<Spritesheet | MultiSpritesheet>;
     images: {
         [name: string]: Texture;
     };
     constructor(sheets?: Spritesheet[]);
-    add(sheet?: Spritesheet): void;
+    add(sheet?: Spritesheet | MultiSpritesheet): void;
     addTexture(tex: Texture, id: string): void;
     readonly textures: {
         [name: string]: Texture;

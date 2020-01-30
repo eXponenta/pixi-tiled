@@ -2,6 +2,7 @@ import { Point } from "pixi.js";
 import { ITiledLayer, ILayerType } from "./ITiledMap";
 import { TiledContainer } from ".";
 import { ObjectLayerBuilder } from "./ObjectsLayerBuilder";
+import { TilesetManager } from "./TilesetManagers";
 
 export interface ITiledProps {
 	defSpriteAnchor?: PIXI.Point;
@@ -20,7 +21,7 @@ export const Config: ITiledProps = {
 };
 
 type TLayerBuilder = {
-	Build(meta: ITiledLayer, ...args: any[]): TiledContainer | undefined;
+	Build(meta: ITiledLayer, tileset: TilesetManager, ...args: any[]): TiledContainer | undefined;
 };
 
 export const LayerBuildersMap: { [key: string]: TLayerBuilder | undefined } = {

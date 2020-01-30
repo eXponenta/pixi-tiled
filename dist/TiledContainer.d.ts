@@ -1,6 +1,6 @@
 import { Container, Text } from "pixi.js";
 import { ITiledPtimitive } from './TiledPrimitives';
-import { IParsedProps } from "./ITiledMap";
+import { IParsedProps, ITiledLayer, ITiledObject, ITiledFrame, ITiledMap } from "./ITiledMap";
 export declare class TiledContainer extends Container {
     layerHeight: number;
     layerWidth: number;
@@ -11,4 +11,6 @@ export declare class TiledContainer extends Container {
     layers?: {
         [key: string]: Container;
     };
+    source?: ITiledLayer | ITiledObject | ITiledMap;
+    tileFrame?: ITiledFrame;
 }

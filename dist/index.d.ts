@@ -12,7 +12,7 @@ import { TiledContainer } from "./TiledContainer";
 export declare const Builders: Array<(meta: any) => any>;
 export declare function Inject(pixiPack?: any, props?: ITiledProps | undefined): void;
 import * as Primitives from "./TiledPrimitives";
-import MultiSpritesheet from "./TiledMultiSheet";
+import { MultiSpritesheet } from "./TiledMultiSheet";
 export { Primitives };
 export { Parser };
 export { CreateStage };

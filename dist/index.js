@@ -6,9 +6,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var ContainerBuilder = __importStar(require("./ContainerBuilder"));
 exports.ContainerBuilder = ContainerBuilder;
@@ -47,6 +44,6 @@ function Inject(pixiPack, props) {
 exports.Inject = Inject;
 var Primitives = __importStar(require("./TiledPrimitives"));
 exports.Primitives = Primitives;
-var TiledMultiSheet_1 = __importDefault(require("./TiledMultiSheet"));
-exports.MultiSpritesheet = TiledMultiSheet_1.default;
+var TiledMultiSheet_1 = require("./TiledMultiSheet");
+exports.MultiSpritesheet = TiledMultiSheet_1.MultiSpritesheet;
 //# sourceMappingURL=index.js.map

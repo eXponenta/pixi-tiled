@@ -42,7 +42,7 @@ export function Inject(
 }
 
 import * as Primitives from "./TiledPrimitives";
-import MultiSpritesheet from "./TiledMultiSheet";
+import {MultiSpritesheet} from "./TiledMultiSheet";
 
 export { Primitives };
 export { Parser };

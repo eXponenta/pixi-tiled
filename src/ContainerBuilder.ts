@@ -12,7 +12,7 @@ import {
 import * as Primitives from "./TiledPrimitives";
 import { ITiledObject, ITiledLayer } from "./ITiledMap";
 
-export function ApplyMeta(meta: ITiledObject | ITiledLayer, target: Container) {
+export function ApplyMeta(meta: ITiledObject | ITiledLayer, target: TiledContainer) {
 	target.name = meta.name;
 	target.tiledId = meta.id;
 	target.width = meta.width || target.width;
@@ -25,7 +25,7 @@ export function ApplyMeta(meta: ITiledObject | ITiledLayer, target: Container) {
 	target.visible = meta.visible == undefined ? true : meta.visible;
 	target.types = meta.type ? meta.type.split(":") : [];
 
-	(target as TiledContainer).primitive = Primitives.BuildPrimitive(meta as ITiledObject);
+	target.primitive = Primitives.BuildPrimitive(meta as ITiledObject);
 
 	const props = meta.parsedProps;
 
@@ -39,6 +39,8 @@ export function ApplyMeta(meta: ITiledObject | ITiledLayer, target: Container) {
 
 		target.properties = props;
 	}
+
+	target.source = meta;
 
 	if (Config.debugContainers) {
 		setTimeout(() => {
@@ -75,7 +77,7 @@ export function Build(meta: ITiledObject): DisplayObject {
 		}
 	}
 
-	ApplyMeta(meta, container);
+	ApplyMeta(meta, container as TiledContainer);
 
 	return container;
 }

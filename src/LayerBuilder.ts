@@ -1,13 +1,13 @@
-import { ITiledLayer } from "./ITiledMap";
-import { _prepareProperties } from "./Utils";
-import { Config } from "./Config";
-import { TiledContainer, ContainerBuilder } from ".";
+import { ITiledLayer } from './ITiledMap';
+import { _prepareProperties } from './Utils';
+import { Config } from './Config';
+import { TiledContainer, ContainerBuilder } from '.';
+import { TilesetManager } from './TilesetManagers';
 
 export const LayerBuilder = {
-	Build(layer: ITiledLayer, zOrder = 0): TiledContainer | undefined {
-		const useDisplay: boolean =
-			!!Config.usePixiDisplay && (PIXI as any).display !== undefined;
+	Build(layer: ITiledLayer, tileset: TilesetManager, zOrder = 0): TiledContainer | undefined {
 
+		const useDisplay: boolean = !!Config.usePixiDisplay && (PIXI as any).display !== undefined;
 		const Layer = useDisplay ? (PIXI as any).display.Layer : {};
 		const Group = useDisplay ? (PIXI as any).display.Group : {};
 
@@ -16,17 +16,12 @@ export const LayerBuilder = {
 		const props = layer.parsedProps;
 
 		if (props.ignore || props.ignoreLoad) {
-			console.log("[TILED] layer ignored:" + layer.name);
+			console.log('[TILED] layer ignored:' + layer.name);
 			return undefined;
 		}
 
-		const layerObject = useDisplay
-			? new Layer(
-					new Group(
-						props.zOrder !== undefined ? props.zOrder : zOrder,
-						true
-					)
-			  )
+		const layerObject: TiledContainer = useDisplay
+			? new Layer(new Group(props.zOrder !== undefined ? props.zOrder : zOrder, true))
 			: new TiledContainer();
 
 		layerObject.tiledId = layer.id;
@@ -37,7 +32,6 @@ export const LayerBuilder = {
 		layerObject.alpha = layer.opacity || 1;
 
 		ContainerBuilder.ApplyMeta(layer, layerObject);
-
 		return layerObject;
-	}
+	},
 };

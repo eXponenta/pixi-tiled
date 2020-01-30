@@ -1,8 +1,7 @@
-import { Spritesheet, Texture } from 'pixi.js';
+import { Spritesheet, Texture } from "pixi.js";
 
-export default class MultiSpritesheet {
-
-	sheets: Spritesheet[] = [];
+export class MultiSpritesheet {
+	sheets: Array<Spritesheet | MultiSpritesheet> = [];
 	images: { [name: string]: Texture } = {};
 
 	constructor(sheets?: Spritesheet[]) {
@@ -13,9 +12,9 @@ export default class MultiSpritesheet {
 		}
 	}
 
-	add(sheet?: Spritesheet) {
-
+	add(sheet?: Spritesheet | MultiSpritesheet) {
 		if (!sheet) throw "Sheet can't be undefined";
+		if (sheet === this) throw "U can't add self to spritesheet";
 
 		this.sheets.push(sheet);
 	}
@@ -40,10 +39,10 @@ export default class MultiSpritesheet {
 		let map: { [name: string]: Texture[] } = {};
 
 		for (const spr of this.sheets) {
+			// can be looped
 			Object.assign(map, spr.animations);
 		}
 
 		return map;
 	}
 }
-

@@ -67,3 +67,9 @@ loader.add("map","path/to/your/map.json")
 
 ### Demo
 Go to demo folder: [./demo](./demo)
+
+#### Live:
+* Midellware: [./midellware.html](https://exponenta.github.io/pixi-tiled/midellware)
+
+* By constructor: [./constructor.html](https://exponenta.github.io/pixi-tiled/constructor.html)
+

@@ -4,7 +4,7 @@ var Utils_1 = require("./Utils");
 var Config_1 = require("./Config");
 var _1 = require(".");
 exports.LayerBuilder = {
-    Build: function (layer, zOrder) {
+    Build: function (layer, tileset, zOrder) {
         if (zOrder === void 0) { zOrder = 0; }
         var useDisplay = !!Config_1.Config.usePixiDisplay && PIXI.display !== undefined;
         var Layer = useDisplay ? PIXI.display.Layer : {};
@@ -12,7 +12,7 @@ exports.LayerBuilder = {
         Utils_1._prepareProperties(layer);
         var props = layer.parsedProps;
         if (props.ignore || props.ignoreLoad) {
-            console.log("[TILED] layer ignored:" + layer.name);
+            console.log('[TILED] layer ignored:' + layer.name);
             return undefined;
         }
         var layerObject = useDisplay
@@ -25,6 +25,6 @@ exports.LayerBuilder = {
         layerObject.alpha = layer.opacity || 1;
         _1.ContainerBuilder.ApplyMeta(layer, layerObject);
         return layerObject;
-    }
+    },
 };
 //# sourceMappingURL=LayerBuilder.js.map

@@ -30,6 +30,7 @@ function ApplyMeta(meta, target) {
         Object.assign(target, props);
         target.properties = props;
     }
+    target.source = meta;
     if (Config_1.Config.debugContainers) {
         setTimeout(function () {
             var rect = new pixi_js_1.Graphics();

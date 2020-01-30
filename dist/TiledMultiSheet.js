@@ -14,6 +14,8 @@ var MultiSpritesheet = (function () {
     MultiSpritesheet.prototype.add = function (sheet) {
         if (!sheet)
             throw "Sheet can't be undefined";
+        if (sheet === this)
+            throw "U can't add self to spritesheet";
         this.sheets.push(sheet);
     };
     MultiSpritesheet.prototype.addTexture = function (tex, id) {
@@ -46,5 +48,5 @@ var MultiSpritesheet = (function () {
     });
     return MultiSpritesheet;
 }());
-exports.default = MultiSpritesheet;
+exports.MultiSpritesheet = MultiSpritesheet;
 //# sourceMappingURL=TiledMultiSheet.js.map

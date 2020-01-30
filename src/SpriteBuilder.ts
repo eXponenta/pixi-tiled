@@ -1,5 +1,5 @@
 import { Config } from "./Config";
-import { DisplayObject, Sprite, Texture } from "pixi.js";
+import { Sprite, Texture } from "pixi.js";
 import * as ContainerBuilder from "./ContainerBuilder";
 import * as Primitives from "./TiledPrimitives";
 import { ITiledSprite, ITiledObjectLayer } from "./ITiledMap";
@@ -14,7 +14,7 @@ export function Build(meta: ITiledSprite): Sprite {
 	}
 
 	//debugger
-	ContainerBuilder.ApplyMeta(meta, sprite);
+	ContainerBuilder.ApplyMeta(meta, sprite as any);
 
 	const obj = meta.image!.objectgroup as ITiledObjectLayer;
 
