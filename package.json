@@ -1,13 +1,16 @@
 {
   "name": "pixiv5-tiled",
+  "iife:name": "TiledOG",
   "version": "1.1.11",
+  "type": "module",
   "description": "pixi-tiled",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "main": "./dist/index.cjs.js",
+  "iife:main": "./dist/pixi5-tiled.js",
+  "module": "./dist/index.esm.js",
+  "typings": "./dist/types/index.d.ts",
+  "source": "./src/index.ts",
   "scripts": {
-    "build": "del-cli ./dist && tsc",
-    "build:demo": "del-cli ./demo/dist && parcel build ./demo/*.html -d demo/dist --public-url ./ "
+    "build": "del-cli ./dist && rollup -c "
   },
   "repository": {
     "type": "git",
@@ -18,15 +21,19 @@
     "tiled",
     "loader"
   ],
-  "author": "eXponenta",
+  "author": "eXponenta <rondo.devil@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/eXponenta/pixi-tiled/issues"
   },
   "homepage": "https://github.com/eXponenta/pixi-tiled#readme",
   "devDependencies": {
+    "@rollup/plugin-json": "^4.0.1",
+    "@rollup/plugin-replace": "^2.3.0",
     "del-cli": "^2.0.0",
     "pixi.js": "^5.2.0",
+    "rollup": "^1.31.0",
+    "rollup-plugin-typescript2": "^0.25.3",
     "ts-helpers": "~1.1.2",
     "typescript": "~3.3.3"
   },

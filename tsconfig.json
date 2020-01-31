@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "target": "ESNext",
+    "module": "ESNext",
     "lib": ["es6", "dom"],
-    "outDir": "./dist",
     "strict": true,
     "sourceMap": true,
     "preserveConstEnums": true,

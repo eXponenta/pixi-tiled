@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="left-up" width="20" height="13" tilewidth="40" tileheight="50" infinite="0" nextlayerid="6" nextobjectid="13">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="20" height="13" tilewidth="40" tileheight="50" infinite="0" nextlayerid="6" nextobjectid="13">
  <tileset firstgid="1" name="Images" tilewidth="192" tileheight="192" tilecount="11" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">
@@ -47,7 +47,7 @@
   </tile>
  </tileset>
  <imagelayer id="3" name="Fullimage">
-  <image source="gfx/bg.png" width="3020" height="1760"/>
+  <image source="gfx/bg.png" width="800" height="650"/>
  </imagelayer>
  <objectgroup id="2" name="Primitives"/>
  <objectgroup id="4" name="Images">

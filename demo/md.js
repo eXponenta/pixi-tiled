@@ -1,35 +1,22 @@
-import * as TiledOG from "../dist";
-import * as PIXI from "pixi.js";
+//inject TILED importer but skip middleware Injecting, only mixins and configs
+PIXI.TiledOG.Inject(PIXI, { injectMiddleware: true, debugContainers: true });
 
-function init() {
+var app = new PIXI.Application({
+	width: 800,
+	height: 650,
+});
 
-	//inject TILED importer but skip middleware Injecting, only mixins and configs
-	TiledOG.Inject(PIXI, {injectMiddleware : true, debugContainers : true})
-	var app = new PIXI.Application( {
-		width: 800, height : 650 
-	});
-    document.body.appendChild(app.view);
-   
-    //load map with dependencies
-    app.loader.add("map", "./../maps/demo.json")
-            //.add("atlas", "./../maps/ui-atlas.json")
-            .load(loaded);
+document.body.appendChild(app.view);
 
-    function loaded() {	
-        const create = app.loader.resources["map"].stage;
- 		//const atlas = app.loader.resources["atlas"].spritesheet;
-        //const create = TiledOG.CreateStage(atlas, map);
-		
-		console.log(create.children);
-		app.stage.addChild(create);
-		
-        app.ticker.add(gameLoop);
-    }
+//load map with dependencies
+app.loader.add('map', './maps/demo.json').load(loaded);
 
-    function gameLoop(dt) {
+function loaded() {
+	const create = app.loader.resources['map'].stage;
 
-    }
+	app.stage.addChild(create);
+
+	app.ticker.add(gameLoop);
 }
 
-
-document.addEventListener("DOMContentLoaded",   () => init());
+function gameLoop(dt) {}

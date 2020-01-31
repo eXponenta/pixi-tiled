@@ -4,6 +4,8 @@ declare global {
 	}
 }
 
+const VERSION = "__VERSION__";
+
 import * as ContainerBuilder from "./ContainerBuilder";
 import * as SpriteBuilder from "./SpriteBuilder";
 import * as TextBuilder from "./TextBuilder";
@@ -53,3 +55,4 @@ export { SpriteBuilder };
 export { TextBuilder };
 export { TiledContainer };
 export { MultiSpritesheet };
+export { VERSION };
