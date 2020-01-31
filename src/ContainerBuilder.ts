@@ -4,13 +4,12 @@ import {
 	Sprite,
 	Rectangle,
 	Texture,
-	DisplayObject,
 	Graphics,
-	Container
 } from "pixi.js";
 
 import * as Primitives from "./TiledPrimitives";
 import { ITiledObject, ITiledLayer } from "./ITiledMap";
+import { TiledSprite } from "./TiledSprite";
 
 export function ApplyMeta(meta: ITiledObject | ITiledLayer, target: TiledContainer) {
 	target.name = meta.name;
@@ -57,13 +56,13 @@ export function ApplyMeta(meta: ITiledObject | ITiledLayer, target: TiledContain
 	}
 }
 
-export function Build(meta: ITiledObject): DisplayObject {
+export function Build(meta: ITiledObject): TiledContainer | TiledSprite {
 	const types: Array<string> = meta.type ? meta.type.split(":") : [];
 
 	let container = undefined; // new TiledOG.TiledContainer();
 
 	if (types.indexOf("mask") > -1) {
-		container = new Sprite(Texture.WHITE);
+		container = new TiledSprite(Texture.WHITE);
 	} else {
 		container = new TiledContainer();
 	}

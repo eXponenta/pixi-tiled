@@ -1,6 +1,6 @@
 import { ITiledLayer, ITiledImageLayer, ITiledObjectLayer, ITiledSprite, ITiledObject } from './ITiledMap';
 import { TiledContainer } from './TiledContainer';
-import { LayerBuilder } from './LayerBuilder';
+import { LayerBuilder, ILayerBuilder } from './LayerBuilder';
 import { TilesetManager } from './TilesetManagers';
 import { _prepareProperties, Objectype, TiledObjectType } from './Utils';
 
@@ -10,9 +10,8 @@ import * as CB from './ContainerBuilder';
 
 import { TiledSprite } from './TiledSprite';
 
-type TGeneratorType = (obj: ITiledObject, ts: TilesetManager) => TiledContainer | undefined;
 export const ObjectLayerBuilder = {
-	__gen: <Record<TiledObjectType, TGeneratorType | undefined>>{
+	__gen: <Record<TiledObjectType, (...args: any[])=> TiledContainer | TiledContainer>>{
 		[TiledObjectType.IMAGE](meta: ITiledObject, tileset: TilesetManager) {
 			const smeta = meta as ITiledSprite;
 			const frame = smeta.image ? tileset.getTileByTile(smeta.image!) : tileset.getTileByGid(smeta.gid);

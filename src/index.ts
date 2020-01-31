@@ -4,30 +4,29 @@ declare global {
 	}
 }
 
-const VERSION = "__VERSION__";
+const VERSION = '__VERSION__';
 
-import * as ContainerBuilder from "./ContainerBuilder";
-import * as SpriteBuilder from "./SpriteBuilder";
-import * as TextBuilder from "./TextBuilder";
-import { Parser, CreateStage } from "./TiledObjectParser";
-import { Config, ITiledProps } from "./Config";
-import { TiledContainer } from "./TiledContainer";
-import { InjectMixins } from "./pixi-utils";
+import * as ContainerBuilder from './ContainerBuilder';
+import * as SpriteBuilder from './SpriteBuilder';
+import * as TextBuilder from './TextBuilder';
 
-export const Builders: Array<(meta: any) => any> = [
-	ContainerBuilder.Build,
-	SpriteBuilder.Build,
-	TextBuilder.Build
-];
+import { Parser, CreateStage } from './TiledObjectParser';
+import { Config, ITiledProps, LayerBuildersMap } from './Config';
+import { TiledContainer } from './TiledContainer';
+import { InjectMixins } from './pixi-utils';
 
-export function Inject(
-	pixiPack = window.PIXI,
-	props: ITiledProps | undefined = undefined
-) {
-	// @ts-ignore
+// prevent circular
+Object.assign(LayerBuildersMap, {
+	tilelayer: undefined,
+	objectgroup: ObjectLayerBuilder,
+	imagelayer: ObjectLayerBuilder,
+	group: undefined,
+});
+
+export function Inject(pixiPack = window.PIXI, props: ITiledProps | undefined = undefined) {
 	if (!pixiPack) {
 		console.warn(
-			"Auto injection works only with globals scoped PIXI, not in modules\nuse 'Loader.registerPlugin(Parser)' otherwith"
+			"Auto injection works only with globals scoped PIXI, not in modules\nuse 'Loader.registerPlugin(Parser)' otherwith",
 		);
 		return;
 	}
@@ -43,9 +42,9 @@ export function Inject(
 	}
 }
 
-import * as Primitives from "./TiledPrimitives";
-import {MultiSpritesheet} from "./TiledMultiSheet";
-
+import * as Primitives from './TiledPrimitives';
+import { MultiSpritesheet } from './TiledMultiSheet';
+import { ObjectLayerBuilder } from './ObjectsLayerBuilder';
 export { Primitives };
 export { Parser };
 export { CreateStage };

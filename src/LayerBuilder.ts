@@ -1,8 +1,13 @@
 import { ITiledLayer } from './ITiledMap';
 import { _prepareProperties } from './Utils';
 import { Config } from './Config';
-import { TiledContainer, ContainerBuilder } from '.';
+import { TiledContainer} from './TiledContainer';
 import { TilesetManager } from './TilesetManagers';
+
+import  * as ContainerBuilder  from "./ContainerBuilder";
+export interface ILayerBuilder {
+	Build(meta: ITiledLayer, tileset: TilesetManager, ...args: any[]): TiledContainer | undefined;
+};
 
 export const LayerBuilder = {
 	Build(layer: ITiledLayer, tileset: TilesetManager, zOrder = 0): TiledContainer | undefined {

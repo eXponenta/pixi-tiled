@@ -1,5 +1,7 @@
 import typescript from 'rollup-plugin-typescript2';
 import replace from "@rollup/plugin-replace";
+import sourcemaps from "rollup-plugin-sourcemaps";
+import { terser } from "rollup-plugin-terser";
 import pkg from './package.json';
 import path from 'path';
 
@@ -14,10 +16,14 @@ export default [
 				useTsconfigDeclarationDir: true,
 				tsconfig: 'tsconfig.json',
 				tsconfigOverride: override,
+				objectHashIgnoreUnknownHack: true,
+				clean: true
 			}),
+			sourcemaps(),
 			replace( {
 				__VERSION__: pkg.version
-			})
+			}),
+			terser()
 		],
 		external: ['pixi.js'],
 		
@@ -25,11 +31,13 @@ export default [
 			{
 				file: pkg.main,
 				format: 'cjs',
+				sourcemap: true,
 				banner
 			},
 			{
 				file: pkg.module,
 				format: 'esm',
+				sourcemap: true,
 				banner
 			},
 			{
@@ -39,6 +47,7 @@ export default [
 				globals: {
 					'pixi.js': 'PIXI',
 				},
+				sourcemap: true,
 				banner,
 				footer: `\n// Inject to PIXI namespace \n PIXI["${pkg['iife:name']}"] = ${pkg['iife:name']};\n`
 			},

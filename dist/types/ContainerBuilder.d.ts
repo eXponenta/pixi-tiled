@@ -1,5 +1,5 @@
 import { TiledContainer } from "./TiledContainer";
-import { DisplayObject } from "pixi.js";
 import { ITiledObject, ITiledLayer } from "./ITiledMap";
+import { TiledSprite } from "./TiledSprite";
 export declare function ApplyMeta(meta: ITiledObject | ITiledLayer, target: TiledContainer): void;
-export declare function Build(meta: ITiledObject): DisplayObject;
+export declare function Build(meta: ITiledObject): TiledContainer | TiledSprite;
