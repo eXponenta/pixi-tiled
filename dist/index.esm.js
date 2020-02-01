@@ -1,5 +1,5 @@
 /*
-	PIXI v5 Tiled support lib, version 1.1.13
+	PIXI v5 Tiled support lib, version 1.1.14
 	Author: eXponenta <rondo.devil@gmail.com> 
 */
 import { Container, Point, Rectangle, Polygon, Ellipse, AnimatedSprite, Sprite, Graphics, Texture, Text, resources, utils, BaseTexture, Matrix } from 'pixi.js';
@@ -11,7 +11,6 @@ class TiledContainer extends Container {
         this.layerWidth = 0;
     }
 }
-//# sourceMappingURL=TiledContainer.js.map
 
 const Config = {
     defSpriteAnchor: new Point(0, 1),
@@ -22,7 +21,6 @@ const Config = {
     roundPixels: true
 };
 const LayerBuildersMap = {};
-//# sourceMappingURL=Config.js.map
 
 function HexStringToHexInt(value) {
     if (!value)
@@ -120,7 +118,6 @@ function _prepareProperties(layer) {
     }
     layer.parsedProps = props;
 }
-//# sourceMappingURL=Utils.js.map
 
 class TiledRect extends Rectangle {
     constructor() {
@@ -258,7 +255,6 @@ function BuildPrimitive(meta) {
     prim.name = meta.name;
     return prim;
 }
-//# sourceMappingURL=TiledPrimitives.js.map
 
 var TiledPrimitives = /*#__PURE__*/Object.freeze({
 	__proto__: null,
@@ -301,7 +297,6 @@ class TileAnimator {
         this._childs.delete(s);
     }
 }
-//# sourceMappingURL=TiledAnimator.js.map
 
 class TiledSprite extends Sprite {
     constructor(tile, createAnimator = false) {
@@ -324,7 +319,6 @@ class TiledSprite extends Sprite {
         return this._animator;
     }
 }
-//# sourceMappingURL=TiledSprite.js.map
 
 function ApplyMeta(meta, target) {
     target.name = meta.name;
@@ -380,7 +374,6 @@ function Build(meta) {
     ApplyMeta(meta, container);
     return container;
 }
-//# sourceMappingURL=ContainerBuilder.js.map
 
 var ContainerBuilder = /*#__PURE__*/Object.freeze({
 	__proto__: null,
@@ -493,7 +486,6 @@ function Build$2(meta) {
     container.properties = props;
     return container;
 }
-//# sourceMappingURL=TextBuilder.js.map
 
 var TextBuilder = /*#__PURE__*/Object.freeze({
 	__proto__: null,
@@ -536,7 +528,6 @@ class MultiSpritesheet {
         return map;
     }
 }
-//# sourceMappingURL=TiledMultiSheet.js.map
 
 class FixedImageResource extends resources.ImageResource {
     load() {
@@ -657,11 +648,9 @@ class TilesetManager extends utils.EventEmitter {
         return this._loadQueue <= 0;
     }
 }
-//# sourceMappingURL=TilesetManagers.js.map
 
 class TiledMapContainer extends TiledContainer {
 }
-//# sourceMappingURL=TiledMapContainer.js.map
 
 let showHello = true;
 function CreateStage(sheet, _data, baseUrl = '') {
@@ -729,7 +718,6 @@ const Parser = {
         console.log('[TILED] middleware registered!');
     },
 };
-//# sourceMappingURL=TiledObjectParser.js.map
 
 function container (pack) {
     if (!pack.Container)
@@ -780,7 +768,6 @@ function container (pack) {
         return this.addChild(...child);
     };
 }
-//# sourceMappingURL=ContainerExt.js.map
 
 function display (pack) {
     if (!pack.DisplayObject)
@@ -797,7 +784,6 @@ function display (pack) {
         this.updateTransform();
     };
 }
-//# sourceMappingURL=DisplayExt.js.map
 
 function emitter (pack) {
     if (!pack.utils)
@@ -808,14 +794,12 @@ function emitter (pack) {
         });
     };
 }
-//# sourceMappingURL=EventEmitterExt.js.map
 
 function InjectMixins(pixiPackage) {
     container(pixiPackage);
     display(pixiPackage);
     emitter(pixiPackage);
 }
-//# sourceMappingURL=index.js.map
 
 const LayerBuilder = {
     Build(layer, tileset, zOrder = 0) {
@@ -840,7 +824,6 @@ const LayerBuilder = {
         return layerObject;
     },
 };
-//# sourceMappingURL=LayerBuilder.js.map
 
 const ObjectLayerBuilder = {
     __gen: {
@@ -959,9 +942,8 @@ const TiledLayerBuilder = {
         return layer.data;
     },
 };
-//# sourceMappingURL=TiledLayerBuilder.js.map
 
-const VERSION = '1.1.13';
+const VERSION = '1.1.14';
 Object.assign(LayerBuildersMap, {
     tilelayer: TiledLayerBuilder,
     objectgroup: ObjectLayerBuilder,

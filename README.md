@@ -2,7 +2,11 @@
 
 Tiled importer for Objects, Layouts, Texts and Shapes.
 
-__NOT SUPPORT TILEMAPS yet!__
+# TILEMAPS #
+
+Basic Support since 1.1.14.
+for faster realisation use pixi-tilemap, it wiil added as external renderer soon.
+
 
 # How to use #
 `npm install pixiv5-tiled`
@@ -73,3 +77,4 @@ Go to demo folder: [./demo](./demo)
 
 * By constructor: [./constructor.html](https://exponenta.github.io/pixi-tiled/demo/constructor.html)
 
+* Tilemap: [./tilemap.html](https://exponenta.github.io/pixi-tiled/demo/tilemap.html)
