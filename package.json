@@ -1,7 +1,7 @@
 {
   "name": "pixiv5-tiled",
   "iife:name": "TiledOG",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "type": "module",
   "description": "pixi-tiled",
   "main": "./dist/index.cjs.js",
