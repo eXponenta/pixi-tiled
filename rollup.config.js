@@ -22,8 +22,7 @@ export default [
 			sourcemaps(),
 			replace( {
 				__VERSION__: pkg.version
-			}),
-			terser()
+			})
 		],
 		external: ['pixi.js'],
 		
@@ -47,6 +46,9 @@ export default [
 				globals: {
 					'pixi.js': 'PIXI',
 				},
+				plugins :[
+					terser()
+				],
 				sourcemap: true,
 				banner,
 				footer: `\n// Inject to PIXI namespace \n PIXI["${pkg['iife:name']}"] = ${pkg['iife:name']};\n`

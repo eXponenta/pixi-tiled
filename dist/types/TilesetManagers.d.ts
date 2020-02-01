@@ -12,6 +12,8 @@ export declare class TilesetManager extends utils.EventEmitter {
     readonly spritesheet: MultiSpritesheet;
     getTileByGid(gid: number, tryLoad?: boolean): ITiledTile | undefined;
     getTileByTile(tile: ITiledTile | null, tryLoad?: boolean, skipAnim?: boolean): ITiledTile | undefined;
+    getTileSetByGid(gid: number): ITiledTileset | undefined;
+    _cropTile(set: ITiledTileset, tile: ITiledTile, texture: Texture): Texture;
     _tryLoadTexture(url: string, tile: ITiledTile): Texture;
     readonly loaded: boolean;
 }

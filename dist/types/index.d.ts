@@ -10,7 +10,7 @@ import * as TextBuilder from './TextBuilder';
 import { Parser, CreateStage } from './TiledObjectParser';
 import { Config, ITiledProps } from './Config';
 import { TiledContainer } from './TiledContainer';
-export declare function Inject(pixiPack?: any, props?: ITiledProps | undefined): void;
+export declare function Inject(pixiPack?: any, props?: Partial<ITiledProps> | undefined): void;
 import * as Primitives from './TiledPrimitives';
 import { MultiSpritesheet } from './TiledMultiSheet';
 export { Primitives };

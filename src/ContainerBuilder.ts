@@ -8,7 +8,7 @@ import {
 } from "pixi.js";
 
 import * as Primitives from "./TiledPrimitives";
-import { ITiledObject, ITiledLayer } from "./ITiledMap";
+import { ITiledObject, ITiledLayer, ITiledTile } from "./ITiledMap";
 import { TiledSprite } from "./TiledSprite";
 
 export function ApplyMeta(meta: ITiledObject | ITiledLayer, target: TiledContainer) {
@@ -62,7 +62,7 @@ export function Build(meta: ITiledObject): TiledContainer | TiledSprite {
 	let container = undefined; // new TiledOG.TiledContainer();
 
 	if (types.indexOf("mask") > -1) {
-		container = new TiledSprite(Texture.WHITE);
+		container = new TiledSprite( { texture: Texture.WHITE, id: -1} as ITiledTile);
 	} else {
 		container = new TiledContainer();
 	}

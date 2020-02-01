@@ -57,7 +57,7 @@ export function CreateStage(
 				continue;
 			}
 
-			const pixiLayer = builder.Build(layer, stage.tileSet, zOrder);
+			const pixiLayer = builder.Build(layer, stage.tileSet, zOrder, stage);
 
 			if (!pixiLayer) {
 				continue;

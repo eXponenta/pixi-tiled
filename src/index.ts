@@ -17,13 +17,13 @@ import { InjectMixins } from './pixi-utils';
 
 // prevent circular
 Object.assign(LayerBuildersMap, {
-	tilelayer: undefined,
+	tilelayer: TiledLayerBuilder,
 	objectgroup: ObjectLayerBuilder,
 	imagelayer: ObjectLayerBuilder,
 	group: undefined,
 });
 
-export function Inject(pixiPack = window.PIXI, props: ITiledProps | undefined = undefined) {
+export function Inject(pixiPack = window.PIXI, props: Partial<ITiledProps> | undefined = undefined) {
 	if (!pixiPack) {
 		console.warn(
 			"Auto injection works only with globals scoped PIXI, not in modules\nuse 'Loader.registerPlugin(Parser)' otherwith",
@@ -45,6 +45,7 @@ export function Inject(pixiPack = window.PIXI, props: ITiledProps | undefined = 
 import * as Primitives from './TiledPrimitives';
 import { MultiSpritesheet } from './TiledMultiSheet';
 import { ObjectLayerBuilder } from './ObjectsLayerBuilder';
+import { TiledLayerBuilder } from './TiledLayerBuilder';
 export { Primitives };
 export { Parser };
 export { CreateStage };

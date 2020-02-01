@@ -38,6 +38,7 @@ export interface ITiledTile {
 	texture: Texture;
 	tilesetId?: number;
 	lazyLoad?: boolean;
+	fromSheet?: boolean;
 }
 
 export interface ITiledTileset {
@@ -51,6 +52,7 @@ export interface ITiledTileset {
 	imagewidth: number;
 	margin?: number;
 	spacing?: number;
+	columns?: number;
 	tilecount?: number;
 	tileheight?: number;
 	tilewidth?: number;

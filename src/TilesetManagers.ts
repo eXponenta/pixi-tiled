@@ -1,8 +1,8 @@
 import { ITiledTileset, ITiledTile } from './ITiledMap';
 import { MultiSpritesheet } from './TiledMultiSheet';
-import { resolveImageUrl } from './Utils';
+import { resolveTile } from './Utils';
 
-import { Spritesheet, Texture, utils, ITextureDictionary, resources, BaseTexture } from 'pixi.js';
+import { Spritesheet, Texture, utils, ITextureDictionary, resources, BaseTexture, Rectangle } from 'pixi.js';
 
 class FixedImageResource extends resources.ImageResource {
 	load(): Promise<void> {
@@ -55,20 +55,32 @@ export class TilesetManager extends utils.EventEmitter {
 	}
 
 	getTileByGid(gid: number, tryLoad = this.loadUnknowImages): ITiledTile | undefined {
-		const tile = resolveImageUrl(this._tileSets, this.baseUrl, gid);
+		const tile = resolveTile(this._tileSets, gid);
 		return this.getTileByTile(tile, tryLoad);
 	}
 
 	getTileByTile(tile: ITiledTile | null, tryLoad = this.loadUnknowImages, skipAnim = false) {
-		if (!tile || !tile.image) {
+		if (!tile) {
 			return undefined;
 		}
+		const set = this._tileSets[tile.tilesetId!];
+
+		if(!tile.image && set.image) {
+			tile.fromSheet = true;
+			tile.image = set.image;
+		}
+
+		if(!tile.image) {
+			return undefined;
+		};
 
 		if (tile.animation && !skipAnim) {
-			const ts = this._tileSets[tile.tilesetId!];
 
 			tile.animation.forEach(e => {
-				e.texture = this.getTileByTile(ts.tiles![e.tileid], tryLoad, true)!.texture;
+				const atile = set.tiles![e.tileid];
+
+				atile.tilesetId = tile.tilesetId;
+				e.texture = this.getTileByTile(atile, tryLoad, true)!.texture;
 				e.time = e.duration;
 			});
 		}
@@ -87,9 +99,43 @@ export class TilesetManager extends utils.EventEmitter {
 			this._sheet.addTexture(texture, tile.image);
 		}
 
+		if(texture && tile.fromSheet) {
+			texture = this._cropTile(set, tile, texture);
+		}
+
 		tile.texture = texture;
 
 		return tile;
+	}
+
+	getTileSetByGid(gid: number): ITiledTileset | undefined {
+		const frame = resolveTile(this._tileSets, gid);
+		
+		if(!frame) {
+			return undefined;
+		}
+
+		return this._tileSets[frame!.tilesetId];
+	}
+
+	_cropTile(set: ITiledTileset, tile: ITiledTile, texture: Texture) {
+		
+		const colls = set.columns!;
+		const rows = set.tilecount! / colls;
+		const margin = set.margin! || 0;
+		const space = set.spacing! || 0;
+		const xId = tile.id % colls;
+		const yId = tile.id / colls | 0;
+
+		texture = new Texture(texture.baseTexture, new Rectangle(
+			margin + xId * (set.tilewidth! + space),
+			margin + yId * (set.tileheight! + space),
+			set.tileheight, set.tilewidth
+		));
+
+		this._sheet.addTexture(texture, `${tile.image}_${tile.tilesetId}:${tile.id}`);
+
+		return texture;
 	}
 
 	_tryLoadTexture(url: string, tile: ITiledTile) {
@@ -115,7 +161,6 @@ export class TilesetManager extends utils.EventEmitter {
 				this._loadQueue--;
 				if (this._loadQueue === 0) {
 					this.emit('loaded');
-					console.log("loaded");
 				}
 			});
 
