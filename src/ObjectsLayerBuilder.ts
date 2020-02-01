@@ -11,27 +11,23 @@ import * as CB from './ContainerBuilder';
 import { TiledSprite } from './TiledSprite';
 
 export const ObjectLayerBuilder = {
-	__gen: <Record<TiledObjectType, (...args: any[])=> TiledContainer | TiledContainer>>{
+	__gen: <Record<TiledObjectType, (...args: any[]) => TiledContainer | TiledContainer>>{
 		[TiledObjectType.IMAGE](meta: ITiledObject, tileset: TilesetManager) {
 			const smeta = meta as ITiledSprite;
 			const frame = smeta.image ? tileset.getTileByTile(smeta.image!) : tileset.getTileByGid(smeta.gid);
 
 			smeta.image = frame;
+
 			const sprite = SB.Build(smeta) as TiledSprite;
 
-			if (frame && frame.texture) {
-				sprite.texture = frame.texture;
-				sprite.tileFrame = frame;
-
-				if (smeta.fromImageLayer) {
-					frame.texture.baseTexture.once('update', () => {
-						sprite.scale.set(1);
-					});
-				}
+			if (smeta.fromImageLayer && frame!.lazyLoad) {
+				frame!.texture.once('loaded', () => {
+					sprite.scale.set(1);
+				});
 			}
 
-			if(smeta.fromImageLayer) {
-				sprite.anchor.set(0,0);
+			if (smeta.fromImageLayer) {
+				sprite.anchor.set(0);
 			}
 
 			return (sprite as any) as TiledContainer;

@@ -1,12 +1,13 @@
 import { Config } from "./Config";
-import { Sprite, Texture, AnimatedSprite } from "pixi.js";
+import { Sprite, Texture, AnimatedSprite, SCALE_MODES } from "pixi.js";
 import * as ContainerBuilder from "./ContainerBuilder";
 import * as Primitives from "./TiledPrimitives";
 import { ITiledSprite, ITiledObjectLayer } from "./ITiledMap";
+import { TiledSprite } from "./TiledSprite";
 
 export function Build(meta: ITiledSprite): Sprite {
 	// TODO make load from texture atlass
-	let sprite;
+	let sprite: Sprite | AnimatedSprite;
 	
 	if(meta.image!.animation) {
 		sprite = new AnimatedSprite(meta.image!.animation, !!meta.parsedProps.autoUpdate || true);
@@ -18,6 +19,8 @@ export function Build(meta: ITiledSprite): Sprite {
 		sprite = new Sprite( meta.image!.texture || Texture.EMPTY);
 	}
 
+	(sprite as TiledSprite).tileFrame = meta.image;
+
 	//TODO Set anchor and offsets to center (.5, .5)
 	if (!meta.fromImageLayer) {
 		sprite.anchor = Config.defSpriteAnchor!;
@@ -25,7 +28,7 @@ export function Build(meta: ITiledSprite): Sprite {
 
 	//debugger
 	ContainerBuilder.ApplyMeta(meta, sprite as any);
-
+	
 	const obj = meta.image!.objectgroup as ITiledObjectLayer;
 
 	if (obj) {

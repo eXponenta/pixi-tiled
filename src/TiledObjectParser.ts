@@ -1,10 +1,11 @@
-import { Spritesheet, LoaderResource } from 'pixi.js';
+import { Spritesheet, LoaderResource, ITextureDictionary, Loader } from 'pixi.js';
 import { TiledContainer } from './TiledContainer';
 import { Config, LayerBuildersMap } from './Config';
 
-import { MultiSpritesheet} from './TiledMultiSheet';
-import {  ITiledMap } from './ITiledMap';
+import { MultiSpritesheet } from './TiledMultiSheet';
+import { ITiledMap } from './ITiledMap';
 import { TilesetManager } from './TilesetManagers';
+import { TiledMapContainer } from './TiledMapContainer';
 
 //inject new field in resources
 declare module 'pixi.js' {
@@ -13,23 +14,16 @@ declare module 'pixi.js' {
 	}
 }
 
+type tValidSheet = Spritesheet | MultiSpritesheet | ITextureDictionary;
 let showHello: boolean = true;
 
 export function CreateStage(
-	res: LoaderResource | Spritesheet | MultiSpritesheet,
-	loader: any,
-): TiledContainer | undefined {
-	let _data: ITiledMap;
-
-	if (res instanceof LoaderResource) {
-		_data = res.data;
-	} else {
-		_data = loader;
-	}
-
+	sheet: tValidSheet | undefined,
+	_data: ITiledMap,
+	baseUrl: string = '',
+): TiledMapContainer | undefined {
 	//validate
 	if (!_data || _data.type != 'map') {
-		//next();
 		return undefined;
 	}
 
@@ -39,26 +33,16 @@ export function CreateStage(
 	}
 
 	const useDisplay: boolean = !!Config.usePixiDisplay && (PIXI as any).display !== undefined;
-	const sheet: MultiSpritesheet | Spritesheet | undefined = res.textures ? (res as any) : undefined;
-	const stage = new TiledContainer();
-	const cropName = new RegExp(/^.*[\\\/]/);
+	const stage = new TiledMapContainer();
 
 	stage.layerHeight = _data.height;
 	stage.layerWidth = _data.width;
 	stage.source = _data;
 
-	let baseUrl = '';
-
-	if (res instanceof LoaderResource) {
-		stage.name = res.url.replace(cropName, '').split('.')[0];
-		baseUrl = res.url.replace(loader.baseUrl, '');
-		baseUrl = baseUrl.match(cropName)![0];
-	}
+	stage.tileSet = new TilesetManager(_data.tilesets, sheet);
+	stage.tileSet.baseUrl = baseUrl;
 
 	if (_data.layers) {
-		const setManager = new TilesetManager(_data.tilesets, sheet);
-		setManager.baseUrl = baseUrl;
-
 		let zOrder = 0; //_data.layers.length;
 
 		if (useDisplay) {
@@ -73,7 +57,7 @@ export function CreateStage(
 				continue;
 			}
 
-			const pixiLayer = builder.Build(layer, setManager, zOrder);
+			const pixiLayer = builder.Build(layer, stage.tileSet, zOrder);
 
 			if (!pixiLayer) {
 				continue;
@@ -93,10 +77,28 @@ export function CreateStage(
 
 export const Parser = {
 	Parse(res: LoaderResource, next: Function) {
-		//@ts-ignore
-		var stage = CreateStage(res, this as any);
+		const data = res.data;
+		const cropName = new RegExp(/^.*[\\\/]/);
+
+		let baseUrl = res.url.replace((this as any).baseUrl, '');
+		baseUrl = baseUrl.match(cropName)![0];
+
+		const stage = CreateStage(res.textures!, data, baseUrl);
+
+		if (!stage) {
+			next();
+			return;
+		}
+
+		stage.name = res.url.replace(cropName, '').split('.')[0];
 		res.stage = stage;
-		next();
+
+		if (stage.tileSet!.loaded) {
+			next();
+			return;
+		}
+
+		stage.tileSet!.once('loaded', () => next());
 	},
 
 	use(res: LoaderResource, next: Function) {

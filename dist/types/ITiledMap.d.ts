@@ -27,6 +27,7 @@ export interface ITiledTile {
     parsedProps: IParsedProps;
     texture: Texture;
     tilesetId?: number;
+    lazyLoad?: boolean;
 }
 export interface ITiledTileset {
     type: "tileset";

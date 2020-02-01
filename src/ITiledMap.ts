@@ -37,6 +37,7 @@ export interface ITiledTile {
 	// PIXI
 	texture: Texture;
 	tilesetId?: number;
+	lazyLoad?: boolean;
 }
 
 export interface ITiledTileset {
