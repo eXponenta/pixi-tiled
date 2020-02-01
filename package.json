@@ -10,7 +10,8 @@
   "typings": "./dist/types/index.d.ts",
   "source": "./src/index.ts",
   "scripts": {
-    "build": "del-cli ./dist && rollup -c "
+    "build": "del-cli ./dist && rollup -c ",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
