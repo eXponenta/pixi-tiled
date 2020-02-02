@@ -1,5 +1,5 @@
 /// <reference types="pixi.js" />
-import { ILayerBuilder } from "./LayerBuilder";
+import { ILayerBuilder } from "./layers/LayerBuilder";
 export interface ITiledProps {
     defSpriteAnchor: PIXI.Point;
     debugContainers: boolean;

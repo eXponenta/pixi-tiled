@@ -1,4 +1,4 @@
-import { ITiledTileset, ITiledTile } from './ITiledMap';
+import { ITiledTileset, ITiledTile } from '../ITiledMap';
 import { MultiSpritesheet } from './TiledMultiSheet';
 import { resolveTile } from './Utils';
 

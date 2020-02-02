@@ -1,11 +1,11 @@
 import { Spritesheet, LoaderResource, ITextureDictionary, Loader } from 'pixi.js';
-import { TiledContainer } from './TiledContainer';
-import { Config, LayerBuildersMap } from './Config';
+import { TiledContainer } from '../objects/TiledContainer';
+import { Config, LayerBuildersMap } from '../Config';
 
 import { MultiSpritesheet } from './TiledMultiSheet';
-import { ITiledMap } from './ITiledMap';
+import { ITiledMap } from '../ITiledMap';
 import { TilesetManager } from './TilesetManagers';
-import { TiledMapContainer } from './TiledMapContainer';
+import { TiledMapContainer } from '../objects/TiledMapContainer';
 
 //inject new field in resources
 declare module 'pixi.js' {

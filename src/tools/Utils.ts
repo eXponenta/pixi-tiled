@@ -1,4 +1,8 @@
-import { ITiledTileset, ITiledMap, IParsedProps, ITiledLayer, ITiledObject, ITiledSprite } from './ITiledMap';
+import { ITiledTileset, ITiledMap, IParsedProps, ITiledLayer, ITiledObject, ITiledSprite } from '../ITiledMap';
+import { Graphics, Sprite } from 'pixi.js';
+import { Config } from '../Config';
+import { BuildPrimitive } from './../objects/TiledPrimitives';
+import { TiledContainer } from './../objects/TiledContainer';
 
 export function HexStringToHexInt(value: string | number): number {
 	if (!value) return 0;
@@ -27,30 +31,6 @@ export function HexStringToAlpha(value: string | number): number {
 		console.warn('Alpha parse error:', e.message);
 		return 1;
 	}
-}
-
-export enum TiledObjectType {
-	DEFAULT,
-	POINT,
-	POLYGON,
-	POLYLINE,
-	ELLIPSE,
-	TEXT,
-	IMAGE,
-}
-
-// https://doc.mapeditor.org/en/stable/reference/json-map-format/
-
-export function Objectype(meta: any): TiledObjectType {
-	if (meta.properties && meta.properties.container) return TiledObjectType.DEFAULT;
-	if (meta.gid || meta.image) return TiledObjectType.IMAGE;
-	if (meta.text != undefined) return TiledObjectType.TEXT;
-	if (meta.point) return TiledObjectType.POINT;
-	if (meta.polygon) return TiledObjectType.POLYGON;
-	if (meta.polyline) return TiledObjectType.POLYLINE;
-	if (meta.ellipse) return TiledObjectType.ELLIPSE;
-
-	return TiledObjectType.DEFAULT;
 }
 
 export function resolveTile(tilesets: ITiledTileset[], gid: number) {
@@ -122,4 +102,49 @@ export function _prepareProperties(layer: ITiledMap | ITiledLayer | ITiledObject
 	}
 
 	layer.parsedProps = props;
+}
+
+export function ApplyMeta(meta: ITiledObject | ITiledLayer, target: TiledContainer) {
+	target.name = meta.name;
+	target.tiledId = meta.id;
+	target.width = meta.width || target.width;
+	target.height = meta.height || target.height;
+	target.rotation = (((meta as ITiledObject).rotation || 0) * Math.PI) / 180.0;
+
+	target.x = meta.x || 0;
+	target.y = meta.y || 0;
+
+	target.visible = meta.visible == undefined ? true : meta.visible;
+	target.types = meta.type ? meta.type.split(":") : [];
+
+	target.primitive = BuildPrimitive(meta as ITiledObject);
+
+	const props = meta.parsedProps;
+
+	if (props) {
+		if (!isNaN(props.opacity as number)) {
+			target.alpha = Number(props.opacity);
+		}
+
+		//@ts-ignore
+		Object.assign(target, props);
+
+		target.properties = props;
+	}
+
+	target.source = meta;
+
+	if (Config.debugContainers) {
+		setTimeout(() => {
+			const rect = new Graphics();
+
+			rect.lineStyle(2, 0xff0000, 0.7)
+				.drawRect(target.x, target.y, meta.width, meta.height)
+				.endFill();
+			if (target instanceof Sprite) {
+				rect.y -= target.height;
+			}
+			target.parent.addChild(rect);
+		}, 30);
+	}
 }

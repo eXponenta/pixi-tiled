@@ -26,20 +26,38 @@ const Config = {
 };
 const LayerBuildersMap = {};
 
-function HexStringToHexInt(value) {
-    if (!value)
-        return 0;
-    if (typeof value == 'number')
-        return value;
-    value = value.length > 7 ? value.substr(3, 6) : value.substr(1, 6);
-    try {
-        return parseInt(value, 16);
+class TileAnimator {
+    constructor(tile) {
+        this._childs = new Set();
+        if (!tile.animation) {
+            throw new Error("Tile has not animation!");
+        }
+        this._tile = tile;
+        this._animator = new PIXI$1.AnimatedSprite(tile.animation);
+        this._animator.onFrameChange = this.__onFrame.bind(this);
     }
-    catch (e) {
-        console.warn('Color parse error:', e.message);
-        return 0;
+    __onFrame() {
+        this._childs.forEach((e) => e.texture = this._animator.texture);
+    }
+    get anim() {
+        return this._animator;
+    }
+    add(s, strict = true) {
+        if (!s)
+            return;
+        if (this._childs.has(s))
+            return;
+        s.anim = this;
+        if (s.tileFrame !== this._tile && strict) {
+            throw (`Invalid sprite! One Animator per tile type! Pased ${s.tileFrame.id} should be ${this._tile.id}`);
+        }
+        this._childs.add(s);
+    }
+    remove(s) {
+        this._childs.delete(s);
     }
 }
+
 var TiledObjectType;
 (function (TiledObjectType) {
     TiledObjectType[TiledObjectType["DEFAULT"] = 0] = "DEFAULT";
@@ -66,60 +84,6 @@ function Objectype(meta) {
     if (meta.ellipse)
         return TiledObjectType.ELLIPSE;
     return TiledObjectType.DEFAULT;
-}
-function resolveTile(tilesets, gid) {
-    let tileSet = undefined;
-    let tilesetId = 0;
-    for (let i = 0; i < tilesets.length; i++) {
-        if (tilesets[i].firstgid <= gid) {
-            tileSet = tilesets[i];
-            tilesetId = i;
-        }
-    }
-    if (!tileSet) {
-        console.error('Image with gid:' + gid + ' not found!');
-        return null;
-    }
-    const realGid = gid - tileSet.firstgid;
-    let find = tileSet.tiles.filter(obj => obj.id == realGid)[0];
-    let img = Object.assign({}, find, { tilesetId });
-    if (!img) {
-        console.error('Load res MISSED gid:' + realGid);
-        return null;
-    }
-    return img;
-}
-function _prepareProperties(layer) {
-    let props = {};
-    if (layer.properties) {
-        if (layer.properties instanceof Array) {
-            for (var p of layer.properties) {
-                let val = p.value;
-                if (p.type == 'color') {
-                    val = HexStringToHexInt(val);
-                }
-                props[p.name] = val;
-            }
-        }
-        else {
-            props = layer.properties;
-        }
-    }
-    const spriteObject = layer;
-    if (spriteObject.gid > 0) {
-        const gid = spriteObject.gid;
-        const vFlip = !!(gid & 0x40000000);
-        const hFlip = !!(gid & 0x80000000);
-        const dFlip = !!(gid & 0x20000000);
-        props['vFlip'] = vFlip;
-        props['hFlip'] = hFlip;
-        props['dFlip'] = dFlip;
-        spriteObject.vFlip = vFlip;
-        spriteObject.hFlip = hFlip;
-        const realGid = gid & ~(0x40000000 | 0x80000000 | 0x20000000);
-        spriteObject.gid = realGid;
-    }
-    layer.parsedProps = props;
 }
 
 class TiledRect extends PIXI$1.Rectangle {
@@ -269,60 +233,74 @@ var TiledPrimitives = /*#__PURE__*/Object.freeze({
 	BuildPrimitive: BuildPrimitive
 });
 
-class TileAnimator {
-    constructor(tile) {
-        this._childs = new Set();
-        if (!tile.animation) {
-            throw new Error("Tile has not animation!");
-        }
-        this._tile = tile;
-        this._animator = new PIXI$1.AnimatedSprite(tile.animation);
-        this._animator.onFrameChange = this.__onFrame.bind(this);
+function HexStringToHexInt(value) {
+    if (!value)
+        return 0;
+    if (typeof value == 'number')
+        return value;
+    value = value.length > 7 ? value.substr(3, 6) : value.substr(1, 6);
+    try {
+        return parseInt(value, 16);
     }
-    __onFrame() {
-        this._childs.forEach((e) => e.texture = this._animator.texture);
-    }
-    get anim() {
-        return this._animator;
-    }
-    add(s, strict = true) {
-        if (!s)
-            return;
-        if (this._childs.has(s))
-            return;
-        s.anim = this;
-        if (s.tileFrame !== this._tile && strict) {
-            throw (`Invalid sprite! One Animator per tile type! Pased ${s.tileFrame.id} should be ${this._tile.id}`);
-        }
-        this._childs.add(s);
-    }
-    remove(s) {
-        this._childs.delete(s);
+    catch (e) {
+        console.warn('Color parse error:', e.message);
+        return 0;
     }
 }
-
-class TiledSprite extends PIXI$1.Sprite {
-    constructor(tile, createAnimator = false) {
-        super(tile.texture);
-        this.tileFrame = tile;
-        if (createAnimator && this.tileFrame.animation) {
-            this.anim = new TileAnimator(this.tileFrame);
+function resolveTile(tilesets, gid) {
+    let tileSet = undefined;
+    let tilesetId = 0;
+    for (let i = 0; i < tilesets.length; i++) {
+        if (tilesets[i].firstgid <= gid) {
+            tileSet = tilesets[i];
+            tilesetId = i;
         }
     }
-    set anim(anim) {
-        if (anim === this._animator)
-            return;
-        if (this._animator) {
-            this._animator.remove(this);
-        }
-        this._animator = anim;
-        anim && anim.add(this);
+    if (!tileSet) {
+        console.error('Image with gid:' + gid + ' not found!');
+        return null;
     }
-    get anim() {
-        return this._animator;
+    const realGid = gid - tileSet.firstgid;
+    let find = tileSet.tiles.filter(obj => obj.id == realGid)[0];
+    let img = Object.assign({}, find, { tilesetId });
+    if (!img) {
+        console.error('Load res MISSED gid:' + realGid);
+        return null;
     }
+    return img;
 }
-
+function _prepareProperties(layer) {
+    let props = {};
+    if (layer.properties) {
+        if (layer.properties instanceof Array) {
+            for (var p of layer.properties) {
+                let val = p.value;
+                if (p.type == 'color') {
+                    val = HexStringToHexInt(val);
+                }
+                props[p.name] = val;
+            }
+        }
+        else {
+            props = layer.properties;
+        }
+    }
+    const spriteObject = layer;
+    if (spriteObject.gid > 0) {
+        const gid = spriteObject.gid;
+        const vFlip = !!(gid & 0x40000000);
+        const hFlip = !!(gid & 0x80000000);
+        const dFlip = !!(gid & 0x20000000);
+        props['vFlip'] = vFlip;
+        props['hFlip'] = hFlip;
+        props['dFlip'] = dFlip;
+        spriteObject.vFlip = vFlip;
+        spriteObject.hFlip = hFlip;
+        const realGid = gid & ~(0x40000000 | 0x80000000 | 0x20000000);
+        spriteObject.gid = realGid;
+    }
+    layer.parsedProps = props;
+}
 function ApplyMeta(meta, target) {
     target.name = meta.name;
     target.tiledId = meta.id;
@@ -356,59 +334,95 @@ function ApplyMeta(meta, target) {
         }, 30);
     }
 }
+
+class TiledSprite extends PIXI$1.Sprite {
+    constructor(source, createAnimator = false, autoInit = true) {
+        super(source.image.texture);
+        this.primitives = [];
+        this.source = source;
+        this.tileFrame = source.image;
+        if (createAnimator && this.tileFrame.animation) {
+            this.anim = new TileAnimator(this.tileFrame);
+        }
+        if (autoInit) {
+            this.init();
+        }
+    }
+    init() {
+        ApplyMeta(this.source, this);
+        if (this.anim) {
+            const a = this.anim.anim;
+            this.properties.animPlaying && a.play();
+            a.loop = this.properties.animLoop !== undefined ? !!this.properties.animLoop : true;
+        }
+        if (this.source.gid) {
+            this.anchor.copyFrom((this.source.anchor || Config.defSpriteAnchor));
+        }
+        const obj = this.tileFrame.objectgroup;
+        if (obj) {
+            this.primitives = obj.objects.map(e => BuildPrimitive(e));
+        }
+        const hFlip = this.source.hFlip;
+        const vFlip = this.source.vFlip;
+        if (hFlip) {
+            this.scale.x *= -1;
+            this.anchor.x = 1;
+        }
+        if (vFlip) {
+            this.scale.y *= -1;
+            this.anchor.y = 0;
+        }
+    }
+    set anim(anim) {
+        if (anim === this._animator)
+            return;
+        if (this._animator) {
+            this._animator.remove(this);
+        }
+        this._animator = anim;
+        anim && anim.add(this);
+    }
+    get anim() {
+        return this._animator;
+    }
+    clone() {
+        const sprite = new TiledSprite(this.source, true);
+        sprite.init();
+        return sprite;
+    }
+}
+
 function Build(meta) {
     const types = meta.type ? meta.type.split(":") : [];
     let container = undefined;
     if (types.indexOf("mask") > -1) {
-        container = new TiledSprite({ texture: PIXI$1.Texture.WHITE, id: -1 });
+        const source = {
+            image: {
+                texture: PIXI$1.Texture.WHITE,
+                id: -1,
+            },
+            fromImageLayer: true
+        };
+        container = new TiledSprite(source);
     }
     else {
         container = new TiledContainer();
+        ApplyMeta(meta, container);
     }
     if (meta.gid) {
-        if (container instanceof PIXI$1.Sprite) {
-            container.anchor = Config.defSpriteAnchor;
-        }
-        else {
-            container.pivot = Config.defSpriteAnchor;
-            container.hitArea = new PIXI$1.Rectangle(0, 0, meta.width, meta.height);
-        }
+        container.pivot = Config.defSpriteAnchor;
+        container.hitArea = new PIXI$1.Rectangle(0, 0, meta.width, meta.height);
     }
-    ApplyMeta(meta, container);
     return container;
 }
 
 var ContainerBuilder = /*#__PURE__*/Object.freeze({
 	__proto__: null,
-	ApplyMeta: ApplyMeta,
 	Build: Build
 });
 
 function Build$1(meta) {
-    const sprite = new TiledSprite(meta.image, true);
-    if (sprite.anim) {
-        const a = sprite.anim.anim;
-        (meta.parsedProps.animPlaying) && a.play();
-        a.loop = meta.parsedProps.animLoop !== undefined ? !!meta.parsedProps.animLoop : true;
-    }
-    if (!meta.fromImageLayer) {
-        sprite.anchor = Config.defSpriteAnchor;
-    }
-    ApplyMeta(meta, sprite);
-    const obj = meta.image.objectgroup;
-    if (obj) {
-        sprite.primitive = BuildPrimitive(obj.objects[0]);
-    }
-    const hFlip = meta.hFlip;
-    const vFlip = meta.vFlip;
-    if (hFlip) {
-        sprite.scale.x *= -1;
-        sprite.anchor.x = 1;
-    }
-    if (vFlip) {
-        sprite.scale.y *= -1;
-        sprite.anchor.y = 0;
-    }
+    const sprite = new TiledSprite(meta, true);
     return sprite;
 }
 
@@ -771,6 +785,7 @@ function container (pack) {
         return this.addChild(...child);
     };
 }
+//# sourceMappingURL=ContainerExt.js.map
 
 function display (pack) {
     if (!pack.DisplayObject)
@@ -787,6 +802,7 @@ function display (pack) {
         this.updateTransform();
     };
 }
+//# sourceMappingURL=DisplayExt.js.map
 
 function emitter (pack) {
     if (!pack.utils)
@@ -797,12 +813,14 @@ function emitter (pack) {
         });
     };
 }
+//# sourceMappingURL=EventEmitterExt.js.map
 
 function InjectMixins(pixiPackage) {
     container(pixiPackage);
     display(pixiPackage);
     emitter(pixiPackage);
 }
+//# sourceMappingURL=index.js.map
 
 const LayerBuilder = {
     Build(layer, tileset, zOrder = 0) {
@@ -916,7 +934,12 @@ const TiledLayerBuilder = {
         const { tileheight, tilewidth } = tileMapSource;
         const genTile = (x, y, gid) => {
             const tile = set.getTileByGid(gid);
-            const s = new TiledSprite(tile);
+            const s = new TiledSprite({
+                image: tile,
+                fromImageLayer: false,
+                gid: gid,
+                anchor: { x: 0, y: 0 }
+            });
             s.x = x * tilewidth;
             s.y = y * tileheight;
             s.roundPixels = Config.roundPixels;

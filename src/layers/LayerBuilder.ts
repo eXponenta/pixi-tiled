@@ -1,10 +1,9 @@
-import { ITiledLayer } from './ITiledMap';
-import { _prepareProperties } from './Utils';
-import { Config } from './Config';
-import { TiledContainer} from './TiledContainer';
-import { TilesetManager } from './TilesetManagers';
+import { ITiledLayer } from '../ITiledMap';
+import { _prepareProperties, ApplyMeta } from '../tools/Utils';
+import { Config } from '../Config';
+import { TiledContainer} from './../objects/TiledContainer';
+import { TilesetManager } from '../tools/TilesetManagers';
 
-import  * as ContainerBuilder  from "./ContainerBuilder";
 export interface ILayerBuilder {
 	Build(meta: ITiledLayer, tileset: TilesetManager, ...args: any[]): TiledContainer | undefined;
 };
@@ -36,7 +35,7 @@ export const LayerBuilder = {
 		layerObject.position.set(layer.x, layer.y);
 		layerObject.alpha = layer.opacity || 1;
 
-		ContainerBuilder.ApplyMeta(layer, layerObject);
+		ApplyMeta(layer, layerObject);
 		return layerObject;
 	},
 };

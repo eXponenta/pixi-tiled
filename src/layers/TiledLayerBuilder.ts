@@ -1,11 +1,11 @@
-import { ITiledLayer, ITiledTileLayer, ITiledMap, ITiledTile } from './ITiledMap';
-import { TilesetManager } from './TilesetManagers';
+import { ITiledLayer, ITiledTileLayer, ITiledMap, ITiledTile, ITiledSprite } from '../ITiledMap';
+import { TilesetManager } from '../tools/TilesetManagers';
 import { LayerBuilder } from './LayerBuilder';
-import { TiledMapContainer } from './TiledMapContainer';
-import { TiledSprite } from './TiledSprite';
-import { Config } from './Config';
-import { TiledContainer } from './index';
-import { TileAnimator } from './TiledAnimator';
+import { TiledMapContainer } from '../objects/TiledMapContainer';
+import { TiledSprite } from '../objects/TiledSprite';
+import { Config } from '../Config';
+import { TiledContainer } from '../index';
+import { TileAnimator } from '../objects/TiledAnimator';
 
 export const TiledLayerBuilder = {
 	Build(layer: ITiledLayer, set: TilesetManager, zOrder: number = 0, tileMap: TiledMapContainer) {
@@ -24,7 +24,12 @@ export const TiledLayerBuilder = {
 		const genTile = (x: number, y: number, gid: number)=>{
 			const tile = set.getTileByGid(gid);
 
-			const s = new TiledSprite(tile!);
+			const s = new TiledSprite({
+				image: tile,
+				fromImageLayer: false,
+				gid: gid,
+				anchor: {x: 0, y: 0}
+			} as ITiledSprite);
 			
 			s.x = x * tilewidth;
 			s.y = y * tileheight;

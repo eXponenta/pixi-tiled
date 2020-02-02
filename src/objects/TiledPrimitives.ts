@@ -1,6 +1,6 @@
 import { Rectangle, Point, Polygon, Ellipse } from "pixi.js";
-import * as Utils from "./Utils";
-import { ITiledObject } from "./ITiledMap";
+import { ITiledObject } from "./../ITiledMap";
+import { TiledObjectType, Objectype } from "../tools/TiledObjectType";
 
 export interface ITiledPtimitive {
 	name: string;
@@ -142,13 +142,13 @@ export function BuildPrimitive( meta: ITiledObject ): ITiledPtimitive | undefine
 
 	let prim: ITiledPtimitive | undefined = undefined;
 
-	const type: Utils.TiledObjectType = Utils.Objectype(meta);
+	const type: TiledObjectType = Objectype(meta);
 
 	meta.x = meta.x || 0;
 	meta.y = meta.y || 0;
 
 	switch (type) {
-		case Utils.TiledObjectType.ELLIPSE: {
+		case TiledObjectType.ELLIPSE: {
 			prim = new TiledEllipse(
 				meta.x + 0.5 * meta.width,
 				meta.y + 0.5 * meta.height,
@@ -157,7 +157,7 @@ export function BuildPrimitive( meta: ITiledObject ): ITiledPtimitive | undefine
 			);
 			break;
 		}
-		case Utils.TiledObjectType.POLYGON: {
+		case TiledObjectType.POLYGON: {
 			const points = meta.polygon!;
 			const poses = points.map(p => {
 				return new Point(p.x + meta.x, p.y + meta.y);
@@ -166,7 +166,7 @@ export function BuildPrimitive( meta: ITiledObject ): ITiledPtimitive | undefine
 			prim = new TiledPolygon(poses);
 			break;
 		}
-		case Utils.TiledObjectType.POLYLINE: {
+		case TiledObjectType.POLYLINE: {
 			const points = meta.polygon!;
 			const poses = points.map(p => {
 				return new Point(p.x + meta.x, p.y + meta.y);

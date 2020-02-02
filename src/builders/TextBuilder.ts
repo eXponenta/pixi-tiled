@@ -1,9 +1,9 @@
-import { TiledContainer } from "./TiledContainer";
-import { Text, DisplayObject, TextStyle } from "pixi.js";
-import { Config } from "./Config";
-import * as ContainerBuilder from "./ContainerBuilder";
-import * as Utils from "./Utils";
-import { ITiledObject } from "./ITiledMap";
+import { TiledContainer } from "./../objects/TiledContainer";
+import { Text, TextStyle } from "pixi.js";
+import { Config } from "../Config";
+import * as Utils from "../tools/Utils";
+import { ITiledObject } from "../ITiledMap";
+import { ApplyMeta } from "../tools/Utils";
 
 export function Build(meta: ITiledObject): TiledContainer {
 	const container = new TiledContainer();
@@ -30,7 +30,7 @@ export function Build(meta: ITiledObject): TiledContainer {
 	meta.properties = [];
 	meta.parsedProps = {};
 
-	ContainerBuilder.ApplyMeta(meta, container);
+	ApplyMeta(meta, container);
 	container.pivot.set(0, 0);
 
 	switch (text.halign) {

@@ -98,6 +98,10 @@ export interface ITiledSprite extends ITiledObject {
     fromImageLayer?: boolean;
     vFlip: boolean;
     hFlip: boolean;
+    anchor?: {
+        x: number;
+        y: number;
+    };
 }
 export interface ITiledLayer extends ITiledBaseObject {
     type: ILayerType;

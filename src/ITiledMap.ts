@@ -102,9 +102,12 @@ export interface ITiledObject extends ITiledBaseObject {
 
 export interface ITiledSprite extends ITiledObject {
 	image?: ITiledTile;
+
+	// pixi
 	fromImageLayer?: boolean;
 	vFlip: boolean;
 	hFlip: boolean;
+	anchor?: {x: number, y: number};
 }
 
 export interface ITiledLayer extends ITiledBaseObject {

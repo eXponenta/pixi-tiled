@@ -1,5 +1,5 @@
 import { Sprite } from 'pixi.js';
-import { ITiledTile, ITiledSprite } from './ITiledMap';
+import { ITiledTile, ITiledSprite } from './../ITiledMap';
 import { TileAnimator } from './TiledAnimator';
 import { ITiledPtimitive } from './TiledPrimitives';
 export declare class TiledSprite extends Sprite {

@@ -6,13 +6,13 @@ declare global {
 
 const VERSION = '__VERSION__';
 
-import * as ContainerBuilder from './ContainerBuilder';
-import * as SpriteBuilder from './SpriteBuilder';
-import * as TextBuilder from './TextBuilder';
+import * as ContainerBuilder from './builders/ContainerBuilder';
+import * as SpriteBuilder from './builders/SpriteBuilder';
+import * as TextBuilder from './builders/TextBuilder';
 
-import { Parser, CreateStage } from './TiledObjectParser';
+import { Parser, CreateStage } from './tools/TiledObjectParser';
 import { Config, ITiledProps, LayerBuildersMap } from './Config';
-import { TiledContainer } from './TiledContainer';
+import { TiledContainer } from './objects/TiledContainer';
 import { InjectMixins } from './pixi-utils';
 
 // prevent circular
@@ -42,10 +42,10 @@ export function Inject(pixiPack = window.PIXI, props: Partial<ITiledProps> | und
 	}
 }
 
-import * as Primitives from './TiledPrimitives';
-import { MultiSpritesheet } from './TiledMultiSheet';
-import { ObjectLayerBuilder } from './ObjectsLayerBuilder';
-import { TiledLayerBuilder } from './TiledLayerBuilder';
+import * as Primitives from './objects/TiledPrimitives';
+import { MultiSpritesheet } from './tools/TiledMultiSheet';
+import { ObjectLayerBuilder } from './layers/ObjectsLayerBuilder';
+import { TiledLayerBuilder } from './layers/TiledLayerBuilder';
 export { Primitives };
 export { Parser };
 export { CreateStage };

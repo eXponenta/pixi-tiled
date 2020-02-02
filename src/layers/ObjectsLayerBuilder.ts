@@ -1,14 +1,15 @@
-import { ITiledLayer, ITiledImageLayer, ITiledObjectLayer, ITiledSprite, ITiledObject } from './ITiledMap';
-import { TiledContainer } from './TiledContainer';
-import { LayerBuilder, ILayerBuilder } from './LayerBuilder';
-import { TilesetManager } from './TilesetManagers';
-import { _prepareProperties, Objectype, TiledObjectType } from './Utils';
+import { ITiledLayer, ITiledImageLayer, ITiledObjectLayer, ITiledSprite, ITiledObject } from '../ITiledMap';
+import { TiledContainer } from '../objects/TiledContainer';
+import { LayerBuilder } from './LayerBuilder';
+import { TilesetManager } from '../tools/TilesetManagers';
+import { _prepareProperties } from '../tools/Utils';
 
-import * as SB from './SpriteBuilder';
-import * as TB from './TextBuilder';
-import * as CB from './ContainerBuilder';
+import * as SB from '../builders/SpriteBuilder';
+import * as TB from '../builders/TextBuilder';
+import * as CB from '../builders/ContainerBuilder';
 
-import { TiledSprite } from './TiledSprite';
+import { TiledSprite } from '../objects/TiledSprite';
+import { TiledObjectType, Objectype } from '../tools/TiledObjectType';
 
 export const ObjectLayerBuilder = {
 	__gen: <Record<TiledObjectType, (...args: any[]) => TiledContainer | TiledContainer>>{

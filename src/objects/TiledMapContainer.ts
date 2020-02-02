@@ -1,5 +1,5 @@
 import { TiledContainer } from "./TiledContainer";
-import { TilesetManager } from "./TilesetManagers";
+import { TilesetManager } from "../tools/TilesetManagers";
 
 export class TiledMapContainer extends TiledContainer {
 	public tileSet?: TilesetManager;

@@ -1,6 +1,6 @@
 import { TiledSprite } from "./TiledSprite";
 import { AnimatedSprite } from "pixi.js";
-import { ITiledTile } from "./ITiledMap";
+import { ITiledTile } from "./../ITiledMap";
 
 export class TileAnimator {
 	private _animator: AnimatedSprite;
