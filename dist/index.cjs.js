@@ -1,5 +1,5 @@
 /*
-	PIXI v5 Tiled support lib, version 1.1.15
+	PIXI v5 Tiled support lib, version 1.1.16
 	Author: eXponenta <rondo.devil@gmail.com> 
 */
 'use strict';
@@ -74,7 +74,6 @@ function resolveTile(tilesets, gid) {
         if (tilesets[i].firstgid <= gid) {
             tileSet = tilesets[i];
             tilesetId = i;
-            break;
         }
     }
     if (!tileSet) {
@@ -951,7 +950,7 @@ const TiledLayerBuilder = {
     },
 };
 
-const VERSION = '1.1.15';
+const VERSION = '1.1.16';
 Object.assign(LayerBuildersMap, {
     tilelayer: TiledLayerBuilder,
     objectgroup: ObjectLayerBuilder,
