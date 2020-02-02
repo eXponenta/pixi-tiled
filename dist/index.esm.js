@@ -1,5 +1,5 @@
 /*
-	PIXI v5 Tiled support lib, version 1.1.14
+	PIXI v5 Tiled support lib, version 1.1.15
 	Author: eXponenta <rondo.devil@gmail.com> 
 */
 import { Container, Point, Rectangle, Polygon, Ellipse, AnimatedSprite, Sprite, Graphics, Texture, Text, resources, utils, BaseTexture, Matrix } from 'pixi.js';
@@ -932,8 +932,12 @@ const TiledLayerBuilder = {
         };
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
-                const gid = x + y * width;
-                layerContatiner.addChild(genTile(x, y, data[gid]));
+                const index = x + y * width;
+                const gid = data[index];
+                if (!gid) {
+                    continue;
+                }
+                layerContatiner.addChild(genTile(x, y, data[index]));
             }
         }
         return layerContatiner;
@@ -943,7 +947,7 @@ const TiledLayerBuilder = {
     },
 };
 
-const VERSION = '1.1.14';
+const VERSION = '1.1.15';
 Object.assign(LayerBuildersMap, {
     tilelayer: TiledLayerBuilder,
     objectgroup: ObjectLayerBuilder,
