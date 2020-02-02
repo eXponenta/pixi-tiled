@@ -1,5 +1,5 @@
 /*
-	PIXI v5 Tiled support lib, version 1.1.16
+	PIXI v5 Tiled support lib, version 1.1.17
 	Author: eXponenta <rondo.devil@gmail.com> 
 */
 import { Container, Point, AnimatedSprite, Rectangle, Polygon, Ellipse, Graphics, Sprite, Texture, Text, resources, utils, BaseTexture, Matrix } from 'pixi.js';
@@ -781,7 +781,6 @@ function container (pack) {
         return this.addChild(...child);
     };
 }
-//# sourceMappingURL=ContainerExt.js.map
 
 function display (pack) {
     if (!pack.DisplayObject)
@@ -798,7 +797,6 @@ function display (pack) {
         this.updateTransform();
     };
 }
-//# sourceMappingURL=DisplayExt.js.map
 
 function emitter (pack) {
     if (!pack.utils)
@@ -809,14 +807,12 @@ function emitter (pack) {
         });
     };
 }
-//# sourceMappingURL=EventEmitterExt.js.map
 
 function InjectMixins(pixiPackage) {
     container(pixiPackage);
     display(pixiPackage);
     emitter(pixiPackage);
 }
-//# sourceMappingURL=index.js.map
 
 const LayerBuilder = {
     Build(layer, tileset, zOrder = 0) {
@@ -969,7 +965,7 @@ const TiledLayerBuilder = {
     },
 };
 
-const VERSION = '1.1.16';
+const VERSION = '1.1.17';
 Object.assign(LayerBuildersMap, {
     tilelayer: TiledLayerBuilder,
     objectgroup: ObjectLayerBuilder,
