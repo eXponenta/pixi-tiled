@@ -61,7 +61,6 @@ export function resolveTile(tilesets: ITiledTileset[], gid: number) {
 		if (tilesets[i].firstgid <= gid) {
 			tileSet = tilesets[i];
 			tilesetId = i;
-			break;
 		}
 	}
 
