@@ -49,8 +49,15 @@ export const TiledLayerBuilder = {
 
 		for (let y = 0; y < height; y++) {
 			for (let x = 0; x < width; x++) {
-				const gid = x + y * width;
-				layerContatiner.addChild(genTile(x,y,data[gid]));
+				const index = x + y * width;
+				const gid = data[index];
+
+				// skip gid 0,
+				if(!gid) {
+					continue;
+				}
+
+				layerContatiner.addChild(genTile(x,y,data[index]));
 			}
 		}
 
