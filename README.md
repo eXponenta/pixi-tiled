@@ -33,7 +33,7 @@ loader.add("map","path/to/your/map.json")
 ### Manual
 
 ```
-import {Inject, Build} from "pixiv5-tiled"
+import {Inject, CreateStage} from "pixiv5-tiled"
 import * as PIXI from "pixi.js"
 
 //Inject only Mixins and apply global configuration 
@@ -50,7 +50,7 @@ loader.add("map","path/to/your/map.json")
         const atlas = app.loader.resources["atlass"].spritesheet;
 
         //build manualy from map data and atlass
-        const stage = TiledOG.CreateStage(atlas, map);
+        const stage = CreateStage(atlas, map);
       });
 ```
 
