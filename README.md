@@ -5,7 +5,8 @@ Tiled importer for Objects, Layouts, Texts and Shapes.
 # TILEMAPS #
 
 Basic Support since 1.1.14.
-for faster realisation use pixi-tilemap, it wiil added as external renderer soon.
+
+For faster realisation use `pixi-tilemap`, it will added as external renderer soon.
 
 
 # How to use #
