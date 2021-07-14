@@ -74,7 +74,6 @@ export function CreateStage(
 export const Parser = {
 	Parse(res: LoaderResource, next: Function) {
 		const data = res.data;
-
 		//validate
 		if (!data || data.type != 'map') {
 			next();
@@ -125,7 +124,7 @@ export const Parser = {
 			loader.load(()=>{
 				Object.keys(loader.resources).forEach(resourcePath => {
 					let tilesetResource = loader.resources[resourcePath];
-					let resourceFileName =  resourcePath.replace(/^.*[\\\/]/, '');
+					let resourceFileName =  resourcePath.replace(cropName, '');
 					for (let  tilesetIndex = 0; tilesetIndex < data.tilesets.length; tilesetIndex++)
 					{
 						const tileset = data.tilesets[tilesetIndex];
