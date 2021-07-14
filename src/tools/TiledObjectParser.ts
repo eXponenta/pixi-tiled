@@ -97,7 +97,6 @@ export const Parser = {
 
 		const _tryCreateStage = function()
 		{
-			console.log("Try create");
 			const stage = CreateStage(res.textures!, data, baseUrl);
 
 			if (!stage) {
