@@ -1,4 +1,4 @@
-import { ITiledTileset, ITiledMap, IParsedProps, ITiledLayer, ITiledObject, ITiledSprite } from '../ITiledMap';
+import { ITiledTileset, ITiledMap, IParsedProps, ITiledLayer, ITiledObject, ITiledSprite, ITiledTile } from '../ITiledMap';
 import { Graphics, Sprite } from 'pixi.js';
 import { Config } from '../Config';
 import { BuildPrimitive } from './../objects/TiledPrimitives';
@@ -51,7 +51,15 @@ export function resolveTile(tilesets: ITiledTileset[], gid: number) {
 
 	const realGid = gid - tileSet.firstgid;
 
-	let find = tileSet.tiles!.filter(obj => obj.id == realGid)[0];
+	let find = null;
+	if (tileSet.tiles !== undefined)
+	{
+		find = tileSet.tiles!.filter(obj => obj.id == realGid)[0];
+	}
+	if (find === null)
+	{
+		find = {id: realGid} as ITiledTile; 
+	}
 	let img = Object.assign({}, find, { tilesetId });
 
 	if (!img) {
