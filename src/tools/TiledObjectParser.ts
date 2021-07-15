@@ -22,10 +22,6 @@ export function CreateStage(
 	_data: ITiledMap,
 	baseUrl: string = '',
 ): TiledMapContainer | undefined {
-	//validate
-	if (!_data || _data.type != 'map') {
-		return undefined;
-	}
 
 	if (showHello) {
 		console.log('[TILED] Importer!\neXponenta {rondo.devil[a]gmail.com}');
@@ -78,27 +74,73 @@ export function CreateStage(
 export const Parser = {
 	Parse(res: LoaderResource, next: Function) {
 		const data = res.data;
-		const cropName = new RegExp(/^.*[\\\/]/);
+		//validate
+		if (!data || data.type != 'map') {
+			next();
+			return;
+		}
 
+		const cropName = new RegExp(/^.*[\\\/]/);
 		let baseUrl = res.url.replace((this as any).baseUrl, '');
 		baseUrl = baseUrl.match(cropName)![0];
 
-		const stage = CreateStage(res.textures!, data, baseUrl);
-
-		if (!stage) {
-			next();
-			return;
+		const tilesetsToLoad = [];
+		for (let  tilesetIndex = 0; tilesetIndex < data.tilesets.length; tilesetIndex++)
+		{
+			const tileset = data.tilesets[tilesetIndex];
+			if (tileset.source !== undefined)
+			{
+				tilesetsToLoad.push(tileset);
+			}
 		}
 
-		stage.name = res.url.replace(cropName, '').split('.')[0];
-		res.stage = stage;
+		const _tryCreateStage = function()
+		{
+			const stage = CreateStage(res.textures!, data, baseUrl);
 
-		if (stage.tileSet!.loaded) {
-			next();
-			return;
+			if (!stage) {
+				next();
+				return;
+			}
+
+			stage.name = res.url.replace(cropName, '').split('.')[0];
+			res.stage = stage;
+
+			if (stage.tileSet!.loaded) {
+				next();
+				return;
+			}
+
+			stage.tileSet!.once('loaded', () => next());
 		}
 
-		stage.tileSet!.once('loaded', () => next());
+		if (tilesetsToLoad.length > 0)
+		{
+			const loader = new Loader();
+			for (let tilesetIndex = 0; tilesetIndex < tilesetsToLoad.length; tilesetIndex++)
+			{
+				loader.add(baseUrl + tilesetsToLoad[tilesetIndex].source);
+			}
+			loader.load(()=>{
+				Object.keys(loader.resources).forEach(resourcePath => {
+					let tilesetResource = loader.resources[resourcePath];
+					let resourceFileName =  resourcePath.replace(cropName, '');
+					for (let  tilesetIndex = 0; tilesetIndex < data.tilesets.length; tilesetIndex++)
+					{
+						const tileset = data.tilesets[tilesetIndex];
+						if (tileset.source === resourceFileName)
+						{
+							Object.assign(tileset, tilesetResource.data);
+						}
+					}
+				});
+				_tryCreateStage();
+			});
+		}
+		else
+		{
+			_tryCreateStage();
+		}
 	},
 
 	use(res: LoaderResource, next: Function) {

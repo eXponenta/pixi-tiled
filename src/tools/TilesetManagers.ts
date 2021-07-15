@@ -75,21 +75,25 @@ export class TilesetManager extends utils.EventEmitter {
 		};
 
 		if (tile.animation && !skipAnim) {
-
 			tile.animation.forEach(e => {
-				const atile = set.tiles![e.tileid];
-
+				const atile = set.tiles!.filter(obj => obj.id == e.tileid)[0];
 				atile.tilesetId = tile.tilesetId;
 				e.texture = this.getTileByTile(atile, tryLoad, true)!.texture;
 				e.time = e.duration;
 			});
 		}
 
-		const absUrl = this.baseUrl + tile.image!;
-
 		let texture = this.spritesheet.textures[tile.image];
 
 		tile.lazyLoad = false;
+
+		const absUrl = this._relativeToAbsolutePath(this.baseUrl, tile.image!);
+
+		//Texture not found by relative path
+		if (!texture) {
+			//Try to find by absolute path
+			texture = this.spritesheet.textures[absUrl];
+		}
 
 		if (!texture && tryLoad) {
 			texture = this._tryLoadTexture(absUrl, tile);
@@ -116,6 +120,28 @@ export class TilesetManager extends utils.EventEmitter {
 		}
 
 		return this._tileSets[frame!.tilesetId];
+	}
+
+	_relativeToAbsolutePath(base: String, relative: String) {
+		var stack = base.split("/"),
+				parts = relative.split("/");
+		stack.pop();
+		for (var i=0; i<parts.length; i++) {
+				if (parts[i] == ".")
+						continue;
+				if (parts[i] == "..")
+						stack.pop();
+				else
+						stack.push(parts[i]);
+		}
+
+		//Remove trailing dot
+		if (stack[0] == '.')
+		{
+			stack.shift();
+		}
+		
+		return stack.join("/");
 	}
 
 	_cropTile(set: ITiledTileset, tile: ITiledTile, texture: Texture) {
