@@ -51,15 +51,16 @@ export function resolveTile(tilesets: ITiledTileset[], gid: number) {
 
 	const realGid = gid - tileSet.firstgid;
 
-	let find = null;
+	let find = undefined;
 	if (tileSet.tiles !== undefined)
 	{
 		find = tileSet.tiles!.filter(obj => obj.id == realGid)[0];
 	}
-	if (find === null)
+	if (find === undefined)
 	{
 		find = {id: realGid} as ITiledTile; 
 	}
+
 	let img = Object.assign({}, find, { tilesetId });
 
 	if (!img) {
