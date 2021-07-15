@@ -32,7 +32,7 @@ export const TiledLayerBuilder = {
 			} as ITiledSprite);
 			
 			s.x = x * tilewidth;
-			s.y = y * tileheight;
+			s.y = y * tileheight - (tile!.imageheight === undefined ? 0 : tile!.imageheight - tileheight);
 			s.roundPixels = Config.roundPixels;
 
 			if(tile && tile.animation) {
