@@ -75,10 +75,8 @@ export class TilesetManager extends utils.EventEmitter {
 		};
 
 		if (tile.animation && !skipAnim) {
-
 			tile.animation.forEach(e => {
-				const atile = set.tiles![e.tileid];
-
+				const atile = set.tiles!.filter(obj => obj.id == e.tileid)[0];
 				atile.tilesetId = tile.tilesetId;
 				e.texture = this.getTileByTile(atile, tryLoad, true)!.texture;
 				e.time = e.duration;
