@@ -12,7 +12,7 @@ jobs:
 
         strategy:
             matrix:
-                node-version: [12.x]
+                node-version: [14.x]
 
         steps:
             - uses: actions/checkout@v2
@@ -47,11 +47,4 @@ jobs:
               run: cd tilemap && yarn
             - name: Build & type-checking
               run: cd tilemap && yarn build
-            - name: Lint
-              run: cd tilemap && yarn lint
-            - uses: GabrielBB/xvfb-action@v1.0
-              with:
-                name: Unit testing
-                run: cd tilemap && yarn unit-test
-
 

@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -28,11 +28,4 @@ jobs:
     - name: Install dependencies
       run: yarn
     - name: Build & type-checking
-      run: yarn build
-    - name: Lint
-      run: yarn lint
-    - uses: GabrielBB/xvfb-action@v1.0
-      with:
-        name: Unit testing
-        run: yarn unit-test
-      
+      run: yarn build      
