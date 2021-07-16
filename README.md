@@ -74,7 +74,7 @@ loader.add("map","path/to/your/map.json")
 Go to demo folder: [./examples](./demo)
 
 #### Live:
-* Middleware: [./midellware.html](https://exponenta.github.io/pixi-tiled/examples/middleware)
+* Middleware: [./middleware.html](https://exponenta.github.io/pixi-tiled/examples/middleware)
 
 * By constructor: [./constructor.html](https://exponenta.github.io/pixi-tiled/examples/constructor)
 
