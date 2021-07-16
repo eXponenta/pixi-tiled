@@ -1,0 +1,35 @@
+name: Latest PixiJS Node.js CI
+
+on:
+    push:
+        branches: [ master ]
+    pull_request:
+        branches: [ master ]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [14.x]
+
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                path: tiled
+            - name: Go into tiled directory
+              run: cd tiled && ls && cat package.json
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: Install npm
+              run: npm install -g npm@7
+            - name: List dir
+              run: ls
+            - name: Install dependencies
+              run: cd tiled && yarn
+            - name: Build & type-checking
+              run: cd tiled && yarn build
+
