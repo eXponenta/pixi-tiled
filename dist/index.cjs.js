@@ -261,7 +261,13 @@ function resolveTile(tilesets, gid) {
         return null;
     }
     const realGid = gid - tileSet.firstgid;
-    let find = tileSet.tiles.filter(obj => obj.id == realGid)[0];
+    let find = undefined;
+    if (tileSet.tiles !== undefined) {
+        find = tileSet.tiles.filter(obj => obj.id == realGid)[0];
+    }
+    if (find === undefined) {
+        find = { id: realGid };
+    }
     let img = Object.assign({}, find, { tilesetId });
     if (!img) {
         console.error('Load res MISSED gid:' + realGid);
@@ -600,15 +606,18 @@ class TilesetManager extends PIXI$1.utils.EventEmitter {
         }
         if (tile.animation && !skipAnim) {
             tile.animation.forEach(e => {
-                const atile = set.tiles[e.tileid];
+                const atile = set.tiles.filter(obj => obj.id == e.tileid)[0];
                 atile.tilesetId = tile.tilesetId;
                 e.texture = this.getTileByTile(atile, tryLoad, true).texture;
                 e.time = e.duration;
             });
         }
-        const absUrl = this.baseUrl + tile.image;
         let texture = this.spritesheet.textures[tile.image];
         tile.lazyLoad = false;
+        const absUrl = this._relativeToAbsolutePath(this.baseUrl, tile.image);
+        if (!texture) {
+            texture = this.spritesheet.textures[absUrl];
+        }
         if (!texture && tryLoad) {
             texture = this._tryLoadTexture(absUrl, tile);
             tile.lazyLoad = true;
@@ -626,6 +635,22 @@ class TilesetManager extends PIXI$1.utils.EventEmitter {
             return undefined;
         }
         return this._tileSets[frame.tilesetId];
+    }
+    _relativeToAbsolutePath(base, relative) {
+        var stack = base.split("/"), parts = relative.split("/");
+        stack.pop();
+        for (var i = 0; i < parts.length; i++) {
+            if (parts[i] == ".")
+                continue;
+            if (parts[i] == "..")
+                stack.pop();
+            else
+                stack.push(parts[i]);
+        }
+        if (stack[0] == '.') {
+            stack.shift();
+        }
+        return stack.join("/");
     }
     _cropTile(set, tile, texture) {
         const colls = set.columns;
@@ -671,9 +696,6 @@ class TiledMapContainer extends TiledContainer {
 
 let showHello = true;
 function CreateStage(sheet, _data, baseUrl = '') {
-    if (!_data || _data.type != 'map') {
-        return undefined;
-    }
     if (showHello) {
         console.log('[TILED] Importer!\neXponenta {rondo.devil[a]gmail.com}');
         showHello = false;
@@ -712,21 +734,56 @@ function CreateStage(sheet, _data, baseUrl = '') {
 const Parser = {
     Parse(res, next) {
         const data = res.data;
+        if (!data || data.type != 'map') {
+            next();
+            return;
+        }
         const cropName = new RegExp(/^.*[\\\/]/);
         let baseUrl = res.url.replace(this.baseUrl, '');
         baseUrl = baseUrl.match(cropName)[0];
-        const stage = CreateStage(res.textures, data, baseUrl);
-        if (!stage) {
-            next();
-            return;
+        const tilesetsToLoad = [];
+        for (let tilesetIndex = 0; tilesetIndex < data.tilesets.length; tilesetIndex++) {
+            const tileset = data.tilesets[tilesetIndex];
+            if (tileset.source !== undefined) {
+                tilesetsToLoad.push(tileset);
+            }
         }
-        stage.name = res.url.replace(cropName, '').split('.')[0];
-        res.stage = stage;
-        if (stage.tileSet.loaded) {
-            next();
-            return;
+        const _tryCreateStage = function () {
+            const stage = CreateStage(res.textures, data, baseUrl);
+            if (!stage) {
+                next();
+                return;
+            }
+            stage.name = res.url.replace(cropName, '').split('.')[0];
+            res.stage = stage;
+            if (stage.tileSet.loaded) {
+                next();
+                return;
+            }
+            stage.tileSet.once('loaded', () => next());
+        };
+        if (tilesetsToLoad.length > 0) {
+            const loader = new PIXI$1.Loader();
+            for (let tilesetIndex = 0; tilesetIndex < tilesetsToLoad.length; tilesetIndex++) {
+                loader.add(baseUrl + tilesetsToLoad[tilesetIndex].source);
+            }
+            loader.load(() => {
+                Object.keys(loader.resources).forEach(resourcePath => {
+                    let tilesetResource = loader.resources[resourcePath];
+                    let resourceFileName = resourcePath.replace(cropName, '');
+                    for (let tilesetIndex = 0; tilesetIndex < data.tilesets.length; tilesetIndex++) {
+                        const tileset = data.tilesets[tilesetIndex];
+                        if (tileset.source === resourceFileName) {
+                            Object.assign(tileset, tilesetResource.data);
+                        }
+                    }
+                });
+                _tryCreateStage();
+            });
         }
-        stage.tileSet.once('loaded', () => next());
+        else {
+            _tryCreateStage();
+        }
     },
     use(res, next) {
         Parser.Parse.call(this, res, next);
@@ -937,7 +994,7 @@ const TiledLayerBuilder = {
                 anchor: { x: 0, y: 0 }
             });
             s.x = x * tilewidth;
-            s.y = y * tileheight;
+            s.y = y * tileheight - (tile.imageheight === undefined ? 0 : tile.imageheight - tileheight);
             s.roundPixels = Config.roundPixels;
             if (tile && tile.animation) {
                 const animators = layerContatiner.animators || new Map();

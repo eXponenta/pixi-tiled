@@ -71,11 +71,13 @@ loader.add("map","path/to/your/map.json")
 
 
 ### Demo
-Go to demo folder: [./demo](./demo)
+Go to demo folder: [./examples](./demo)
 
 #### Live:
-* Midellware: [./midellware.html](https://exponenta.github.io/pixi-tiled/demo/midellware.html)
+* Middleware: [./midellware.html](https://exponenta.github.io/pixi-tiled/examples/middleware)
 
-* By constructor: [./constructor.html](https://exponenta.github.io/pixi-tiled/demo/constructor.html)
+* By constructor: [./constructor.html](https://exponenta.github.io/pixi-tiled/examples/constructor)
 
-* Tilemap: [./tilemap.html](https://exponenta.github.io/pixi-tiled/demo/tilemap.html)
+* Tilemap: [./tilemap.html](https://exponenta.github.io/pixi-tiled/examples/tilemap)
+
+* Tilemap + external tileset: [./tilemap_external.html](https://exponenta.github.io/pixi-tiled/examples/tilemap_external_tileset)

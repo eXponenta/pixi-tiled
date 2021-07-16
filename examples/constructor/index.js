@@ -10,8 +10,8 @@ document.body.appendChild(app.view);
 
 //load map with dependencies
 app.loader
-	.add('map', './maps/ui-map.json')
-	.add('atlas', './maps/ui-atlas.json')
+	.add('map', './../assets/ui-map.json')
+	.add('atlas', './../assets/ui-atlas.json')
 	.load(loaded);
 
 function loaded() {

@@ -9,7 +9,7 @@ var app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 //load map with dependencies
-app.loader.baseUrl = './maps/';
+app.loader.baseUrl = './../assets/';
 app.loader
 	.add('map', 'desert.json')
 	.add('texture', "tmw_desert_spacing.png")
