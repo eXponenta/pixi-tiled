@@ -1,7 +1,7 @@
 {
   "name": "pixiv5-tiled",
   "iife:name": "TiledOG",
-  "version": "1.1.17",
+  "version": "2.0.0",
   "type": "module",
   "description": "pixi-tiled",
   "namespace": "PIXI.tiled",
