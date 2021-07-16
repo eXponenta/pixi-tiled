@@ -1,4 +1,4 @@
-import { Sprite } from 'pixi.js';
+import { Sprite } from '@pixi/sprite';
 import { ITiledTile, ITiledSprite, ITiledObjectLayer } from './../ITiledMap';
 import { TileAnimator } from './TiledAnimator';
 import { Config } from './../Config';
@@ -10,6 +10,7 @@ export class TiledSprite extends Sprite {
 	public tileFrame?: ITiledTile;
 	public source?: ITiledSprite;
 	public primitives: ITiledPtimitive[] = [];
+	public properties: Record<string, any> = {};
 	
 	private _animator?: TileAnimator;
 

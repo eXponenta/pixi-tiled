@@ -1,5 +1,5 @@
 import { TiledContainer } from "./../objects/TiledContainer";
-import { Text, TextStyle } from "pixi.js";
+import { Text, TextStyle } from "@pixi/text";
 import { Config } from "../Config";
 import * as Utils from "../tools/Utils";
 import { ITiledObject } from "../ITiledMap";
@@ -20,6 +20,7 @@ export function Build(meta: ITiledObject): TiledContainer {
 		fontSize: text.pixelsize || "16px"
 	} as TextStyle);
 
+	//@ts-ignore
 	pixiText.name = meta.name + "_Text";
 
 	pixiText.roundPixels = !!Config.roundFontAlpha;
@@ -78,14 +79,17 @@ export function Build(meta: ITiledObject): TiledContainer {
 	if (props) {
 		pixiText.style.stroke =
 			Utils.HexStringToHexInt(props.strokeColor as string) || 0;
-		pixiText.style.strokeThickness = props.strokeThickness || 0;
-		pixiText.style.padding = props.fontPadding || 0;
+
+		pixiText.style.strokeThickness = +props.strokeThickness || 0;
+		pixiText.style.padding = +props.fontPadding || 0;
 
 		Object.assign(pixiText, props);
 	}
 
 	//_cont.parentGroup = _layer.group;
-	container.addChild(pixiText);
+	container.addChild(<any> pixiText);
+
+	//@ts-ignore
 	container.text = pixiText;
 
 	container.properties = props;

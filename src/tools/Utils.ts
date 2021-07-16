@@ -1,5 +1,15 @@
-import { ITiledTileset, ITiledMap, IParsedProps, ITiledLayer, ITiledObject, ITiledSprite, ITiledTile } from '../ITiledMap';
-import { Graphics, Sprite } from 'pixi.js';
+import {
+	ITiledTileset,
+	ITiledMap,
+	IParsedProps,
+	ITiledLayer,
+	ITiledObject,
+	ITiledSprite,
+	ITiledTile
+} from '../ITiledMap';
+
+import { Sprite } from '@pixi/sprite';
+import { Graphics } from '@pixi/graphics';
 import { Config } from '../Config';
 import { BuildPrimitive } from './../objects/TiledPrimitives';
 import { TiledContainer } from './../objects/TiledContainer';
@@ -153,7 +163,8 @@ export function ApplyMeta(meta: ITiledObject | ITiledLayer, target: TiledContain
 			if (target instanceof Sprite) {
 				rect.y -= target.height;
 			}
-			target.parent.addChild(rect);
+
+			target.parent.addChild<any>(rect);
 		}, 30);
 	}
 }

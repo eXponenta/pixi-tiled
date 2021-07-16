@@ -1,4 +1,5 @@
-import { Spritesheet, LoaderResource, ITextureDictionary, Loader } from 'pixi.js';
+import { Spritesheet } from '@pixi/spritesheet';
+import { ILoaderResource, Loader } from '@pixi/loaders';
 import { TiledContainer } from '../objects/TiledContainer';
 import { Config, LayerBuildersMap } from '../Config';
 
@@ -8,13 +9,13 @@ import { TilesetManager } from './TilesetManagers';
 import { TiledMapContainer } from '../objects/TiledMapContainer';
 
 //inject new field in resources
-declare module 'pixi.js' {
-	export interface LoaderResource {
+declare module GlobalMixins {
+	export interface ILoaderResource {
 		stage?: TiledContainer;
 	}
 }
 
-type tValidSheet = Spritesheet | MultiSpritesheet | ITextureDictionary;
+type tValidSheet = Spritesheet | MultiSpritesheet;
 let showHello: boolean = true;
 
 export function CreateStage(
@@ -28,7 +29,7 @@ export function CreateStage(
 		showHello = false;
 	}
 
-	const useDisplay: boolean = !!Config.usePixiDisplay && (PIXI as any).display !== undefined;
+	const useDisplay: boolean = false;
 	const stage = new TiledMapContainer();
 
 	stage.layerHeight = _data.height;
@@ -72,7 +73,7 @@ export function CreateStage(
 }
 
 export const Parser = {
-	Parse(res: LoaderResource, next: Function) {
+	Parse(res: ILoaderResource, next: Function) {
 		const data = res.data;
 		//validate
 		if (!data || data.type != 'map') {
@@ -96,7 +97,7 @@ export const Parser = {
 
 		const _tryCreateStage = function()
 		{
-			const stage = CreateStage(res.textures!, data, baseUrl);
+			const stage = CreateStage(<any>res.textures!, data, baseUrl);
 
 			if (!stage) {
 				next();
@@ -104,6 +105,7 @@ export const Parser = {
 			}
 
 			stage.name = res.url.replace(cropName, '').split('.')[0];
+			//@ts-ignore
 			res.stage = stage;
 
 			if (stage.tileSet!.loaded) {
@@ -143,7 +145,7 @@ export const Parser = {
 		}
 	},
 
-	use(res: LoaderResource, next: Function) {
+	use(res: ILoaderResource, next: Function) {
 		Parser.Parse.call(this, res, next);
 	},
 

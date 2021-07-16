@@ -1,6 +1,5 @@
 import { ITiledLayer } from '../ITiledMap';
 import { _prepareProperties, ApplyMeta } from '../tools/Utils';
-import { Config } from '../Config';
 import { TiledContainer} from './../objects/TiledContainer';
 import { TilesetManager } from '../tools/TilesetManagers';
 
@@ -10,11 +9,6 @@ export interface ILayerBuilder {
 
 export const LayerBuilder = {
 	Build(layer: ITiledLayer, tileset: TilesetManager, zOrder = 0): TiledContainer | undefined {
-
-		const useDisplay: boolean = !!Config.usePixiDisplay && (PIXI as any).display !== undefined;
-		const Layer = useDisplay ? (PIXI as any).display.Layer : {};
-		const Group = useDisplay ? (PIXI as any).display.Group : {};
-
 		_prepareProperties(layer);
 
 		const props = layer.parsedProps;
@@ -24,9 +18,7 @@ export const LayerBuilder = {
 			return undefined;
 		}
 
-		const layerObject: TiledContainer = useDisplay
-			? new Layer(new Group(props.zOrder !== undefined ? props.zOrder : zOrder, true))
-			: new TiledContainer();
+		const layerObject: TiledContainer = new TiledContainer();
 
 		layerObject.tiledId = layer.id;
 		layerObject.name = layer.name;

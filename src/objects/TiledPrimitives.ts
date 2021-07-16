@@ -1,4 +1,4 @@
-import { Rectangle, Point, Polygon, Ellipse } from "pixi.js";
+import { Rectangle, Point, Polygon, Ellipse } from "@pixi/math";
 import { ITiledObject } from "./../ITiledMap";
 import { TiledObjectType, Objectype } from "../tools/TiledObjectType";
 

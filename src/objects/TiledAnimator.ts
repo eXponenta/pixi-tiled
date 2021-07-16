@@ -1,5 +1,5 @@
 import { TiledSprite } from "./TiledSprite";
-import { AnimatedSprite } from "pixi.js";
+import { AnimatedSprite, FrameObject } from "@pixi/sprite-animated";
 import { ITiledTile } from "./../ITiledMap";
 
 export class TileAnimator {
@@ -14,12 +14,12 @@ export class TileAnimator {
 		}
 
 		this._tile = tile;
-		this._animator = new AnimatedSprite(tile.animation);
+		this._animator = new AnimatedSprite(<FrameObject[]> <any> tile.animation);
 		this._animator.onFrameChange = this.__onFrame.bind(this);
 	}
 
 	__onFrame() {
-		this._childs.forEach((e)=> e.texture = this._animator.texture);
+		this._childs.forEach((e)=> e.texture = <any> this._animator.texture);
 	}
 
 	get anim() {

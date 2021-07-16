@@ -2,23 +2,12 @@ import { ITiledTileset, ITiledTile } from '../ITiledMap';
 import { MultiSpritesheet } from './TiledMultiSheet';
 import { resolveTile } from './Utils';
 
-import { Spritesheet, Texture, utils, ITextureDictionary, resources, BaseTexture, Rectangle } from 'pixi.js';
+import { Spritesheet } from '@pixi/spritesheet';
+import { Rectangle } from '@pixi/math';
+import { Texture, BaseTexture, ImageResource } from '@pixi/core';
+import { EventEmitter } from '@pixi/utils';
 
-class FixedImageResource extends resources.ImageResource {
-	load(): Promise<void> {
-		return new Promise((res, rej) => {
-			const rejector = {
-				onError: rej,
-			};
-
-			// @ts-ignore
-			(this.onError as any).add(rejector);
-			super.load().then(res);
-		});
-	}
-}
-
-export class TilesetManager extends utils.EventEmitter {
+export class TilesetManager extends EventEmitter {
 	private _sheet: MultiSpritesheet = new MultiSpritesheet();
 	private _loadQueue: number = 0;
 
@@ -32,7 +21,7 @@ export class TilesetManager extends utils.EventEmitter {
 	 */
 	public loadUnknowImages: boolean = true;
 
-	constructor(private _tileSets: ITiledTileset[], sheet?: MultiSpritesheet | Spritesheet | ITextureDictionary) {
+	constructor(private _tileSets: ITiledTileset[], sheet?: MultiSpritesheet | Spritesheet | Record<string, Texture<any>>) {
 		super();
 
 		if (sheet) {
@@ -40,7 +29,7 @@ export class TilesetManager extends utils.EventEmitter {
 				this.register(sheet as MultiSpritesheet);
 			} else {
 				Object.keys(sheet).forEach(e => {
-					this._sheet.addTexture((sheet as ITextureDictionary)[e], e);
+					this._sheet.addTexture((sheet as Record<string, Texture>)[e], e);
 				});
 			}
 		}
@@ -166,7 +155,7 @@ export class TilesetManager extends utils.EventEmitter {
 
 	_tryLoadTexture(url: string, tile: ITiledTile) {
 		// @ts-ignore
-		const res = new FixedImageResource(url, {
+		const res = new ImageResource(url, {
 			autoLoad: false,
 			crossorigin: 'anonymous',
 		});

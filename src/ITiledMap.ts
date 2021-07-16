@@ -1,4 +1,4 @@
-import { Texture } from "pixi.js";
+import type { Texture } from "@pixi/core";
 
 export type IPropType = "float" | "int" | "color" | "bool" | "string";
 
@@ -35,7 +35,7 @@ export interface ITiledTile {
 	parsedProps: IParsedProps;
 	
 	// PIXI
-	texture: Texture;
+	texture: Texture<any>;
 	tilesetId?: number;
 	lazyLoad?: boolean;
 	fromSheet?: boolean;

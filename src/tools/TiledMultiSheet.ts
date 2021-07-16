@@ -1,8 +1,9 @@
-import { Spritesheet, Texture } from "pixi.js";
+import type { Texture } from "@pixi/core";
+import type { Spritesheet } from "@pixi/spritesheet";
 
 export class MultiSpritesheet {
 	sheets: Array<Spritesheet | MultiSpritesheet> = [];
-	images: { [name: string]: Texture } = {};
+	images: { [name: string]: Texture<any> } = {};
 
 	constructor(sheets?: Spritesheet[]) {
 		if (sheets) {
@@ -23,8 +24,8 @@ export class MultiSpritesheet {
 		this.images[id] = tex;
 	}
 
-	get textures(): { [name: string]: Texture } {
-		let map: { [name: string]: Texture } = {};
+	get textures(): { [name: string]: Texture<any> } {
+		let map: { [name: string]: Texture<any> } = {};
 
 		for (const spr of this.sheets) {
 			Object.assign(map, spr.textures);

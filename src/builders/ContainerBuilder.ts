@@ -1,9 +1,7 @@
 import { TiledContainer } from "./../objects/TiledContainer";
 import { Config } from "../Config";
-import {
-	Rectangle,
-	Texture,
-} from "pixi.js";
+import { Rectangle } from "@pixi/math";
+import { Texture } from "@pixi/core";
 
 import { ITiledObject, ITiledSprite } from "../ITiledMap";
 import { TiledSprite } from "./../objects/TiledSprite";
@@ -30,7 +28,7 @@ export function Build(meta: ITiledObject): TiledContainer | TiledSprite {
 
 	if (meta.gid) {
 		container.pivot = Config.defSpriteAnchor as any;
-		container.hitArea = new Rectangle(0, 0, meta.width, meta.height);
+		(<TiledContainer> container).hitArea = new Rectangle(0, 0, meta.width, meta.height);
 	}
 
 	return container;

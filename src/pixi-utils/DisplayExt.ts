@@ -1,17 +1,11 @@
+import { DisplayObject } from '@pixi/display';
 
+export default function(displayObject: typeof DisplayObject) {
 
-declare module "pixi.js" {
-	export interface DisplayObject {
-		replaceWithTransform(from:DisplayObject): void
-	}
-}
-
-export default function(pack : {DisplayObject : any}) {
-
-	if(!pack.DisplayObject)
+	if(!displayObject)
 		throw new Error("Cant't find DisplayObject in package!");
 	
-	pack.DisplayObject.prototype.replaceWithTransform = function(from: any) {
+	(<any>displayObject.prototype).replaceWithTransform = function(from: any) {
         from.updateTransform();
 
         if(from.parent){

@@ -1,8 +1,8 @@
-import * as PIXI from 'pixi.js';
+import { EventEmitter } from '@pixi/utils'
 
 export class KeyInputHandler {
 	static IsKeyDown: Array<boolean> = [];
-	static events: PIXI.utils.EventEmitter = new PIXI.utils.EventEmitter();
+	static events: EventEmitter = new EventEmitter();
 
 	private static latestDom: HTMLElement | Window | undefined;
 

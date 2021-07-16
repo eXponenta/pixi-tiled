@@ -1,5 +1,5 @@
 //inject TILED importer but skip middleware Injecting, only mixins and configs
-PIXI.TiledOG.Inject(PIXI, { injectMiddleware: true, debugContainers: true });
+PIXI.tiled.Inject(PIXI, { injectMiddleware: true, debugContainers: true });
 
 var app = new PIXI.Application({
 	width: 800,

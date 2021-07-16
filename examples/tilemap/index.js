@@ -1,5 +1,5 @@
 //inject TILED importer but skip middleware Injecting, only mixins and configs
-PIXI.TiledOG.Inject(PIXI, { injectMiddleware: false, debugContainers: true });
+PIXI.tiled.Inject(PIXI, { injectMiddleware: false, debugContainers: true });
 
 var app = new PIXI.Application({
 	width: 1280,
@@ -19,13 +19,15 @@ function loaded() {
 	const data = app.loader.resources['map'].data;
 	const tex = app.loader.resources['texture'].texture;
 
-	const create = PIXI.TiledOG.CreateStage({
+	const create = PIXI.tiled.CreateStage({
 		"tmw_desert_spacing.png": tex
 	}, data);
 
 	app.stage.addChild(create);
 
 	app.ticker.add(gameLoop);
+
+	window.app = app;
 }
 
 function gameLoop(dt) {}

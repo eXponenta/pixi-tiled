@@ -1,8 +1,8 @@
-import { Point } from "pixi.js";
+import { Point } from "@pixi/math";
 import { ILayerBuilder } from "./layers/LayerBuilder";
 
 export interface ITiledProps {
-	defSpriteAnchor: PIXI.Point;
+	defSpriteAnchor: Point;
 	debugContainers: boolean;
 	usePixiDisplay: boolean;
 	roundFontAlpha: boolean;

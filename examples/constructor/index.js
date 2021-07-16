@@ -1,5 +1,5 @@
 //inject TILED importer but skip middleware Injecting, only mixins and configs
-PIXI.TiledOG.Inject(PIXI, { injectMiddleware: false, debugContainers: true });
+PIXI.tiled.Inject(PIXI, { injectMiddleware: false, debugContainers: true });
 
 var app = new PIXI.Application({
 	width: 720,
@@ -18,7 +18,7 @@ function loaded() {
 	const map = app.loader.resources['map'].data;
 	const atlas = app.loader.resources['atlas'].spritesheet;
 
-	const create = PIXI.TiledOG.CreateStage(atlas, map);
+	const create = PIXI.tiled.CreateStage(atlas, map);
 
 	app.stage.addChild(create);
 	app.stage.scale.set(app.screen.width / 1080);
