@@ -29,6 +29,11 @@ export function CreateStage(
 		showHello = false;
 	}
 
+	if (!Config.autoCreateStage)
+	{
+		return undefined;
+	}
+
 	const useDisplay: boolean = false;
 	const stage = new TiledMapContainer();
 
