@@ -97,6 +97,11 @@ export const Parser = {
 
 		const _tryCreateStage = function()
 		{
+			if (!Config.autoCreateStage)
+			{
+				next();
+				return;
+			}
 			const stage = CreateStage(<any>res.textures!, data, baseUrl);
 
 			if (!stage) {
