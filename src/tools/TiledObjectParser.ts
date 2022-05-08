@@ -31,6 +31,11 @@ export function CreateStage(
 		console.log('[TILED] Importer!\neXponenta {rondo.devil[a]gmail.com}');
 		showHello = false;
 	}
+	
+	if (!Config.autoCreateStage)
+	{
+		return undefined;
+	}
 
 	const useDisplay: boolean = false;
 	const stage = new TiledMapContainer();
