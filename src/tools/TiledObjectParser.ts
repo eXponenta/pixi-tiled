@@ -7,6 +7,7 @@ import { MultiSpritesheet } from './TiledMultiSheet';
 import { ITiledMap } from '../ITiledMap';
 import { TilesetManager } from './TilesetManagers';
 import { TiledMapContainer } from '../objects/TiledMapContainer';
+import { EventEmitter } from '@pixi/utils';
 
 //inject new field in resources
 declare module GlobalMixins {
@@ -17,6 +18,8 @@ declare module GlobalMixins {
 
 type tValidSheet = Spritesheet | MultiSpritesheet;
 let showHello: boolean = true;
+
+let TilesetCache: any[] = [];
 
 export function CreateStage(
 	sheet: tValidSheet | undefined,
@@ -85,15 +88,6 @@ export const Parser = {
 		let baseUrl = res.url.replace((this as any).baseUrl, '');
 		baseUrl = baseUrl.match(cropName)![0];
 
-		const tilesetsToLoad = [];
-		for (let  tilesetIndex = 0; tilesetIndex < data.tilesets.length; tilesetIndex++)
-		{
-			const tileset = data.tilesets[tilesetIndex];
-			if (tileset.source !== undefined)
-			{
-				tilesetsToLoad.push(tileset);
-			}
-		}
 
 		const _tryCreateStage = function()
 		{
@@ -116,6 +110,38 @@ export const Parser = {
 			stage.tileSet!.once('loaded', () => next());
 		}
 
+		const tilesetsToLoad = [];
+		let tilesetsLoadingInProcess = false;
+		for (let  tilesetIndex = 0; tilesetIndex < data.tilesets.length; tilesetIndex++)
+		{
+			const tileset = data.tilesets[tilesetIndex];
+			if (tileset.source !== undefined)
+			{
+				let cachedTileset = TilesetCache[tileset.source];
+				if (cachedTileset)
+				{
+					data.tilesets[tilesetIndex] = cachedTileset;
+					if (!cachedTileset.isLoaded)
+					{
+						tilesetsLoadingInProcess = true;
+						cachedTileset.loaded.once("loaded", ()=>{
+							_tryCreateStage();
+						});
+					}
+				}
+				else 
+				{
+					tilesetsToLoad.push(tileset);
+					TilesetCache[tileset.source] = tileset;
+					tileset.loaded = new EventEmitter();
+					tileset.loaded.once("loaded", ()=>{
+						_tryCreateStage();
+					});
+					tilesetsLoadingInProcess = true;
+				}
+			}
+		}
+
 		if (tilesetsToLoad.length > 0)
 		{
 			const loader = new Loader();
@@ -133,13 +159,14 @@ export const Parser = {
 						if (tileset.source === resourceFileName)
 						{
 							Object.assign(tileset, tilesetResource.data);
+							tileset.isLoaded = true;
+							tileset.loaded.emit("loaded");
 						}
 					}
 				});
-				_tryCreateStage();
 			});
 		}
-		else
+		if (!tilesetsLoadingInProcess)
 		{
 			_tryCreateStage();
 		}
