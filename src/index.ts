@@ -56,3 +56,6 @@ export { TextBuilder };
 export { TiledContainer };
 export { MultiSpritesheet };
 export { VERSION };
+export { LayerBuildersMap};
+export { ObjectLayerBuilder};
+export * from './ITiledMap';
