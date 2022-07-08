@@ -167,7 +167,7 @@ export function BuildPrimitive( meta: ITiledObject ): ITiledPtimitive | undefine
 			break;
 		}
 		case TiledObjectType.POLYLINE: {
-			const points = meta.polygon!;
+			const points = meta.polyline!;
 			const poses = points.map(p => {
 				return new Point(p.x + meta.x, p.y + meta.y);
 			});
