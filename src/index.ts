@@ -37,9 +37,9 @@ export function Inject(pixiPack = window.PIXI, props: Partial<ITiledProps> | und
 
 	InjectMixins(pixiPack);
 
-	if (Config.injectMiddleware) {
-		pixiPack.Loader.registerPlugin(Parser);
-	}
+	//if (Config.injectMiddleware) {
+	//	pixiPack.Loader.registerPlugin(Parser);
+	//}
 }
 
 import * as Primitives from './objects/TiledPrimitives';
