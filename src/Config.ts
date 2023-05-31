@@ -8,7 +8,6 @@ export interface ITiledProps {
 	roundFontAlpha: boolean;
 	injectMiddleware: boolean;
 	roundPixels: boolean;
-	autoCreateStage: boolean;
 }
 
 export const Config: ITiledProps = {
@@ -17,8 +16,7 @@ export const Config: ITiledProps = {
 	usePixiDisplay: false,
 	roundFontAlpha: false,
 	injectMiddleware: true,
-	roundPixels: true,
-	autoCreateStage: true
+	roundPixels: true
 };
 
 export const LayerBuildersMap: { [key: string]: ILayerBuilder | undefined } = {};

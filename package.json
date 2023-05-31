@@ -32,6 +32,7 @@
   "homepage": "https://github.com/eXponenta/pixi-tiled#readme",
   "devDependencies": {
     "@microsoft/api-extractor": "^7.18.4",
+    "@pixi/assets": "^7.2.4",
     "@pixi-build-tools/rollup-configurator": "^1.0.14",
     "@pixi/canvas-renderer": "^7.2.4",
     "@pixi/constants": "^7.2.4",
@@ -58,6 +59,7 @@
   },
   "peerDependencies": {
     "@pixi/canvas-renderer": "^7.2.4",
+    "@pixi/assets": "^7.2.4",
     "@pixi/constants": "^7.2.4",
     "@pixi/core": "^7.2.4",
     "@pixi/display": "^7.2.4",
