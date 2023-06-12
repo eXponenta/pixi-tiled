@@ -9,11 +9,12 @@ var app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 //load map with dependencies
-app.loader.add('map', './../assets/demo.json').load(loaded);
+PIXI.Assets.add('map', './assets/demo.json');
+PIXI.Assets.load('map').then(loaded);
 
 function loaded() {
-	const create = app.loader.resources['map'].stage;
-
+	const map = PIXI.Assets.get('map');
+	const create = PIXI.tiled.CreateStage(undefined, map);
 	app.stage.addChild(create);
 
 	app.ticker.add(gameLoop);

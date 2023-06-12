@@ -9,20 +9,18 @@ var app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 //load map with dependencies
-app.loader
-	.add('map', './../assets/ui-map.json')
-	.add('atlas', './../assets/ui-atlas.json')
-	.load(loaded);
+PIXI.Assets.add('map', './assets/ui-map.json');
+PIXI.Assets.add('atlas', './assets/ui-atlas.json');
+PIXI.Assets.load(['map', 'atlas']).then(loaded);
 
 function loaded() {
-	const map = app.loader.resources['map'].data;
-	const atlas = app.loader.resources['atlas'].spritesheet;
-
+	const map = PIXI.Assets.get('map');
+	const atlas = PIXI.Assets.get('atlas');	
 	const create = PIXI.tiled.CreateStage(atlas, map);
-
+	
 	app.stage.addChild(create);
 	app.stage.scale.set(app.screen.width / 1080);
-
+	
 	app.ticker.add(gameLoop);
 }
 
