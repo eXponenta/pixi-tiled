@@ -104,15 +104,14 @@ export const ObjectLayerBuilder = {
 
 				gid: -1,
 				name: imageLayer.name,
-				x: imageLayer.x + imageLayer.offsetx,
-				y: imageLayer.y + imageLayer.offsety,
+				x: imageLayer.x,
+				y: imageLayer.y,
 
 				fromImageLayer: true,
 				properties: imageLayer.properties,
 				parsedProps: imageLayer.parsedProps,
 			} as ITiledSprite,
 		];
-
 		return true;
 	},
 };
