@@ -9,15 +9,13 @@ var app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 //load map with dependencies
-app.loader.baseUrl = './../assets/';
-app.loader
-	.add('map', 'desert.json')
-	.add('texture', "tmw_desert_spacing.png")
-	.load(loaded);
+PIXI.Assets.add('map', './assets/desert.json');
+PIXI.Assets.add('texture', "./assets/tmw_desert_spacing.png");
+PIXI.Assets.load(['map', 'texture']).then(loaded);
 
 function loaded() {
-	const data = app.loader.resources['map'].data;
-	const tex = app.loader.resources['texture'].texture;
+	const data = PIXI.Assets.get('map');
+	const tex = PIXI.Assets.get('texture').texture;
 
 	const create = PIXI.tiled.CreateStage({
 		"tmw_desert_spacing.png": tex

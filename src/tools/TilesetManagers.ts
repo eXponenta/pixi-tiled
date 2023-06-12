@@ -74,10 +74,9 @@ export class TilesetManager extends EventEmitter {
 
 		let texture = this.spritesheet.textures[tile.image];
 
-		tile.lazyLoad = false;
+		tile.lazyLoad = !(texture != undefined && texture.valid);
 
 		const absUrl = this._relativeToAbsolutePath(this.baseUrl, tile.image!);
-
 		//Texture not found by relative path
 		if (!texture) {
 			//Try to find by absolute path
@@ -97,7 +96,6 @@ export class TilesetManager extends EventEmitter {
 		}
 
 		tile.texture = texture;
-
 		return tile;
 	}
 
@@ -143,9 +141,9 @@ export class TilesetManager extends EventEmitter {
 		const yId = tile.id / colls | 0;
 
 		texture = new Texture(texture.baseTexture, new Rectangle(
-			margin + xId * (set.tilewidth! + space),
-			margin + yId * (set.tileheight! + space),
-			set.tileheight, set.tilewidth
+			texture._frame.x + margin + xId * (set.tilewidth! + space),
+			texture._frame.y + margin + yId * (set.tileheight! + space),
+			set.tilewidth, set.tileheight
 		));
 
 		this._sheet.addTexture(texture, `${tile.image}_${tile.tilesetId}:${tile.id}`);

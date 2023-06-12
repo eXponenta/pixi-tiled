@@ -7,6 +7,9 @@ import { MultiSpritesheet } from './TiledMultiSheet';
 import { ITiledMap } from '../ITiledMap';
 import { TilesetManager } from './TilesetManagers';
 import { TiledMapContainer } from '../objects/TiledMapContainer';
+import { EventEmitter } from '@pixi/utils';
+import { utils, ExtensionType, extensions } from '@pixi/core';
+import { LoaderParserPriority, LoadAsset, LoaderParser, AssetExtension, Assets } from '@pixi/assets';
 
 //inject new field in resources
 declare module GlobalMixins {
@@ -18,10 +21,11 @@ declare module GlobalMixins {
 type tValidSheet = Spritesheet | MultiSpritesheet;
 let showHello: boolean = true;
 
+let TilesetCache: { [index: string]: any } = {};
+
 export function CreateStage(
 	sheet: tValidSheet | undefined,
 	_data: ITiledMap,
-	baseUrl: string = '',
 ): TiledMapContainer | undefined {
 
 	if (showHello) {
@@ -37,7 +41,7 @@ export function CreateStage(
 	stage.source = _data;
 
 	stage.tileSet = new TilesetManager(_data.tilesets, sheet);
-	stage.tileSet.baseUrl = baseUrl;
+	stage.tileSet.baseUrl = _data.baseUrl;
 
 	if (_data.layers) {
 		let zOrder = 0; //_data.layers.length;
@@ -68,88 +72,98 @@ export function CreateStage(
 			stage.addChild(pixiLayer);
 		}
 	}
-
 	return stage;
 }
+const cropName = new RegExp(/^.*[\\\/]/);
 
-export const Parser = {
-	Parse(res: ILoaderResource, next: Function) {
-		const data = res.data;
-		//validate
-		if (!data || data.type != 'map') {
-			next();
-			return;
-		}
-
-		const cropName = new RegExp(/^.*[\\\/]/);
-		let baseUrl = res.url.replace((this as any).baseUrl, '');
-		baseUrl = baseUrl.match(cropName)![0];
-
-		const tilesetsToLoad = [];
-		for (let  tilesetIndex = 0; tilesetIndex < data.tilesets.length; tilesetIndex++)
+const TiledMapAsset = {
+	extension: ExtensionType.Asset,
+	detection: {
+		test: async() =>  { return true;},
+		add: async (formats:any) => { return [...formats, "json"]; },
+		remove: async (formats:any) => { return formats.filter((ext:any) => ext == "json")}
+	},
+	loader: {
+		extension: {
+			type: ExtensionType.LoadParser,
+			priority: LoaderParserPriority.Low
+		},
+		testParse(asset: any, loadAsset?: LoadAsset, loader?: Loader): Promise<boolean>
 		{
-			const tileset = data.tilesets[tilesetIndex];
-			if (tileset.source !== undefined)
-			{
-				tilesetsToLoad.push(tileset);
-			}
-		}
-
-		const _tryCreateStage = function()
+			return new Promise((resolve, reject) => {
+				if (asset && asset.type == 'map')
+				{
+					resolve(true);
+				}
+				else
+				{
+					resolve(false);
+				}
+			});
+		},
+		parse(map: ITiledMap, loadedAsset: any, loader?: Loader): Promise<ITiledMap>
 		{
-			const stage = CreateStage(<any>res.textures!, data, baseUrl);
+			return new Promise((resolve, reject) => {	
+				let baseUrl = loadedAsset.src.replace((this as any).baseUrl, '');
+				baseUrl = baseUrl.match(cropName)![0];
+				map.baseUrl = baseUrl;
 
-			if (!stage) {
-				next();
-				return;
-			}
-
-			stage.name = res.url.replace(cropName, '').split('.')[0];
-			//@ts-ignore
-			res.stage = stage;
-
-			if (stage.tileSet!.loaded) {
-				next();
-				return;
-			}
-
-			stage.tileSet!.once('loaded', () => next());
-		}
-
-		if (tilesetsToLoad.length > 0)
-		{
-			const loader = new Loader();
-			for (let tilesetIndex = 0; tilesetIndex < tilesetsToLoad.length; tilesetIndex++)
-			{
-				loader.add(baseUrl + tilesetsToLoad[tilesetIndex].source);
-			}
-			loader.load(()=>{
-				Object.keys(loader.resources).forEach(resourcePath => {
-					let tilesetResource = loader.resources[resourcePath];
-					let resourceFileName =  resourcePath.replace(cropName, '');
-					for (let  tilesetIndex = 0; tilesetIndex < data.tilesets.length; tilesetIndex++)
+				const tilesetsToLoad = [];
+				for (let  tilesetIndex = 0; tilesetIndex < map.tilesets.length; tilesetIndex++)
+				{
+					const tileset = map.tilesets[tilesetIndex];
+					if (tileset.source !== undefined)
 					{
-						const tileset = data.tilesets[tilesetIndex];
-						if (tileset.source === resourceFileName)
+						let cachedTileset = TilesetCache[tileset.source];
+						if (cachedTileset)
 						{
-							Object.assign(tileset, tilesetResource.data);
+							map.tilesets[tilesetIndex] = cachedTileset;
+						}
+						else 
+						{
+							tilesetsToLoad.push(tileset);
+							TilesetCache[tileset.source] = tileset;
 						}
 					}
-				});
-				_tryCreateStage();
+				}			
+				if (tilesetsToLoad.length == 0)
+				{
+					resolve(map as ITiledMap);
+				}
+				else
+				{
+					let  tilesetsList = [];
+					for (let tilesetIndex = 0; tilesetIndex < tilesetsToLoad.length; tilesetIndex++)
+					{
+						let tileset = tilesetsToLoad[tilesetIndex];
+						if (tileset.source !== undefined)
+						{
+							let name = utils.path.basename(tileset.source);
+							tilesetsList.push(name);
+							Assets.add(name, baseUrl + tilesetsToLoad[tilesetIndex].source);
+						}
+					}
+					Assets.load(tilesetsList).then((resources)=>{
+						Object.keys(resources).forEach(resourcePath => {
+							let tilesetResource = resources[resourcePath];
+							let resourceFileName =  resourcePath.replace(cropName, '');
+							for (let  tilesetIndex = 0; tilesetIndex < map.tilesets.length; tilesetIndex++)
+							{
+								const tileset = map.tilesets[tilesetIndex];
+								if (tileset.source === resourceFileName)
+								{
+									Object.assign(tileset, tilesetResource);
+								}
+							} 
+						});
+						resolve(map as ITiledMap);
+					});
+				}
 			});
-		}
-		else
-		{
-			_tryCreateStage();
-		}
-	},
+		},
+	} as LoaderParser<ITiledMap>
+} as AssetExtension;
 
-	use(res: ILoaderResource, next: Function) {
-		Parser.Parse.call(this, res, next);
-	},
+extensions.add(TiledMapAsset);
 
-	add() {
-		console.log('[TILED] middleware registered!');
-	},
-};
+export { TiledMapAsset };

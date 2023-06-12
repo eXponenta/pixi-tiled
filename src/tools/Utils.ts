@@ -130,8 +130,8 @@ export function ApplyMeta(meta: ITiledObject | ITiledLayer, target: TiledContain
 	target.height = meta.height || target.height;
 	target.rotation = (((meta as ITiledObject).rotation || 0) * Math.PI) / 180.0;
 
-	target.x = meta.x || 0;
-	target.y = meta.y || 0;
+	target.x = (meta.x || 0) + ((meta as ITiledLayer).offsetx || 0);
+	target.y = (meta.y || 0) + ((meta as ITiledLayer).offsety || 0);
 
 	target.visible = meta.visible == undefined ? true : meta.visible;
 	target.types = meta.type ? meta.type.split(":") : [];
