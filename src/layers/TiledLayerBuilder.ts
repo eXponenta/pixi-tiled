@@ -21,6 +21,34 @@ export const TiledLayerBuilder = {
 		const { width, height } = layer;
 		const { tileheight, tilewidth } = tileMapSource;
 
+		var xWeights = {
+			x: 0,
+			y: 0
+		};
+		var yWeights = {
+			x: 0,
+			y: 0
+		};
+		var mapOrientationShift = {
+			x: 0,
+			y: 0
+		};
+		switch (tileMapSource.orientation)
+		{
+			case "orthogonal":
+				xWeights.x = tilewidth;
+				yWeights.y = tileheight;
+				break;
+			case "isometric":
+				xWeights.x = tilewidth / 2;
+				xWeights.y = -tilewidth / 2;
+				yWeights.x = tileheight / 2;
+				yWeights.y = tileheight / 2;
+				mapOrientationShift.x = (height - 1) * xWeights.x;
+				mapOrientationShift.y = -tileheight/2;
+				break;
+		}
+
 		const genTile = (x: number, y: number, gid: number)=>{
 			const tile = set.getTileByGid(gid);
 
@@ -31,8 +59,8 @@ export const TiledLayerBuilder = {
 				anchor: {x: 0, y: 0}
 			} as ITiledSprite);
 			
-			s.x = x * tilewidth;
-			s.y = y * tileheight - (tile!.imageheight === undefined ? 0 : tile!.imageheight - tileheight);
+			s.x = x * xWeights.x + y * xWeights.y + mapOrientationShift.x;
+			s.y = x * yWeights.x + y * yWeights.y + mapOrientationShift.y - (tile!.imageheight === undefined ? 0 : tile!.imageheight - tileheight);
 			s.roundPixels = Config.roundPixels;
 
 			if(tile && tile.animation) {
