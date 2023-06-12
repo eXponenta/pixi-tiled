@@ -148,7 +148,7 @@ export interface ITiledMap {
 	tilewidth: number;
 
 	backgroundcolor?: string;
-	orientation: "orthogonal"; // only one supported now
+	orientation: "orthogonal" | "isometric"; // only one supported now
     properties: Array<IPropDefinition>;
     parsedProps: IParsedProps;
 	renderorder?: "right-down"; // right-down
@@ -161,4 +161,5 @@ export interface ITiledMap {
 
 	version: 1;
 	tiledversion: string;
+	baseUrl: string;
 }
