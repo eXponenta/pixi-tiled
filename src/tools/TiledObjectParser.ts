@@ -26,7 +26,6 @@ let TilesetCache: { [index: string]: any } = {};
 export function CreateStage(
 	sheet: tValidSheet | undefined,
 	_data: ITiledMap,
-	baseUrl: string = '',
 ): TiledMapContainer | undefined {
 
 	if (showHello) {
@@ -42,7 +41,7 @@ export function CreateStage(
 	stage.source = _data;
 
 	stage.tileSet = new TilesetManager(_data.tilesets, sheet);
-	stage.tileSet.baseUrl = baseUrl;
+	stage.tileSet.baseUrl = _data.baseUrl;
 
 	if (_data.layers) {
 		let zOrder = 0; //_data.layers.length;
@@ -76,33 +75,6 @@ export function CreateStage(
 	return stage;
 }
 const cropName = new RegExp(/^.*[\\\/]/);
-const _tryCreateStage = function(map: any, baseUrl: string): Promise<TiledMapContainer>
-{
-	return new Promise((resolve, reject)=>{
-		const stage = CreateStage(undefined, map, baseUrl);
-
-		if (stage == undefined) 
-		{
-			reject();
-		} 
-		else 
-		{
-			stage.name = map.url.replace(cropName, '').split('.')[0];
-
-			//@ts-ignore
-			res.stage = stage;
-
-			if (stage.tileSet!.loaded) 
-			{
-				resolve(stage);
-			}
-			else
-			{
-				stage.tileSet!.once('loaded', () => resolve(stage));
-			}
-		}
-	});
-};
 
 const TiledMapAsset = {
 	extension: ExtensionType.Asset,
@@ -134,6 +106,7 @@ const TiledMapAsset = {
 			return new Promise((resolve, reject) => {	
 				let baseUrl = loadedAsset.src.replace((this as any).baseUrl, '');
 				baseUrl = baseUrl.match(cropName)![0];
+				map.baseUrl = baseUrl;
 
 				const tilesetsToLoad = [];
 				for (let  tilesetIndex = 0; tilesetIndex < map.tilesets.length; tilesetIndex++)
@@ -181,7 +154,7 @@ const TiledMapAsset = {
 								{
 									Object.assign(tileset, tilesetResource);
 								}
-							}
+							} 
 						});
 						resolve(map as ITiledMap);
 					});
