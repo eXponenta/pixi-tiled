@@ -143,8 +143,8 @@ export class TilesetManager extends EventEmitter {
 		const yId = tile.id / colls | 0;
 
 		texture = new Texture(texture.baseTexture, new Rectangle(
-			margin + xId * (set.tilewidth! + space),
-			margin + yId * (set.tileheight! + space),
+			texture._frame.x + margin + xId * (set.tilewidth! + space),
+			texture._frame.y + margin + yId * (set.tileheight! + space),
 			set.tileheight, set.tilewidth
 		));
 
